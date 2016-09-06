@@ -1,7 +1,6 @@
 package org.binx.utils.math.test;
 
-import org.binx.utils.math.generator.NumberGenerator;
-import org.yadi.refJ.exceptions.*;
+import org.binx.utils.math.generator.*;
 
 /**
  * 
@@ -22,6 +21,7 @@ public abstract class MathTestUtils {
 	
 	/**
 	 * Test if all element of list are Numbers
+	 * <i>Return null if the list is empty</i>
 	 * 
 	 * @param objects
 	 * @return
@@ -34,7 +34,7 @@ public abstract class MathTestUtils {
 			}
 			return true;
 		}
-		return false;
+		return null;
 	}
 	
 	/**
@@ -46,7 +46,7 @@ public abstract class MathTestUtils {
 	 * @throws NotNumberException
 	 */
 	public static Boolean isPositive(Object o) {
-		return AGreaterThanB(NumberGenerator.get(o), 0);
+		return AGreaterThanB(NumberGeneratorUtils.get(o), 0);
 	}
 	
 	/**
@@ -77,7 +77,7 @@ public abstract class MathTestUtils {
 	 * @return
 	 */
 	public static Boolean isNegative(Object o) {	
-		return ALowerThanB(NumberGenerator.get(o), 0);
+		return ALowerThanB(NumberGeneratorUtils.get(o), 0);
 	}
 	
 	/**
@@ -111,8 +111,8 @@ public abstract class MathTestUtils {
 	 */
 	public static Boolean AGreaterThanB(Object A, Object B) {
 		if(areNumbers(A, B)){
-			Number varA = NumberGenerator.get(A);
-			Number varB = NumberGenerator.get(B);
+			Number varA = NumberGeneratorUtils.get(A);
+			Number varB = NumberGeneratorUtils.get(B);
 
 			return varA.doubleValue() > varB.doubleValue();
 		}
@@ -129,8 +129,8 @@ public abstract class MathTestUtils {
 	 */
 	public static Boolean AGreaterOrEqualToB(Object A, Object B) {
 		if(areNumbers(A, B)){
-			Number varA = NumberGenerator.get(A);
-			Number varB = NumberGenerator.get(B);
+			Number varA = NumberGeneratorUtils.get(A);
+			Number varB = NumberGeneratorUtils.get(B);
 			
 			return varA.doubleValue() >= varB.doubleValue();
 		}
@@ -146,7 +146,8 @@ public abstract class MathTestUtils {
 	 * @return
 	 */
 	public static Boolean firstGreaterThanOthers(Object... objects) {
-		if(areNumbers(objects)){
+		if(objects.length == 1 && isNumber(objects[0])) return true;
+		if(objects.length > 1 && areNumbers(objects)){
 			for (int i = 1; i < objects.length; i++) {
 				if (ALowerOrEqualToB(objects[0], objects[i]))
 					return false;
@@ -166,7 +167,8 @@ public abstract class MathTestUtils {
 	 * @return
 	 */
 	public static Boolean firstGreaterOrEqualToOthers(Object... objects) {
-		if(areNumbers(objects)){
+		if(objects.length == 1 && isNumber(objects[0])) return true;
+		if(objects.length > 1 && areNumbers(objects)){
 			for (int i = 1; i < objects.length; i++) {
 				if (ALowerThanB(objects[0], objects[i]))
 					return false;
@@ -184,7 +186,8 @@ public abstract class MathTestUtils {
 	 * @param objects
 	 */
 	public static Boolean latestGreaterThanOthers(Object... objects) {
-		if(areNumbers(objects)){
+		if(objects.length == 1 && isNumber(objects[0])) return true;
+		if(objects.length > 1 && areNumbers(objects)){
 			for(int i = 0; i < objects.length - 1; i++){
 				if(ALowerOrEqualToB(objects[objects.length - 1], objects[i]))
 					return false;
@@ -203,7 +206,8 @@ public abstract class MathTestUtils {
 	 * @param objects
 	 */
 	public static Boolean latestGreaterOrEqualToOthers(Object... objects) {
-		if(areNumbers(objects)){
+		if(objects.length == 1 && isNumber(objects[0])) return true;
+		if(objects.length > 1 && areNumbers(objects)){
 			for(int i = 0; i < objects.length - 1; i++){
 				if(ALowerThanB(objects[objects.length - 1], objects[i]))
 					return false;
@@ -222,7 +226,7 @@ public abstract class MathTestUtils {
 	 * @param objects
 	 */
 	public static Boolean numberAtPositionIsGreaterThanOthers(Integer position, Object... objects) {
-		if(areNumbers(objects) && position >= 1 && position <= objects.length){
+		if(position >= 1 && position <= objects.length && areNumbers(objects)){
 			for(int i = 0; i < position - 1; i++){
 				if(ALowerOrEqualToB(objects[position - 1], objects[i]))
 					return false;
@@ -245,7 +249,7 @@ public abstract class MathTestUtils {
 	 * @param objects
 	 */
 	public static Boolean numberAtPositionIsGreaterOrEqualToOthers(Integer position, Object... objects) {
-		if(areNumbers(objects) && position >= 1 && position <= objects.length){
+		if(position >= 1 && position <= objects.length && areNumbers(objects)){
 			for(int i = 0; i < position - 1; i++){
 				if(ALowerThanB(objects[position - 1], objects[i]))
 					return false;
@@ -270,8 +274,8 @@ public abstract class MathTestUtils {
 	 */
 	public static Boolean ALowerThanB(Object A, Object B) {
 		if(areNumbers(A, B)){
-			Number varA = NumberGenerator.get(A);
-			Number varB = NumberGenerator.get(B);
+			Number varA = NumberGeneratorUtils.get(A);
+			Number varB = NumberGeneratorUtils.get(B);
 			
 			return varA.doubleValue() < varB.doubleValue();
 		}
@@ -289,8 +293,8 @@ public abstract class MathTestUtils {
 	 */
 	public static Boolean ALowerOrEqualToB(Object A, Object B) {
 		if(areNumbers(A, B)){
-			Number varA = NumberGenerator.get(A);
-			Number varB = NumberGenerator.get(B);
+			Number varA = NumberGeneratorUtils.get(A);
+			Number varB = NumberGeneratorUtils.get(B);
 			
 			return varA.doubleValue() <= varB.doubleValue();
 		}
@@ -305,7 +309,8 @@ public abstract class MathTestUtils {
 	 * @param objects
 	 */
 	public static Boolean firstLowerThanOthers(Object... objects) {
-		if(areNumbers(objects)){
+		if(objects.length == 1 && isNumber(objects[0])) return true;
+		if(objects.length > 1 && areNumbers(objects)){
 			for(int i = 1; i < objects.length; i++){
 				if(AGreaterOrEqualToB(objects[0], objects[i]))
 					return false;
@@ -324,7 +329,8 @@ public abstract class MathTestUtils {
 	 * @param objects
 	 */
 	public static Boolean firstLowerOrEqualToOthers(Object... objects) {
-		if(areNumbers(objects)){
+		if(objects.length == 1 && isNumber(objects[0])) return true;
+		if(objects.length > 1 && areNumbers(objects)){
 			for(int i = 1; i < objects.length; i++){
 				if(AGreaterThanB(objects[0], objects[i]))
 					return false;
@@ -342,8 +348,9 @@ public abstract class MathTestUtils {
 	 * @param objects
 	 */
 	public static Boolean latestLowerThanOthers(Object... objects) {
-		if(areNumbers(objects)){
-			for(int i = 1; i < objects.length; i++){
+		if(objects.length == 1 && isNumber(objects[0])) return true;
+		if(objects.length > 1 && areNumbers(objects)){
+			for(int i = 0; i < objects.length - 1; i++){
 				if(AGreaterOrEqualToB(objects[objects.length - 1], objects[i]))
 					return false;
 			}
@@ -361,7 +368,8 @@ public abstract class MathTestUtils {
 	 * @param objects
 	 */
 	public static Boolean latestLowerOrEqualToOthers(Object... objects) {
-		if(areNumbers(objects)){
+		if(objects.length == 1 && isNumber(objects[0])) return true;
+		if(objects.length > 1 && areNumbers(objects)){
 			for(int i = 1; i < objects.length; i++){
 				if(AGreaterThanB(objects[objects.length - 1], objects[i]))
 					return false;
@@ -380,7 +388,7 @@ public abstract class MathTestUtils {
 	 * @param objects
 	 */
 	public static Boolean numberAtPositionIsLowerThanOthers(Integer position, Object... objects) {
-		if(areNumbers(objects) && position >= 1 && position <= objects.length){
+		if(position >= 1 && position <= objects.length && areNumbers(objects)){
 			for(int i = 0; i < position - 1; i++){
 				if(AGreaterOrEqualToB(objects[position - 1], objects[i]))
 					return false;
@@ -403,7 +411,7 @@ public abstract class MathTestUtils {
 	 * @param objects
 	 */
 	public static Boolean numberAtPositionIsLowerOrEqualToOthers(Integer position, Object... objects) {
-		if(areNumbers(objects) && position >= 1 && position <= objects.length){
+		if(position >= 1 && position <= objects.length && areNumbers(objects)){
 			for(int i = 0; i < position - 1; i++){
 				if(AGreaterThanB(objects[position - 1], objects[i]))
 					return false;
@@ -428,8 +436,8 @@ public abstract class MathTestUtils {
 	 */
 	public static Boolean AEqualToB(Object A, Object B) {
 		if(areNumbers(A, B)){
-			Number varA = NumberGenerator.get(A);
-			Number varB = NumberGenerator.get(B);
+			Number varA = NumberGeneratorUtils.get(A);
+			Number varB = NumberGeneratorUtils.get(B);
 
 			return varA.doubleValue() == varB.doubleValue();
 		}
@@ -439,12 +447,12 @@ public abstract class MathTestUtils {
 	/**
 	 * Test that all elements of the list are equal<br/>
 	 * <i>Condition : elements are Numbers (primitive numbers or java.lang.Number)</i><br/>
-	 * <i>Return null if are not a numbers or it's an empty list</i>
+	 * <i>Return null if are not a numbers or if the list is empty or with one element</i>
 	 * 
 	 * @param objects
 	 */
 	public static Boolean areEqual(Object... objects) {
-		if(areNumbers(objects)){
+		if(objects.length > 1 && areNumbers(objects)){
 			for(int i = 1; i < objects.length; i++){
 				if(ADifferentFromB(objects[0], objects[i]))
 					return false;
@@ -465,8 +473,8 @@ public abstract class MathTestUtils {
 	 */
 	public static Boolean ADifferentFromB(Object A, Object B) {
 		if(areNumbers(A, B)){
-			Number varA = NumberGenerator.get(A);
-			Number varB = NumberGenerator.get(B);
+			Number varA = NumberGeneratorUtils.get(A);
+			Number varB = NumberGeneratorUtils.get(B);
 
 			return varA.doubleValue() != varB.doubleValue();
 		}
@@ -482,7 +490,8 @@ public abstract class MathTestUtils {
 	 * @param objects
 	 */
 	public static Boolean areDifferentFromEachOthers(Object... objects) {
-		if(areNumbers(objects)){
+		if(objects.length == 1 && isNumber(objects[0])) return true;
+		if(objects.length > 1 && areNumbers(objects)){
 			for(int i = 1; i < objects.length; i++){
 				if(AEqualToB(objects[0], objects[i]))
 					return false;
