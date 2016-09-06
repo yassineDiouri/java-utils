@@ -52,6 +52,30 @@ public abstract class NullTestUtils {
 	}
 
 	/**
+	 * Test if only the first Object is not null and others are null<br/>
+	 * <i>Whatever the classes</i><br/>
+	 * <i>Return null if the list is empty</i>
+	 * 
+	 * @param objects
+	 * @return
+	 */
+	public static Boolean onlyTheFirstIsNotNull(Object... objects) {
+		if(objects.length > 0){
+			for (int i = 0; i < objects.length; i++) {
+				if (i == 0) {
+					if (isNull(objects[i]))
+						return false;
+				} else {
+					if (isNotNull(objects[i]))
+						return false;
+				}
+			}
+			return true;
+		}
+		return null;
+	}
+
+	/**
 	 * Test if only the first Object is null and others are not null<br/>
 	 * <i>Whatever the classes</i><br/>
 	 * <i>Return null if the list is empty</i>
@@ -67,6 +91,30 @@ public abstract class NullTestUtils {
 						return false;
 				} else {
 					if (isNull(objects[i]))
+						return false;
+				}
+			}
+			return true;
+		}
+		return null;
+	}
+
+	/**
+	 * Test if only the latest Object is not null and others are null<br/>
+	 * <i>Whatever the classes</i><br/>
+	 * <i>Return null if the list is empty</i>
+	 * 
+	 * @param objects
+	 * @return
+	 */
+	public static Boolean onlyTheLatestIsNotNull(Object... objects) {
+		if(objects.length > 0){
+			for (int i = 0; i < objects.length; i++) {
+				if (i == objects.length - 1) {
+					if (isNull(objects[i]))
+						return false;
+				} else {
+					if (isNotNull(objects[i]))
 						return false;
 				}
 			}
@@ -100,6 +148,31 @@ public abstract class NullTestUtils {
 	}
 
 	/**
+	 * Test if only the Object in the position X is not null and others are null<br/>
+	 * <i>Whatever the classes</i><br/>
+	 * <i>Return null if the list is empty or on not valid position</i>
+	 * 
+	 * @param position : start from '1'
+	 * @param objects
+	 * @return
+	 */
+	public static Boolean onlyTheObjectInPositionIsNotNull(Integer position, Object... objects) {
+		if(objects.length > 0 && position >= 1 && position <= objects.length){
+			for (int i = 0; i < objects.length; i++) {
+				if (i == position - 1) {
+					if (isNull(objects[i]))
+						return false;
+				} else {
+					if (isNotNull(objects[i]))
+						return false;
+				}
+			}
+			return true;
+		}
+		return null;
+	}
+
+	/**
 	 * Test if only the Object in the position X is null and others are not null<br/>
 	 * <i>Whatever the classes</i><br/>
 	 * <i>Return null if the list is empty or on not valid position</i>
@@ -120,6 +193,27 @@ public abstract class NullTestUtils {
 				}
 			}
 			return true;
+		}
+		return null;
+	}
+
+	/**
+	 * Test if only X Objects are not null and others are null<br/>
+	 * <i>Whatever the classes</i><br/>
+	 * <i>Return null if the list is empty</i>
+	 * 
+	 * @param x : Number of Objects how must be null on the list
+	 * @param objects
+	 * @return 
+	 */
+	public static Boolean xObjectsAreNotNull(Integer x, Object... objects) {
+		if(objects.length > 0 && x >= 0 && x <= objects.length){
+			int n = 0;
+			for(int i = 0; i < objects.length; i++){
+				if(isNotNull(objects[i]))
+					n++;
+			}
+			return n == x;
 		}
 		return null;
 	}
