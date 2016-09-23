@@ -2,9 +2,6 @@ package org.binx.utils.empty;
 
 import java.util.*;
 
-import org.yadi.refJ.exceptions.*;
-import org.yadi.refJ.generator.*;
-
 /**
  * This Class contain static functions that offers<br/>
  * Boolean empty tests of Objects or Arrays<br/>
@@ -37,8 +34,7 @@ public abstract class EmptyTestUtils {
 		if(o instanceof java.lang.String) return ((String) o).length() == 0;
 		if(o instanceof java.util.Collection) return ((Collection<?>) o).size() == 0;
 		if(o instanceof java.util.Map) return ((Map<?, ?>) o).size() == 0;
-		if(o.getClass().isArray()) 
-			{ try { return ArrayGenerator.getArray(o).length == 0; } catch (NotArrayException unused) {} }
+		if(o.getClass().isArray()) return ((Object[]) o).length == 0;
 		return null;
 	}
 	
