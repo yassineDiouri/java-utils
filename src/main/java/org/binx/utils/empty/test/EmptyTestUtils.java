@@ -1,4 +1,4 @@
-package org.binx.utils.empty;
+package org.binx.utils.empty.test;
 
 import java.util.*;
 
