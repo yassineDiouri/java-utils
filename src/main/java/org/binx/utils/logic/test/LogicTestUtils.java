@@ -29,10 +29,10 @@ public abstract class LogicTestUtils {
 	 * @return
 	 * True if All elements are True<br/>
 	 * False if one or more are False<br/>
-	 * Null if one or more are Null
+	 * Null if one or more are Null or empty list
 	 */
 	public static Boolean and(Boolean... bools) {
-		if(!NullTestUtils.areNotNull((Object[]) bools)) return null;
+		if(nullTestToList((Object[]) bools)) return null;
 		for(Boolean b : bools) {
 			if(!b) return false;
 		}
@@ -50,7 +50,7 @@ public abstract class LogicTestUtils {
 	 * Null if one or more are Null
 	 */
 	public static Boolean or(Boolean... bools) {
-		if(!NullTestUtils.areNotNull((Object[]) bools)) return null;
+		if(nullTestToList((Object[]) bools)) return null;
 		for(Boolean b : bools) {
 			if(b) return true;
 		}
@@ -68,5 +68,13 @@ public abstract class LogicTestUtils {
 		if(!NullTestUtils.areNotNull(b1, b2)) return null;
 		if(b1 == b2) return false;
 		else return true;
+	}
+	
+	/*Test if the list is empty or contains null args*/
+	private static Boolean nullTestToList(Object... objects){
+		Boolean notNulTest = NullTestUtils.areNotNull(objects);
+		if(notNulTest == null) return true;
+		if(!notNulTest) return true;
+		return false;
 	}
 }
