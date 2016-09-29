@@ -46,7 +46,7 @@ public abstract class MathTestUtils {
 	 * @throws NotNumberException
 	 */
 	public static Boolean isPositive(Object o) {
-		return AGreaterThanB(NumberGeneratorUtils.get(o), 0);
+		return AGreaterThanB(NumberGenerator.get(o), 0);
 	}
 	
 	/**
@@ -77,7 +77,7 @@ public abstract class MathTestUtils {
 	 * @return
 	 */
 	public static Boolean isNegative(Object o) {	
-		return ALowerThanB(NumberGeneratorUtils.get(o), 0);
+		return ALowerThanB(NumberGenerator.get(o), 0);
 	}
 	
 	/**
@@ -111,8 +111,8 @@ public abstract class MathTestUtils {
 	 */
 	public static Boolean AGreaterThanB(Object A, Object B) {
 		if(areNumbers(A, B)){
-			Number varA = NumberGeneratorUtils.get(A);
-			Number varB = NumberGeneratorUtils.get(B);
+			Number varA = NumberGenerator.get(A);
+			Number varB = NumberGenerator.get(B);
 
 			return varA.doubleValue() > varB.doubleValue();
 		}
@@ -129,8 +129,8 @@ public abstract class MathTestUtils {
 	 */
 	public static Boolean AGreaterOrEqualToB(Object A, Object B) {
 		if(areNumbers(A, B)){
-			Number varA = NumberGeneratorUtils.get(A);
-			Number varB = NumberGeneratorUtils.get(B);
+			Number varA = NumberGenerator.get(A);
+			Number varB = NumberGenerator.get(B);
 			
 			return varA.doubleValue() >= varB.doubleValue();
 		}
@@ -274,8 +274,8 @@ public abstract class MathTestUtils {
 	 */
 	public static Boolean ALowerThanB(Object A, Object B) {
 		if(areNumbers(A, B)){
-			Number varA = NumberGeneratorUtils.get(A);
-			Number varB = NumberGeneratorUtils.get(B);
+			Number varA = NumberGenerator.get(A);
+			Number varB = NumberGenerator.get(B);
 			
 			return varA.doubleValue() < varB.doubleValue();
 		}
@@ -293,8 +293,8 @@ public abstract class MathTestUtils {
 	 */
 	public static Boolean ALowerOrEqualToB(Object A, Object B) {
 		if(areNumbers(A, B)){
-			Number varA = NumberGeneratorUtils.get(A);
-			Number varB = NumberGeneratorUtils.get(B);
+			Number varA = NumberGenerator.get(A);
+			Number varB = NumberGenerator.get(B);
 			
 			return varA.doubleValue() <= varB.doubleValue();
 		}
@@ -436,8 +436,8 @@ public abstract class MathTestUtils {
 	 */
 	public static Boolean AEqualToB(Object A, Object B) {
 		if(areNumbers(A, B)){
-			Number varA = NumberGeneratorUtils.get(A);
-			Number varB = NumberGeneratorUtils.get(B);
+			Number varA = NumberGenerator.get(A);
+			Number varB = NumberGenerator.get(B);
 
 			return varA.doubleValue() == varB.doubleValue();
 		}
@@ -473,8 +473,8 @@ public abstract class MathTestUtils {
 	 */
 	public static Boolean ADifferentFromB(Object A, Object B) {
 		if(areNumbers(A, B)){
-			Number varA = NumberGeneratorUtils.get(A);
-			Number varB = NumberGeneratorUtils.get(B);
+			Number varA = NumberGenerator.get(A);
+			Number varB = NumberGenerator.get(B);
 
 			return varA.doubleValue() != varB.doubleValue();
 		}

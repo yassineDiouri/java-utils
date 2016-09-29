@@ -12,7 +12,6 @@ import junit.framework.*;
 public class MathTestUtilsUnitTests extends TestCase {
 
 	protected Object nul;
-	
 	protected BigDecimal number;
 	protected String notNumber;
 	protected int intNumber;
