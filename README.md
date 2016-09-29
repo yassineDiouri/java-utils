@@ -6,7 +6,7 @@
   </tr>
   <tr>
     <td>math</td>
-    <td>1.1.0 [STABLE]</td>
+    <td>1.1.1 [STABLE]</td>
   </tr>
   <tr>
     <td>null</td>
