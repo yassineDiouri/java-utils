@@ -31,13 +31,14 @@ public abstract class DatabaseListManager {
 	 * Test if the database already exists<br/>
 	 * <i>Test By Name</i>
 	 * 
-	 * @param db
+	 * @param name
 	 * @return
 	 * True if exists<br/>
 	 * else False
 	 */
-	public static Boolean existsDatabase(Database db) {
-		if(db != null && getNamesDatabases().contains(db.getName())) return true;
+	public static Boolean existsDatabase(String name) {
+		if(name != null && getNamesDatabases().contains(formatName(name)))
+			return true;
 		return false;
 	}
 	
@@ -51,7 +52,7 @@ public abstract class DatabaseListManager {
 	 * else True
 	 */
 	public static Boolean addDatabase(Database db) {
-		if(databaseList == null || db == null || db.getName().equals("") || existsDatabase(db))
+		if(databaseList == null || db == null || db.getName().equals("") || existsDatabase(db.getName()))
 			return false;
 		databaseList.getDatabases().add(db);
 		return true;
@@ -66,7 +67,7 @@ public abstract class DatabaseListManager {
 	 * else get instance of database with "name"
 	 */
 	public static Database getDatabase(String name) {
-		if(databaseList != null && name != null && !name.equals("")){
+		if(databaseList != null && name != null && !name.equals("")) {
 			for(Database db : databaseList.getDatabases()){
 				if(db.getName().equals(name))
 					return db;
@@ -87,5 +88,52 @@ public abstract class DatabaseListManager {
 			for(Database db : databaseList.getDatabases())
 				names.add(db.getName());
 		return names;
+	}
+	
+	/**
+	 * Set the given database name to default
+	 * 
+	 * @param name
+	 * @return
+	 * True if database exists and set to default<br/>
+	 * False else 
+	 */
+	public static Boolean setToDefaultDatabase(String name) {
+		if(databaseList != null || !name.equals("")) {
+			for(int i = 0; i < databaseList.getDatabases().size(); i++) {
+				if(databaseList.getDatabases().get(i).getName().equals(name)) {
+					databaseList.setDefaultDatabase(i);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Remove database with specified name 
+	 * 
+	 * @param name
+	 * @return
+	 * True if database is removed<br/>
+	 * else False<br/>
+	 * Null if name given is null or empty
+	 */
+	public static Boolean removeDatabase(String name) {
+		if(databaseList != null && name != null && !name.equals("")) {
+			for(Database db : databaseList.getDatabases()){
+				if(db.getName().equals(name)) {
+					databaseList.getDatabases().remove(db);
+					return true;
+				}
+			}
+			return false;
+		}
+		return null;
+	}
+	
+	/*format name to lower case and delete spaces*/
+	private static String formatName(String name) {
+		return name == null ? name : name.toLowerCase().trim();
 	}
 }

@@ -20,8 +20,7 @@ public abstract class DatabaseManager {
 	 * False if not
 	 */
 	public static Boolean createNewDatabase(String name) {
-		String formatedName = name.toLowerCase().trim();
-		if(formatedName.equals("")) return false;
+		String formatedName = formatName(name);
 		return DatabaseListManager.addDatabase(DatabaseGenerator.getDatabase(formatedName));
 	}
 	
@@ -34,8 +33,39 @@ public abstract class DatabaseManager {
 	 * else get instance of database with "name"
 	 */
 	public static Database getDatabase(String name) {
-		String formatedName = name.toLowerCase().trim();
-		if(formatedName.equals("")) return null;
+		String formatedName = formatName(name);
 		return DatabaseListManager.getDatabase(formatedName);
+	}
+	
+	/**
+	 * Set the given database name to default
+	 * 
+	 * @param name
+	 * @return
+	 * True if database exists and set to default<br/>
+	 * False else 
+	 */
+	public static Boolean setToDefault(String name) {
+		String formatedName = formatName(name);
+		return DatabaseListManager.setToDefaultDatabase(formatedName);
+	}
+	
+	/**
+	 * Remove database with specified name 
+	 * 
+	 * @param name
+	 * @return
+	 * True if database is removed<br/>
+	 * else False<br/>
+	 * Null if name given is null or empty
+	 */
+	public static Boolean deleteDatabase(String name) {
+		String formatedName = formatName(name);
+		return DatabaseListManager.removeDatabase(formatedName);
+	}
+	
+	/*format name to lower case and delete spaces*/
+	private static String formatName(String name) {
+		return name == null ? name : name.toLowerCase().trim();
 	}
 }

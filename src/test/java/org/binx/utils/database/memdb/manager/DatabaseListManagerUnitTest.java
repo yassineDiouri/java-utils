@@ -12,50 +12,77 @@ import junit.framework.*;
 public class DatabaseListManagerUnitTest extends TestCase {
 
 	private Database db;
-	private Database existsDb;
-	private Database notExistsDb;
 	private Database dbNameEmpty;
+	private String emptyName;
+	private String nul;
+	private String notExistName;
+	private String existName;
 	
 	@Override
 	protected void setUp() {
-		db = new Database("testDB");
-		existsDb = new Database("testDB");
-		notExistsDb = new Database("notExistDB");
-		dbNameEmpty = new Database("");
+		nul = null;
+		emptyName = "";
+		notExistName = "notExistDB";
+		existName = "testDB";
+		db = new Database(existName);
+		dbNameEmpty = new Database(emptyName);
 	}
 	
-	public void testGetDatabaseListReturnNotNull() {
+	public void testDatabaseListManager() {
+		getDatabaseListReturnNotNull();
+		getDatabaseListReturnDatabaseListClass();
+		addDatabaseReturnFalse();
+		existsDatabaseReturnFalse();
+		getDatabaseReturnNull();
+		
+		addDatabaseReturnTrue();
+		existsDatabaseReturnTrue();
+		addDatabaseMakeSizeNotZero();
+		getNamesDatabasesReturnSameSize();
+		getDatabaseReturnNotNull();
+	}
+	
+	public void getDatabaseListReturnNotNull() {
 		assertNotNull(DatabaseListManager.getDatabaseList());
 	}
 	
-	public void testGetDatabaseListReturnDatabaseListClass() {
+	public void getDatabaseListReturnDatabaseListClass() {
 		assertEquals(DatabaseListManager.getDatabaseList().getClass(), DatabaseList.class);
 	}
 	
-	public void testAddDatabaseReturnFalse() {
+	public void existsDatabaseReturnFalse() {
+		assertFalse(DatabaseListManager.existsDatabase(notExistName));
+	}
+	
+	public void existsDatabaseReturnTrue() {
+		assertTrue(DatabaseListManager.existsDatabase(existName));
+	}
+	
+	public void addDatabaseReturnFalse() {
 		assertFalse(DatabaseListManager.addDatabase(null));
 		assertFalse(DatabaseListManager.addDatabase(dbNameEmpty));
 	}
 	
-	public void testAddDatabaseReturnTrue() {
+	public void addDatabaseReturnTrue() {
 		assertTrue(DatabaseListManager.addDatabase(db));
 	}
 	
-	public void testAddDatabaseMakeSizeNotZero() {
+	public void addDatabaseMakeSizeNotZero() {
 		assertTrue(!DatabaseListManager.getDatabaseList().getDatabases().isEmpty());
 	}
 	
-	public void testExistsDatabaseReturnFalse() {
-		assertFalse(DatabaseListManager.existsDatabase(notExistsDb));
-	}
-	
-	public void testExistsDatabaseReturnTrue() {
-		assertTrue(DatabaseListManager.existsDatabase(existsDb));
-	}
-	
-	/*getNamesDatabases()*/
-	public void testNamesDatabasesReturnSameSize() {
+	public void getNamesDatabasesReturnSameSize() {
 		assertEquals(DatabaseListManager.getNamesDatabases().size(), 
 				DatabaseListManager.getDatabaseList().getDatabases().size());
+	}
+	
+	public void getDatabaseReturnNull() {
+		assertNull(DatabaseListManager.getDatabase(nul));
+		assertNull(DatabaseListManager.getDatabase(emptyName));
+		assertNull(DatabaseListManager.getDatabase(notExistName));
+	}
+	
+	public void getDatabaseReturnNotNull() {
+		assertNotNull(DatabaseListManager.getDatabase(existName));
 	}
 }
