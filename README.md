@@ -18,6 +18,6 @@
   </tr>
   <tr>
     <td>logic</td>
-    <td>0.0.1 [SNAPSHOT]</td>
+    <td>1.0.0 [STABLE]</td>
   </tr>
 </table>
