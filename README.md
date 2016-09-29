@@ -22,6 +22,6 @@
   </tr>
   <tr>
     <td>MemDB</td>
-    <td>0.0.1 [SNAPSHOT]</td>
+    <td>0.0.2 [SNAPSHOT]</td>
   </tr>
 </table>
