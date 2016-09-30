@@ -28,21 +28,6 @@ public abstract class DatabaseListManager {
 	}
 	
 	/**
-	 * Test if the database already exists<br/>
-	 * <i>Test By Name</i>
-	 * 
-	 * @param name
-	 * @return
-	 * True if exists<br/>
-	 * else False
-	 */
-	public static Boolean existsDatabase(String name) {
-		if(name != null && getNamesDatabases().contains(name))
-			return true;
-		return false;
-	}
-	
-	/**
 	 * Add a new Database<br/>
 	 * <i>Condition : database not null, name not empty and did not exists</i>
 	 * 
@@ -52,9 +37,9 @@ public abstract class DatabaseListManager {
 	 * else True
 	 */
 	public static Boolean addDatabase(Database db) {
-		if(databaseList == null || db == null || db.getName().equals("") || existsDatabase(db.getName()))
+		if(db == null || db.getName().equals("") || existsDatabase(db.getName()))
 			return false;
-		databaseList.getDatabases().add(db);
+		getDatabaseList().getDatabases().add(db);
 		return true;
 	}
 	
@@ -67,8 +52,8 @@ public abstract class DatabaseListManager {
 	 * else get instance of database with "name"
 	 */
 	public static Database getDatabase(String name) {
-		if(databaseList != null && name != null && !name.equals("")) {
-			for(Database db : databaseList.getDatabases()){
+		if(name != null && !name.equals("")) {
+			for(Database db : getDatabaseList().getDatabases()){
 				if(db.getName().equals(name))
 					return db;
 			}
@@ -77,17 +62,22 @@ public abstract class DatabaseListManager {
 	}
 	
 	/**
-	 * List all names of existing databases
+	 * Return default database
 	 * 
 	 * @return
-	 * List of names
+	 * Null if default database not set
+	 * else return instance of database
 	 */
-	public static List<String> getNamesDatabases() {
-		List<String> names = new ArrayList<>();
-		if(databaseList != null)
-			for(Database db : databaseList.getDatabases())
-				names.add(db.getName());
-		return names;
+	public static Database getDefaultDatabase() {
+		if(getDatabaseList().getDefaultDatabase() < 0)
+			return null;
+		else
+			return getDatabaseList().getDatabases().
+				get(getDatabaseList().getDefaultDatabase());
+	}
+	
+	public static List<Database> getAllDatabases() {
+		return getDatabaseList().getDatabases();
 	}
 	
 	/**
@@ -99,30 +89,15 @@ public abstract class DatabaseListManager {
 	 * False else 
 	 */
 	public static Boolean setToDefaultDatabase(String name) {
-		if(databaseList != null || !name.equals("")) {
-			for(int i = 0; i < databaseList.getDatabases().size(); i++) {
-				if(databaseList.getDatabases().get(i).getName().equals(name)) {
-					databaseList.setDefaultDatabase(i);
+		if(name!= null && !name.equals("")) {
+			for(int i = 0; i < getAllDatabases().size(); i++) {
+				if(getAllDatabases().get(i).getName().equals(name)) {
+					getDatabaseList().setDefaultDatabase(i);
 					return true;
 				}
 			}
 		}
 		return false;
-	}
-	
-	/**
-	 * Return default database
-	 * 
-	 * @return
-	 * Null if default database not set
-	 * else return instance of database
-	 */
-	public static Database getDefaultDatabase() {
-		if(databaseList.getDefaultDatabase() < 0)
-			return null;
-		else
-			return databaseList.getDatabases().
-				get(databaseList.getDefaultDatabase());
 	}
 	
 	/**
@@ -134,14 +109,51 @@ public abstract class DatabaseListManager {
 	 * else False<br/>
 	 */
 	public static Boolean removeDatabase(String name) {
-		if(databaseList != null && name != null && !name.equals("")) {
-			for(Database db : databaseList.getDatabases()){
+		if(name != null && !name.equals("")) {
+			for(Database db : getAllDatabases()){
 				if(db.getName().equals(name)) {
-					databaseList.getDatabases().remove(db);
+					getAllDatabases().remove(db);
 					return true;
 				}
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Test if the database already exists<br/>
+	 * <i>Test By Name</i>
+	 * 
+	 * @param name
+	 * @return
+	 * True if exists<br/>
+	 * else False
+	 */
+	public static Boolean existsDatabase(String name) {
+		if(name != null && getAllNamesDatabases().contains(name))
+			return true;
+		return false;
+	}
+	
+	/**
+	 * List all names of existing databases
+	 * 
+	 * @return
+	 * List of names
+	 */
+	public static List<String> getAllNamesDatabases() {
+		List<String> names = new ArrayList<>();
+		for(Database db : getAllDatabases())
+			names.add(db.getName());
+		return names;
+	}
+	
+	/**
+	 * Get number of databases
+	 * 
+	 * @return
+	 */
+	public static Integer size() {
+		return getAllDatabases().size();
 	}
 }

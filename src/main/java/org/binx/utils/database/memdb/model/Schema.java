@@ -18,7 +18,7 @@ public class Schema {
 	}
 	
 	public Schema(String name) {
-		this.name = name;
+		this.name = (name == null || name.equals("")) ? "public" : name;
 		tables = new ArrayList<>();
 	}
 

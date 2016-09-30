@@ -25,10 +25,6 @@ public class DatabaseList {
 		this.defaultDatabase = defaultDatabase;
 	}
 
-	public void setDatabases(List<Database> databases) {
-		this.databases = databases;
-	}
-
 	public List<Database> getDatabases() {
 		return databases;
 	}

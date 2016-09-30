@@ -34,6 +34,7 @@ public class DatabaseListManagerUnitTest extends TestCase {
 		addDatabaseReturnFalse();
 		existsDatabaseReturnFalse();
 		getDatabaseReturnNull();
+		sizeReturnZero();
 		
 		addDatabaseReturnTrue();
 		existsDatabaseReturnTrue();
@@ -78,7 +79,7 @@ public class DatabaseListManagerUnitTest extends TestCase {
 	}
 	
 	public void getNamesDatabasesReturnSameSize() {
-		assertEquals(DatabaseListManager.getNamesDatabases().size(), 
+		assertEquals(DatabaseListManager.getAllNamesDatabases().size(), 
 				DatabaseListManager.getDatabaseList().getDatabases().size());
 	}
 	
@@ -118,5 +119,9 @@ public class DatabaseListManagerUnitTest extends TestCase {
 		assertFalse(DatabaseListManager.removeDatabase(nul));
 		assertFalse(DatabaseListManager.removeDatabase(emptyName));
 		assertFalse(DatabaseListManager.removeDatabase(notExistName));
+	}
+	
+	public void sizeReturnZero() {
+		assertEquals(DatabaseListManager.size(), new Integer(0));
 	}
 }
