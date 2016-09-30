@@ -14,6 +14,7 @@ public class DatabaseList {
 	
 	public DatabaseList(){
 		databases = new ArrayList<>();
+		defaultDatabase = -1;
 	}
 
 	public Integer getDefaultDatabase() {

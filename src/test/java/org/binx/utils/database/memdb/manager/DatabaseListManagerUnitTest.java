@@ -40,6 +40,12 @@ public class DatabaseListManagerUnitTest extends TestCase {
 		addDatabaseMakeSizeNotZero();
 		getNamesDatabasesReturnSameSize();
 		getDatabaseReturnNotNull();
+		getDefaultDatabaseReturnNull();
+		setToDefaultDatabaseReturnTrue();
+		setToDefaultDatabaseReturnFalse();
+		getDefaultDatabaseReturnNotNull();
+		removeDatabaseReturnTrue();
+		removeDatabaseReturnFalse();
 	}
 	
 	public void getDatabaseListReturnNotNull() {
@@ -84,5 +90,33 @@ public class DatabaseListManagerUnitTest extends TestCase {
 	
 	public void getDatabaseReturnNotNull() {
 		assertNotNull(DatabaseListManager.getDatabase(existName));
+	}
+	
+	public void setToDefaultDatabaseReturnTrue() {
+		assertTrue(DatabaseListManager.setToDefaultDatabase(existName));
+	}
+	
+	public void setToDefaultDatabaseReturnFalse() {
+		assertFalse(DatabaseListManager.setToDefaultDatabase(nul));
+		assertFalse(DatabaseListManager.setToDefaultDatabase(emptyName));
+		assertFalse(DatabaseListManager.setToDefaultDatabase(notExistName));
+	}
+	
+	public void getDefaultDatabaseReturnNull() {
+		assertNull(DatabaseListManager.getDefaultDatabase());
+	}
+	
+	public void getDefaultDatabaseReturnNotNull() {
+		assertNotNull(DatabaseListManager.getDefaultDatabase());
+	}
+	
+	public void removeDatabaseReturnTrue() {
+		assertTrue(DatabaseListManager.removeDatabase(existName));
+	}
+	
+	public void removeDatabaseReturnFalse() {
+		assertFalse(DatabaseListManager.removeDatabase(nul));
+		assertFalse(DatabaseListManager.removeDatabase(emptyName));
+		assertFalse(DatabaseListManager.removeDatabase(notExistName));
 	}
 }

@@ -11,6 +11,20 @@ import org.binx.utils.database.memdb.model.*;
 public abstract class DatabaseManager {
 
 	/**
+	 * Test if the database exists or not<br/>
+	 * <i>Test By Name</i>
+	 * 
+	 * @param name
+	 * @return
+	 * True if exists<br/>
+	 * else False
+	 */
+	public static Boolean exists(String name) {
+		String formatedName = formatName(name);
+		return DatabaseListManager.existsDatabase(formatedName);
+	}
+	
+	/**
 	 * Create a new database<br/>
 	 * <i>condition : name not empty and not exists</i>
 	 * 
@@ -57,7 +71,6 @@ public abstract class DatabaseManager {
 	 * @return
 	 * True if database is removed<br/>
 	 * else False<br/>
-	 * Null if name given is null or empty
 	 */
 	public static Boolean deleteDatabase(String name) {
 		String formatedName = formatName(name);

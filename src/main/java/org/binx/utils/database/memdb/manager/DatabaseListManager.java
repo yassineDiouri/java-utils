@@ -37,7 +37,7 @@ public abstract class DatabaseListManager {
 	 * else False
 	 */
 	public static Boolean existsDatabase(String name) {
-		if(name != null && getNamesDatabases().contains(formatName(name)))
+		if(name != null && getNamesDatabases().contains(name))
 			return true;
 		return false;
 	}
@@ -111,13 +111,27 @@ public abstract class DatabaseListManager {
 	}
 	
 	/**
+	 * Return default database
+	 * 
+	 * @return
+	 * Null if default database not set
+	 * else return instance of database
+	 */
+	public static Database getDefaultDatabase() {
+		if(databaseList.getDefaultDatabase() < 0)
+			return null;
+		else
+			return databaseList.getDatabases().
+				get(databaseList.getDefaultDatabase());
+	}
+	
+	/**
 	 * Remove database with specified name 
 	 * 
 	 * @param name
 	 * @return
 	 * True if database is removed<br/>
 	 * else False<br/>
-	 * Null if name given is null or empty
 	 */
 	public static Boolean removeDatabase(String name) {
 		if(databaseList != null && name != null && !name.equals("")) {
@@ -127,13 +141,7 @@ public abstract class DatabaseListManager {
 					return true;
 				}
 			}
-			return false;
 		}
-		return null;
-	}
-	
-	/*format name to lower case and delete spaces*/
-	private static String formatName(String name) {
-		return name == null ? name : name.toLowerCase().trim();
+		return false;
 	}
 }
