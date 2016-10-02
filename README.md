@@ -21,7 +21,7 @@
     <td>1.0.0 [STABLE]</td>
   </tr>
   <tr>
-    <td>MemDB</td>
-    <td>0.0.4 [SNAPSHOT]</td>
+    <td><a href="https://github.com/yassineDiouri/java-utils/tree/master/src/main/java/org/binx/utils/database/memdb">MemDB</a></td>
+    <td>0.0.6 [SNAPSHOT]</td>
   </tr>
 </table>

@@ -49,9 +49,12 @@ public class DatabaseManagerUnitTest extends TestCase {
 		getSchemaOnDatabaseNameReturnNull();
 		countSchemasFromDatabaseNameReturnNull();
 		countSchemasFromDefaultDatabaseReturnNull();
+		addSchemaWithSpecifiedDbReturnNull();
 
 		getAllSchemasOnDatabaseNameReturnNull();
 		getAllNamesSchemasWithDatabaseNameReturnNull();
+		isEmptyFromDatabaseNameReturnNull();
+		isEmptyFromDatabaseNameReturnTrue();
 		
 		createNewDatabaseReturnTrue();
 		existsReturnFalse();
@@ -86,6 +89,7 @@ public class DatabaseManagerUnitTest extends TestCase {
 		getDefaultSchemaFromDefaultDatabaseReturnNotNull();
 		countSchemasFromDatabaseNameReturnNotNull();
 		countSchemasFromDefaultDatabaseReturnNotNull();
+		isEmptyFromDatabaseNameReturnFalse();
 		
 		deleteSchemaFromDatabaseNameReturnNull();
 		deleteSchemaFromDatabaseNameReturnFalse();
@@ -151,8 +155,24 @@ public class DatabaseManagerUnitTest extends TestCase {
 					&& !DatabaseManager.exists(dbName));
 	}
 	
+	public void isEmptyFromDatabaseNameReturnNull() {
+		assertNull(DatabaseManager.isEmpty(notExistDbName));
+	}
+	
+	public void isEmptyFromDatabaseNameReturnFalse() {
+		assertFalse(DatabaseManager.isEmpty(dbName));
+	}
+	
+	public void isEmptyFromDatabaseNameReturnTrue() {
+		DatabaseManager.createNewDatabase("emtpyDB");
+		assertTrue(DatabaseManager.isEmpty("emtpyDB"));
+	}
+	
+	public void addSchemaWithSpecifiedDbReturnNull() {
+		assertNull(DatabaseManager.addSchema(notExistDbName, schema));
+	}
+	
 	public void addSchemaWithSpecifiedDbReturnFalse() {
-		assertFalse(DatabaseManager.addSchema(notExistDbName, schema));
 		assertFalse(DatabaseManager.addSchema(dbName, nullSchema));
 		assertFalse(DatabaseManager.addSchema(dbName, nullNameSchema));
 		assertFalse(DatabaseManager.addSchema(dbName, emptyNameSchema));
@@ -272,21 +292,21 @@ public class DatabaseManagerUnitTest extends TestCase {
 	}
 	
 	public void existsSchemaOnDatabaseNameReturnFalse() {
-		assertFalse(DatabaseManager.existsSchema(notExistDbName, schema));
-		assertFalse(DatabaseManager.existsSchema(dbName, nullSchema));
+		assertFalse(DatabaseManager.existsSchema(notExistDbName, schema.getName()));
+		assertFalse(DatabaseManager.existsSchema(dbName, nul));
 	}
 	
 	public void existsSchemaOnDatabaseNameReturnTrue() {
-		assertTrue(DatabaseManager.existsSchema(dbName, schema));
+		assertTrue(DatabaseManager.existsSchema(dbName, schema.getName()));
 	}
 	
 	public void existsSchemaOnDefaultDatabaseReturnFalse() {
-		assertFalse(DatabaseManager.existsSchema(schema));
-		assertFalse(DatabaseManager.existsSchema(nullSchema));
+		assertFalse(DatabaseManager.existsSchema(schema.getName()));
+		assertFalse(DatabaseManager.existsSchema(nul));
 	}
 	
 	public void existsSchemaOnDefaultDatabaseReturnTrue() {
-		assertTrue(DatabaseManager.existsSchema(dbName, schema));
+		assertTrue(DatabaseManager.existsSchema(schema.getName()));
 	}
 	
 	public void getAllNamesSchemasWithDatabaseNameReturnNull() {
