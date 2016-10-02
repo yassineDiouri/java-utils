@@ -9,10 +9,12 @@ import java.util.*;
  */
 public class Schema {
 
+	public final static Schema DEFAULT_SCHEMA = new Schema();
+	
 	private String name;
 	private List<Table> tables;
 	
-	public Schema() {
+	private Schema() {
 		this.name = "public";
 		tables = new ArrayList<>();
 	}

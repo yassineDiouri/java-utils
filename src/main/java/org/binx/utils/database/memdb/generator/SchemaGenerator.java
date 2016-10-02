@@ -1,6 +1,6 @@
 package org.binx.utils.database.memdb.generator;
 
-import org.binx.utils.database.memdb.model.*;
+import org.binx.utils.database.memdb.model.Schema;
 
 /**
  * 
@@ -10,7 +10,7 @@ import org.binx.utils.database.memdb.model.*;
 public abstract class SchemaGenerator {
 
 	public static Schema getDefaultSchema() {
-		return new Schema();
+		return Schema.DEFAULT_SCHEMA;
 	}
 	
 	public static Schema getSchema(String name) {
