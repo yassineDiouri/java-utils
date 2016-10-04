@@ -108,7 +108,7 @@ public abstract class DatabaseListManager {
 	 * True if database is removed<br/>
 	 * else False<br/>
 	 */
-	public static Boolean removeDatabase(String name) {
+	public static Boolean deleteDatabase(String name) {
 		if(name != null && !name.equals("")) {
 			for(Database db : getAllDatabases()){
 				if(db.getName().equals(name)) {

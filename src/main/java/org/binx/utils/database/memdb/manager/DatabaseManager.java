@@ -73,7 +73,7 @@ public abstract class DatabaseManager {
 	 * else False
 	 */
 	public static Boolean deleteDatabase(String name) {
-		return DatabaseListManager.removeDatabase(name);
+		return DatabaseListManager.deleteDatabase(name);
 	}
 	
 	/**
@@ -153,7 +153,8 @@ public abstract class DatabaseManager {
 	 * @param schema
 	 * @return
 	 * False if there is no default database, schema given is null or name of schema is null<br/>
-	 * True if success to be added to default database
+	 * True if success to be added to default database<br/>
+	 * Null if there is no default database
 	 */
 	public static Boolean addSchema(Schema schema) {
 		return getDefault() != null ? addSchema(getDefault().getName(), schema) :  null;
@@ -220,7 +221,7 @@ public abstract class DatabaseManager {
 	 * Return Default Schema from default database
 	 * 
 	 * @return
-	 * Null if database not exists
+	 * Null if there is no default database
 	 */
 	public static Schema getDefaultSchema() {
 		Database defaultDB = getDefault();
@@ -317,7 +318,7 @@ public abstract class DatabaseManager {
 	}
 	
 	/**
-	 * Verify if schema given exists on the database specified
+	 * Verify if schema given exists on default database 
 	 * 
 	 * @param schema
 	 * @return
@@ -376,13 +377,10 @@ public abstract class DatabaseManager {
 	 * 
 	 * @param databaseName
 	 * @return
-	 * Null if database not exists
+	 * -1 : if database not exists
 	 */
 	public static Integer countSchemas(String databaseName) {
-		if(exists(databaseName)) {
-			return getDatabase(databaseName).getSchemas().size();
-		}
-		return null;
+		return exists(databaseName) ? getAllSchemas(databaseName).size() : -1;
 	}
 
 	/**
@@ -390,13 +388,9 @@ public abstract class DatabaseManager {
 	 * 
 	 * @param databaseName
 	 * @return
-	 * Null if there is no default database
+	 * -1 : if there is no default database
 	 */
 	public static Integer countSchemas() {
-		Database defaultDB = getDefault();
-		if(defaultDB != null) {
-			return getDefault().getSchemas().size();
-		}
-		return null;
+		return getDefault() != null ? getAllSchemas().size() : -1;
 	}
 }

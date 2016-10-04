@@ -47,8 +47,8 @@ public class DatabaseManagerUnitTest extends TestCase {
 		getDefaultReturnNull();
 		existsSchemaOnDatabaseNameReturnFalse();
 		getSchemaOnDatabaseNameReturnNull();
-		countSchemasFromDatabaseNameReturnNull();
-		countSchemasFromDefaultDatabaseReturnNull();
+		countSchemasFromDatabaseNameReturnMinus1();
+		countSchemasFromDefaultDatabaseReturnMinus1();
 		addSchemaWithSpecifiedDbReturnNull();
 
 		getAllSchemasOnDatabaseNameReturnNull();
@@ -327,16 +327,16 @@ public class DatabaseManagerUnitTest extends TestCase {
 				DatabaseManager.getDefault().getSchemas().size());
 	}
 	
-	public void countSchemasFromDatabaseNameReturnNull() {
-		assertNull(DatabaseManager.countSchemas(notExistDbName));
+	public void countSchemasFromDatabaseNameReturnMinus1() {
+		assertEquals(DatabaseManager.countSchemas(notExistDbName), new Integer(-1));
 	}
 	
 	public void countSchemasFromDatabaseNameReturnNotNull() {
 		assertNotNull(DatabaseManager.countSchemas(dbName));
 	}
 	
-	public void countSchemasFromDefaultDatabaseReturnNull() {
-		assertNull(DatabaseManager.countSchemas());
+	public void countSchemasFromDefaultDatabaseReturnMinus1() {
+		assertEquals(DatabaseManager.countSchemas(), new Integer(-1));
 	}
 	
 	public void countSchemasFromDefaultDatabaseReturnNotNull() {

@@ -112,13 +112,13 @@ public class DatabaseListManagerUnitTest extends TestCase {
 	}
 	
 	public void removeDatabaseReturnTrue() {
-		assertTrue(DatabaseListManager.removeDatabase(existName));
+		assertTrue(DatabaseListManager.deleteDatabase(existName));
 	}
 	
 	public void removeDatabaseReturnFalse() {
-		assertFalse(DatabaseListManager.removeDatabase(nul));
-		assertFalse(DatabaseListManager.removeDatabase(emptyName));
-		assertFalse(DatabaseListManager.removeDatabase(notExistName));
+		assertFalse(DatabaseListManager.deleteDatabase(nul));
+		assertFalse(DatabaseListManager.deleteDatabase(emptyName));
+		assertFalse(DatabaseListManager.deleteDatabase(notExistName));
 	}
 	
 	public void sizeReturnZero() {
