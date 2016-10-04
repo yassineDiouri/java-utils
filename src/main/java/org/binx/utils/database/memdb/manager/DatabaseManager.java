@@ -18,27 +18,27 @@ public abstract class DatabaseManager {
 	 * Create a new database<br/>
 	 * <i>condition : name not empty and not exists</i>
 	 * 
-	 * @param name
+	 * @param databaseName
 	 * @return
 	 * True if database added successfully<br/>
 	 * False if not
 	 */
-	public static Boolean createNewDatabase(String name) {
-		if(!exists(name))
-			return DatabaseListManager.addDatabase(DatabaseGenerator.getDatabase(name));
+	public static Boolean createNewDatabase(String databaseName) {
+		if(!exists(databaseName))
+			return DatabaseListManager.addDatabase(DatabaseGenerator.getDatabase(databaseName));
 		return false;
 	}
 	
 	/**
 	 * Return database with specified name
 	 * 
-	 * @param name
+	 * @param databaseName
 	 * @return
 	 * Null if database not exist<br/>
 	 * else get instance of database with "name"
 	 */
-	public static Database getDatabase(String name) {
-		return DatabaseListManager.getDatabase(name);
+	public static Database getDatabase(String databaseName) {
+		return DatabaseListManager.getDatabase(databaseName);
 	}
 	
 	/**
@@ -49,8 +49,8 @@ public abstract class DatabaseManager {
 	 * True if database exists and set to default<br/>
 	 * False else 
 	 */
-	public static Boolean setToDefault(String name) {
-		return DatabaseListManager.setToDefaultDatabase(name);
+	public static Boolean setToDefault(String databaseName) {
+		return DatabaseListManager.setToDefaultDatabase(databaseName);
 	}
 	
 	/**
@@ -72,8 +72,8 @@ public abstract class DatabaseManager {
 	 * True if database is removed<br/>
 	 * else False
 	 */
-	public static Boolean deleteDatabase(String name) {
-		return DatabaseListManager.deleteDatabase(name);
+	public static Boolean deleteDatabase(String databaseName) {
+		return DatabaseListManager.deleteDatabase(databaseName);
 	}
 	
 	/**
@@ -85,8 +85,8 @@ public abstract class DatabaseManager {
 	 * True if exists<br/>
 	 * else False
 	 */
-	public static Boolean exists(String name) {
-		return DatabaseListManager.existsDatabase(name);
+	public static Boolean exists(String databaseName) {
+		return DatabaseListManager.existsDatabase(databaseName);
 	}
 
 	/**
@@ -97,10 +97,10 @@ public abstract class DatabaseManager {
 	 * True if database don't contains schemas and the default schema don't contains tables<br/>
 	 * else False
 	 */
-	public static Boolean isEmpty(String name) {
-		if(exists(name)) {
-			if(countSchemas(name) == 1)
-				if(getAllSchemas(name).get(0).getTables().size() == 0)
+	public static Boolean isEmpty(String databaseName) {
+		if(exists(databaseName)) {
+			if(countSchemas(databaseName) == 1)
+				if(getAllSchemas(databaseName).get(0).getTables().size() == 0)
 					return true;
 			return false;
 		}
@@ -164,16 +164,16 @@ public abstract class DatabaseManager {
 	 * Return Schema with specified name from database "name"
 	 * 
 	 * @param databaseName
-	 * @param name
+	 * @param schemaName
 	 * @return
 	 * Specified Schema with name if exist<br/>
 	 * else return default schema<br/>
 	 * Null if database not exists
 	 */
-	public static Schema getSchema(String databaseName, String name) {
+	public static Schema getSchema(String databaseName, String schemaName) {
 		if(exists(databaseName)) {
 			for(Schema sc : getAllSchemas(databaseName)) {
-				if(sc.getName().equals(name))
+				if(sc.getName().equals(schemaName))
 					return sc;
 			}
 			return getAllSchemas(databaseName).get(0); // default schema
@@ -191,11 +191,11 @@ public abstract class DatabaseManager {
 	 * else return default schema<br/>
 	 * Null if there is no default database
 	 */
-	public static Schema getSchema(String name) {
+	public static Schema getSchema(String schemaName) {
 		Database db = getDefault();
 		if(db != null) {
 			for(Schema sc : getAllSchemas()) {
-				if(sc.getName().equals(name))
+				if(sc.getName().equals(schemaName))
 					return sc;
 			}
 			return db.getSchemas().get(0); // default schema
@@ -265,10 +265,10 @@ public abstract class DatabaseManager {
 	 * else True<br/>
 	 * Null if database not exists, or name is default schema
 	 */
-	public static Boolean deleteSchema(String databaseName, String name) {
-		if(exists(databaseName) && !name.equals(Schema.DEFAULT_SCHEMA.getName())) {
+	public static Boolean deleteSchema(String databaseName, String schemaName) {
+		if(exists(databaseName) && !schemaName.equals(Schema.DEFAULT_SCHEMA.getName())) {
 			for(int i = 1; i < countSchemas(databaseName); i++) {
-				if(getAllSchemas(databaseName).get(i).getName().equals(name)) {
+				if(getAllSchemas(databaseName).get(i).getName().equals(schemaName)) {
 					getAllSchemas(databaseName).remove(i);
 					return true;
 				}
@@ -288,11 +288,11 @@ public abstract class DatabaseManager {
 	 * else True<br/>
 	 * Null if there is no default database, or name is default schema
 	 */
-	public static Boolean deleteSchema(String name) {
+	public static Boolean deleteSchema(String schemaName) {
 		Database defaultDB = getDefault();
-		if(defaultDB != null && !name.equals(Schema.DEFAULT_SCHEMA.getName())) {
+		if(defaultDB != null && !schemaName.equals(Schema.DEFAULT_SCHEMA.getName())) {
 			for(int i = 1; i < countSchemas(); i++) {
-				if(getAllSchemas().get(i).getName().equals(name)) {
+				if(getAllSchemas().get(i).getName().equals(schemaName)) {
 					getAllSchemas().remove(i);
 					return true;
 				}
@@ -311,8 +311,8 @@ public abstract class DatabaseManager {
 	 * True if exist<br/>
 	 * else False
 	 */
-	public static Boolean existsSchema(String databaseName, String name) {
-		if(exists(databaseName) && getAllNamesSchemas(databaseName).contains(name)) 
+	public static Boolean existsSchema(String databaseName, String schemaName) {
+		if(exists(databaseName) && getAllNamesSchemas(databaseName).contains(schemaName)) 
 			return true;
 		return false;
 	}
@@ -325,8 +325,8 @@ public abstract class DatabaseManager {
 	 * True if exist<br/>
 	 * else False
 	 */
-	public static Boolean existsSchema(String name) {
-		if(getDefault() != null && getAllNamesSchemas().contains(name)) 
+	public static Boolean existsSchema(String schemaName) {
+		if(getDefault() != null && getAllNamesSchemas().contains(schemaName)) 
 			return true;
 		return false;
 	}

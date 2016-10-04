@@ -18,7 +18,7 @@ public abstract class SchemaManager {
 	 * @param databaseName
 	 * @param schemaName
 	 * @return
-	 * False if database did not exist, schema given is null or its name null<br/>
+	 * False if schema given is null<br/>
 	 * True if success to be added<br/>
 	 * Null if database not exists
 	 */
@@ -31,9 +31,9 @@ public abstract class SchemaManager {
 	 * 
 	 * @param schemaName
 	 * @return
-	 * False if ther is no default database, schema given is null or its name null<br/>
+	 * False if schema given is null<br/>
 	 * True if success to be added<br/>
-	 * Null if database not exists
+	 * Null if there is no default database
 	 */
 	public static Boolean createNewSchema(String schemaName) {
 		return DatabaseManager.addSchema(SchemaGenerator.getSchema(schemaName));

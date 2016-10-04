@@ -15,7 +15,7 @@ public abstract class DatabaseListManager {
 	private static DatabaseList databaseList = null;
 	
 	/**
-	 * initialize or get databases
+	 * initialize and get databases
 	 * 
 	 * @return
 	 * Existing databaseList<br/>
