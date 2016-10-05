@@ -88,29 +88,30 @@ public abstract class SchemaManager {
 	}
 	
 	/**
-	 * Delete database from specified database
+	 * Delete schema from specified database
 	 * 
 	 * @param databaseName
-	 * @param schemaName
+	 * @param name
 	 * @return
-	 * False if not delete, or not exist schema<br/>
+	 * False if not delete, not exist schema or name is default schema<br/>
 	 * else True<br/>
-	 * Null if database not exists, or name is default schema
+	 * Null if database not exists
 	 */
-	public static Boolean deleteSchema(String databaseName, String schemaName) {
+	public static Boolean delete(String databaseName, String schemaName) {
 		return DatabaseManager.deleteSchema(databaseName, schemaName);
 	}
 	
 	/**
-	 * Delete database from default database
+	 * Delete schema from default database
 	 * 
-	 * @param schemaName
+	 * @param databaseName
+	 * @param name
 	 * @return
-	 * False if not delete, or not exist schema<br/>
+	 * False if not delete, not exist schema or name is default schema<br/>
 	 * else True<br/>
-	 * Null if there is no default database, or name is default schema
+	 * Null if there is no default database
 	 */
-	public static Boolean deleteSchema(String schemaName) {
+	public static Boolean delete(String schemaName) {
 		return DatabaseManager.deleteSchema(schemaName);
 	}
 	
@@ -151,7 +152,8 @@ public abstract class SchemaManager {
 	 */
 	public static Boolean addTable(String databaseName, String schemaName, Table table) {
 		if(exists(databaseName, schemaName)) {
-			if(!existsTable(databaseName, schemaName, table.getName())) {
+			if(table != null && !existsTable(databaseName, schemaName, table.getName())
+					&& !table.getName().trim().equals("")) {
 				getAllTables(databaseName, schemaName).add(table);
 				return true;
 			}
@@ -172,7 +174,8 @@ public abstract class SchemaManager {
 	public static Boolean addTable(String databaseName, Table table) {
 		Schema defaultSC = getDefault(databaseName);
 		if(defaultSC != null) {
-			if(!existsTable(databaseName, table.getName())) {
+			if(table != null && !existsTable(databaseName, table.getName())
+					&& !table.getName().trim().equals("")) {
 				getAllTables(databaseName).add(table);
 				return true;
 			}
@@ -192,8 +195,9 @@ public abstract class SchemaManager {
 	 */
 	public static Boolean addTableDefaultDB(String schemaName, Table table) {
 		if(exists(schemaName)) {
-			if(!existsTableDefaultDB(schemaName, table.getName())) {
-				getAllTables(schemaName).add(table);
+			if(table != null && !existsTableDefaultDB(schemaName, table.getName())
+					&& !table.getName().trim().equals("")) {
+				getAllTablesDefaultDB(schemaName).add(table);
 				return true;
 			}
 			return false;
@@ -212,7 +216,8 @@ public abstract class SchemaManager {
 	public static Boolean addTable(Table table) {
 		Schema defaultSC = getDefault();
 		if(defaultSC != null) {
-			if(!existsTable(table.getName())) {
+			if(table != null && !existsTable(table.getName())
+					&& !table.getName().trim().equals("")) {
 				getAllTables().add(table);
 				return true;
 			}

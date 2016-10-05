@@ -256,19 +256,20 @@ public abstract class DatabaseManager {
 	}
 	
 	/**
-	 * Delete database from specified database
+	 * Delete schema from specified database
 	 * 
 	 * @param databaseName
 	 * @param name
 	 * @return
-	 * False if not delete, or not exist schema<br/>
+	 * False if not delete, not exist schema or name is default schema<br/>
 	 * else True<br/>
-	 * Null if database not exists, or name is default schema
+	 * Null if database not exists
 	 */
 	public static Boolean deleteSchema(String databaseName, String schemaName) {
-		if(exists(databaseName) && !schemaName.equals(Schema.DEFAULT_SCHEMA.getName())) {
+		if(exists(databaseName)) {
 			for(int i = 1; i < countSchemas(databaseName); i++) {
-				if(getAllSchemas(databaseName).get(i).getName().equals(schemaName)) {
+				if(getAllSchemas(databaseName).get(i).getName().equals(schemaName)
+						 && !schemaName.equals(Schema.DEFAULT_NAME)) {
 					getAllSchemas(databaseName).remove(i);
 					return true;
 				}
@@ -279,20 +280,21 @@ public abstract class DatabaseManager {
 	}
 	
 	/**
-	 * Delete database from default database
+	 * Delete schema from default database
 	 * 
 	 * @param databaseName
 	 * @param name
 	 * @return
-	 * False if not delete, or not exist schema<br/>
+	 * False if not delete, not exist schema or name is default schema<br/>
 	 * else True<br/>
-	 * Null if there is no default database, or name is default schema
+	 * Null if there is no default database
 	 */
 	public static Boolean deleteSchema(String schemaName) {
 		Database defaultDB = getDefault();
-		if(defaultDB != null && !schemaName.equals(Schema.DEFAULT_SCHEMA.getName())) {
+		if(defaultDB != null) {
 			for(int i = 1; i < countSchemas(); i++) {
-				if(getAllSchemas().get(i).getName().equals(schemaName)) {
+				if(getAllSchemas().get(i).getName().equals(schemaName)
+						 && !schemaName.equals(Schema.DEFAULT_NAME)) {
 					getAllSchemas().remove(i);
 					return true;
 				}
@@ -340,7 +342,7 @@ public abstract class DatabaseManager {
 	 * False if not
 	 */
 	public static Boolean isDefaultSchema(Schema schema) {
-		if(schema != null && schema.getName().equals(Schema.DEFAULT_SCHEMA.getName()))
+		if(schema != null && schema.getName().equals(Schema.DEFAULT_NAME))
 			return true;
 		return false;
 	}

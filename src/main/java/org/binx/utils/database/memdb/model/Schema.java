@@ -9,15 +9,10 @@ import java.util.*;
  */
 public class Schema {
 
-	public final static Schema DEFAULT_SCHEMA = new Schema();
+	public final static String DEFAULT_NAME = "public";
 	
 	private String name;
 	private List<Table> tables;
-	
-	private Schema() {
-		this.name = "public";
-		tables = new ArrayList<>();
-	}
 	
 	public Schema(String name) {
 		this.name = (name == null || name.equals("")) ? "public" : name;

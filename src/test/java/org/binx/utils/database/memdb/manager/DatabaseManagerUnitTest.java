@@ -32,7 +32,7 @@ public class DatabaseManagerUnitTest extends TestCase {
 		notExistDbName = "not_Exist";
 		emptyDbName = "";
 		schema = new Schema("schema");
-		defaultSchema = Schema.DEFAULT_SCHEMA;
+		defaultSchema = new Schema(Schema.DEFAULT_NAME);
 		nullNameSchema = new Schema(null);
 		emptyNameSchema = new Schema("");
 		nullSchema = null;
@@ -202,8 +202,8 @@ public class DatabaseManagerUnitTest extends TestCase {
 	}
 	
 	public void getSchemaOnDatabaseNameReturnDefaultSchema() {
-		assertEquals(DatabaseManager.getSchema(dbName, nul).getName(), Schema.DEFAULT_SCHEMA.getName());
-		assertEquals(DatabaseManager.getSchema(dbName, "").getName(), Schema.DEFAULT_SCHEMA.getName());
+		assertEquals(DatabaseManager.getSchema(dbName, nul).getName(), Schema.DEFAULT_NAME);
+		assertEquals(DatabaseManager.getSchema(dbName, "").getName(), Schema.DEFAULT_NAME);
 	}
 	
 	public void getSchemaOnDefaultDatabaseReturnNull() {
@@ -216,8 +216,8 @@ public class DatabaseManagerUnitTest extends TestCase {
 	}
 	
 	public void getSchemaOnDefaultDatabaseReturnDefaultSchema() {
-		assertEquals(DatabaseManager.getSchema(nul).getName(), Schema.DEFAULT_SCHEMA.getName());
-		assertEquals(DatabaseManager.getSchema("").getName(), Schema.DEFAULT_SCHEMA.getName());
+		assertEquals(DatabaseManager.getSchema(nul).getName(), Schema.DEFAULT_NAME);
+		assertEquals(DatabaseManager.getSchema("").getName(), Schema.DEFAULT_NAME);
 	}
 	
 	public void getDefaultSchemaFromDatabaseNameReturnNull() {
@@ -253,12 +253,12 @@ public class DatabaseManagerUnitTest extends TestCase {
 	}
 	
 	public void deleteSchemaFromDatabaseNameReturnNull() {
-		assertNull(DatabaseManager.deleteSchema(dbName, defaultSchema.getName()));
 		assertNull(DatabaseManager.deleteSchema(notExistDbName, schema.getName()));
 	}
 	
 	public void deleteSchemaFromDatabaseNameReturnFalse() {
 		assertFalse(DatabaseManager.deleteSchema(dbName, ""));
+		assertFalse(DatabaseManager.deleteSchema(dbName, defaultSchema.getName()));
 		assertFalse(DatabaseManager.deleteSchema(dbName, notExistSchema.getName()));
 	}
 	
@@ -267,12 +267,12 @@ public class DatabaseManagerUnitTest extends TestCase {
 	}
 	
 	public void deleteSchemaFromDefaultDatabaseReturnNull() {
-		assertNull(DatabaseManager.deleteSchema(defaultSchema.getName()));
 		assertNull(DatabaseManager.deleteSchema(schema.getName()));
 	}
 	
 	public void deleteSchemaFromDefaultDatabaseReturnFalse() {
 		assertFalse(DatabaseManager.deleteSchema(""));
+		assertFalse(DatabaseManager.deleteSchema(defaultSchema.getName()));
 		assertFalse(DatabaseManager.deleteSchema(notExistSchema.getName()));
 	}
 	

@@ -10,7 +10,7 @@ import org.binx.utils.database.memdb.model.Schema;
 public abstract class SchemaGenerator {
 
 	public static Schema getDefaultSchema() {
-		return Schema.DEFAULT_SCHEMA;
+		return new Schema(Schema.DEFAULT_NAME);
 	}
 	
 	public static Schema getSchema(String name) {
