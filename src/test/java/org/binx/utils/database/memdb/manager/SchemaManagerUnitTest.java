@@ -55,6 +55,8 @@ public class SchemaManagerUnitTest extends TestCase {
 		addTableOnDefaultDatabaseAndDefaultSchemaReturnNull();
 		getAllTablesWithDefaultDatabaseAndDefaultSchemaReturnNull();
 		deleteTableWithDefaultDatabaseAndDefaultSchemaReturnNull();
+		getAllNamesTablesWithDefaultDatabaseAndDefaultSchemaReturnNull();
+		countTablesWithDefaultDatabaseAndDefaultSchemaReturnMinus1();
 		
 		DatabaseManager.setToDefault(defaultdb);
 		createNewSchemaWithDatabaseReturnTrue();
@@ -88,6 +90,26 @@ public class SchemaManagerUnitTest extends TestCase {
 		getAllTablesWithDefaultDatabaseAndDefaultSchemaReturnNotNull();
 		existsTableWithDatabaseAndSchemaReturnFalse();
 		existsTableWithDatabaseAndSchemaReturnTrue();
+		existsTableWithDatabaseAndDefaultSchemaReturnFalse();
+		existsTableWithDatabaseAndDefaultSchemaReturnTrue();
+		existsTableDefaultDBWithDatabaseAndSchemaReturnFalse();
+		existsTableDefaultDBWithDatabaseAndSchemaReturnTrue();
+		existsTableWithDefaultDatabaseAndDefaultSchemaReturnFalse();
+		existsTableWithDefaultDatabaseAndDefaultSchemaReturnTrue();
+		getAllNamesTablesWithDatabaseAndSchemaReturnNotNull();
+		getAllNamesTablesWithDatabaseAndSchemaReturnNull();
+		getAllNamesTablesWithDatabaseAndDefaultSchemaReturnNull();
+		getAllNamesTablesWithDatabaseAndDefaultSchemaReturnNotNull();
+		getAllNamesTablesDefaultDBWithDefaultDatabaseAndSchemaReturnNull();
+		getAllNamesTablesDefaultDBWithDefaultDatabaseAndSchemaReturnNotNull();
+		getAllNamesTablesWithDefaultDatabaseAndDefaultSchemaReturnNotNull();
+		countTablesWithDatabaseAndSchemaReturnMinus1();
+		countTablesWithDatabaseAndSchemaReturnGreaterOrEqualTo0();
+		countTablesWithDatabaseAndDefaultSchemaReturnMinus1();
+		countTablesWithDatabaseAndDefaultSchemaReturnGreaterOrEqualTo0();
+		countTablesDefaultDBWithDefaultDatabaseAndSchemaReturnMinus1();
+		countTablesDefaultDBWithDefaultDatabaseAndSchemaReturnGreaterOrEqualTo0();
+		countTablesWithDefaultDatabaseAndDefaultSchemaReturnGreaterOrEqualTo0();
 		
 		deleteTableWithDefaultDatabaseAndDefaultSchemaReturnFalse();
 		deleteTableDefaultDBWithDefaultDatabaseAndSchemaReturnNull();
@@ -365,12 +387,94 @@ public class SchemaManagerUnitTest extends TestCase {
 	}
 	
 	public void existsTableWithDatabaseAndDefaultSchemaReturnFalse() {
-		assertFalse(SchemaManager.existsTable(notexistdb, simpleSchema, simpleTab));
-		assertFalse(SchemaManager.existsTable(simpledb, notexistSchema, simpleTab));
-		assertFalse(SchemaManager.existsTable(simpledb, simpleSchema, notexistTab));
+		assertFalse(SchemaManager.existsTable(notexistdb, simpleTab));
+		assertFalse(SchemaManager.existsTable(simpledb, notexistTab));
 	}
 	
 	public void existsTableWithDatabaseAndDefaultSchemaReturnTrue() {
-		assertTrue(SchemaManager.existsTable(simpledb, simpleSchema, simpleTab));
+		assertTrue(SchemaManager.existsTable(simpledb, simpleTab));
+	}
+	
+	public void existsTableDefaultDBWithDatabaseAndSchemaReturnFalse() {
+		assertFalse(SchemaManager.existsTableDefaultDB(notexistSchema, simpleTab));
+		assertFalse(SchemaManager.existsTableDefaultDB(simpleSchema, notexistTab));
+	}
+	
+	public void existsTableDefaultDBWithDatabaseAndSchemaReturnTrue() {
+		assertTrue(SchemaManager.existsTableDefaultDB(simpleSchema, simpleTab));
+	}
+	
+	public void existsTableWithDefaultDatabaseAndDefaultSchemaReturnFalse() {
+		assertFalse(SchemaManager.existsTable(notexistTab));
+	}
+	
+	public void existsTableWithDefaultDatabaseAndDefaultSchemaReturnTrue() {
+		assertTrue(SchemaManager.existsTable(simpleTab));
+	}
+	
+	public void getAllNamesTablesWithDatabaseAndSchemaReturnNull() {
+		assertNull(SchemaManager.getAllNamesTables(simpledb, notexistSchema));
+		assertNull(SchemaManager.getAllNamesTables(notexistdb, simpleSchema));
+	}
+	
+	public void getAllNamesTablesWithDatabaseAndSchemaReturnNotNull() {
+		assertNotNull(SchemaManager.getAllNamesTables(simpledb, simpleSchema));
+	}
+	
+	public void getAllNamesTablesWithDatabaseAndDefaultSchemaReturnNull() {
+		assertNull(SchemaManager.getAllNamesTables(notexistdb));
+	}
+	
+	public void getAllNamesTablesWithDatabaseAndDefaultSchemaReturnNotNull() {
+		assertNotNull(SchemaManager.getAllNamesTables(simpledb));
+	}
+	
+	public void getAllNamesTablesDefaultDBWithDefaultDatabaseAndSchemaReturnNull() {
+		assertNull(SchemaManager.getAllNamesTablesDefaultDB(notexistSchema));
+	}
+	
+	public void getAllNamesTablesDefaultDBWithDefaultDatabaseAndSchemaReturnNotNull() {
+		assertNotNull(SchemaManager.getAllNamesTablesDefaultDB(simpleSchema));
+	}
+	
+	public void getAllNamesTablesWithDefaultDatabaseAndDefaultSchemaReturnNull() {
+		assertNull(SchemaManager.getAllNamesTables());
+	}
+	
+	public void getAllNamesTablesWithDefaultDatabaseAndDefaultSchemaReturnNotNull() {
+		assertNotNull(SchemaManager.getAllNamesTables());
+	}
+	
+	public void countTablesWithDatabaseAndSchemaReturnMinus1() {
+		assertEquals(SchemaManager.countTables(notexistdb, simpleSchema), new Integer(-1));
+		assertEquals(SchemaManager.countTables(simpledb, notexistSchema), new Integer(-1));
+	}
+	
+	public void countTablesWithDatabaseAndSchemaReturnGreaterOrEqualTo0() {
+		assertTrue(SchemaManager.countTables(simpledb, simpleSchema) >= 0);
+	}
+	
+	public void countTablesWithDatabaseAndDefaultSchemaReturnMinus1() {
+		assertEquals(SchemaManager.countTables(notexistdb), new Integer(-1));
+	}
+	
+	public void countTablesWithDatabaseAndDefaultSchemaReturnGreaterOrEqualTo0() {
+		assertTrue(SchemaManager.countTables(simpledb) >= 0);
+	}
+	
+	public void countTablesDefaultDBWithDefaultDatabaseAndSchemaReturnMinus1() {
+		assertEquals(SchemaManager.countTablesDefaultDB(notexistSchema), new Integer(-1));
+	}
+	
+	public void countTablesDefaultDBWithDefaultDatabaseAndSchemaReturnGreaterOrEqualTo0() {
+		assertTrue(SchemaManager.countTablesDefaultDB(simpleSchema) >= 0);
+	}
+	
+	public void countTablesWithDefaultDatabaseAndDefaultSchemaReturnMinus1() {
+		assertEquals(SchemaManager.countTables(), new Integer(-1));
+	}
+	
+	public void countTablesWithDefaultDatabaseAndDefaultSchemaReturnGreaterOrEqualTo0() {
+		assertTrue(SchemaManager.countTables() >= 0);
 	}
 }
