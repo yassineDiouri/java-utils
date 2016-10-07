@@ -374,7 +374,7 @@ public abstract class SchemaManager {
 		}
 		return null;
 	}
-
+	
 	/**
 	 * Delete Table from specified database..default(schema)
 	 * 
@@ -397,7 +397,7 @@ public abstract class SchemaManager {
 		}
 		return null;
 	}
-
+	
 	/**
 	 * Delete Table from specified default(database)..schema
 	 * 
@@ -419,7 +419,7 @@ public abstract class SchemaManager {
 		}
 		return null;
 	}
-
+	
 	/**
 	 * Delete Table from specified default(database)..default(schema)
 	 * 
