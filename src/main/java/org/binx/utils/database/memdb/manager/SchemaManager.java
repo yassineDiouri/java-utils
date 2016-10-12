@@ -366,9 +366,9 @@ public abstract class SchemaManager {
 	public static Boolean deleteTable(String databaseName, String schemaName, String tableName) {
 		if(exists(databaseName, schemaName)) {
 			for(Table tab : getAllTables(databaseName, schemaName)) {
-					if(tab.getName().equals(tableName)) {
-						return getAllTables(databaseName, schemaName).remove(tab);
-					}
+				if(tab.getName().equals(tableName)) {
+					return getAllTables(databaseName, schemaName).remove(tab);
+				}
 			}
 			return false;
 		}
@@ -389,9 +389,9 @@ public abstract class SchemaManager {
 		Schema defaultSC = getDefault(databaseName);
 		if(defaultSC != null) {
 			for(Table tab : getAllTables(databaseName)) {
-					if(tab.getName().equals(tableName)) {
-						return getAllTables(databaseName).remove(tab);
-					}
+				if(tab.getName().equals(tableName)) {
+					return getAllTables(databaseName).remove(tab);
+				}
 			}
 			return false;
 		}
@@ -411,9 +411,9 @@ public abstract class SchemaManager {
 	public static Boolean deleteTableDefaultDB(String schemaName, String tableName) {
 		if(exists(schemaName)) {
 			for(Table tab : getAllTablesDefaultDB(schemaName)) {
-					if(tab.getName().equals(tableName)) {
-						return getAllTablesDefaultDB(schemaName).remove(tab);
-					}
+				if(tab.getName().equals(tableName)) {
+					return getAllTablesDefaultDB(schemaName).remove(tab);
+				}
 			}
 			return false;
 		}
@@ -433,9 +433,9 @@ public abstract class SchemaManager {
 		Schema defaultSC = getDefault();
 		if(defaultSC != null) {
 			for(Table tab : getAllTables()) {
-					if(tab.getName().equals(tableName)) {
-						return getAllTables().remove(tab);
-					}
+				if(tab.getName().equals(tableName)) {
+					return getAllTables().remove(tab);
+				}
 			}
 			return false;
 		}

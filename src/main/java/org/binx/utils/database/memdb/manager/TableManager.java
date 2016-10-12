@@ -475,6 +475,98 @@ public abstract class TableManager {
 	}
 	
 	/**
+	 * Remove Column from specified table on database..schema
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnName
+	 * @return
+	 * True if removed<br/>
+	 * False if not<br/>
+	 * Null if table, schema or database not exists
+	 */
+	public static Boolean deleteColumn(String databaseName, String schemaName, String tableName, String columnName) {
+		if(exists(databaseName, schemaName, tableName)) {
+			for(Column<?> col : getAllColumns(databaseName, schemaName, tableName)) {
+				if(col.getName().equals(columnName)) {
+					return getAllColumns(databaseName, schemaName, tableName).remove(col);
+				}
+			}
+			return false;
+		}
+		return null;
+	}
+	
+	/**
+	 * Remove Column from specified table on database..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param tableName
+	 * @param columnName
+	 * @return
+	 * True if removed<br/>
+	 * False if not<br/>
+	 * Null if table or database not exists
+	 */
+	public static Boolean deleteColumn(String databaseName, String tableName, String columnName) {
+		if(exists(databaseName, tableName)) {
+			for(Column<?> col : getAllColumns(databaseName, tableName)) {
+				if(col.getName().equals(columnName)) {
+					return getAllColumns(databaseName, tableName).remove(col);
+				}
+			}
+			return false;
+		}
+		return null;
+	}
+	
+	/**
+	 * Remove Column from specified table on default(database)..schema
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnName
+	 * @return
+	 * True if removed<br/>
+	 * False if not<br/>
+	 * Null if table or schema not exists, or there is no default databse
+	 */
+	public static Boolean deleteColumnDefaultDB(String schemaName, String tableName, String columnName) {
+		if(existsDefaultDB(schemaName, tableName)) {
+			for(Column<?> col : getAllColumnsDefaultDB(schemaName, tableName)) {
+				if(col.getName().equals(columnName)) {
+					return getAllColumnsDefaultDB(schemaName, tableName).remove(col);
+				}
+			}
+			return false;
+		}
+		return null;
+	}
+	
+	/**
+	 * Remove Column from specified table on default(database)..default(schema)
+	 * 
+	 * @param tableName
+	 * @param columnName
+	 * @return
+	 * True if removed<br/>
+	 * False if not<br/>
+	 * Null if table not exists, or there is no default databse
+	 */
+	public static Boolean deleteColumn(String tableName, String columnName) {
+		if(exists(tableName)) {
+			for(Column<?> col : getAllColumns(tableName)) {
+				if(col.getName().equals(columnName)) {
+					return getAllColumns(tableName).remove(col);
+				}
+			}
+			return false;
+		}
+		return null;
+	}
+	
+	/**
 	 * Verify if column exists on specified table in database..schema
 	 * 
 	 * @param databaseName
