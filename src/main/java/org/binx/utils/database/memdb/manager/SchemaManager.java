@@ -154,8 +154,7 @@ public abstract class SchemaManager {
 		if(exists(databaseName, schemaName)) {
 			if(table != null && !existsTable(databaseName, schemaName, table.getName())
 					&& !table.getName().trim().equals("")) {
-				getAllTables(databaseName, schemaName).add(table);
-				return true;
+				return getAllTables(databaseName, schemaName).add(table);
 			}
 			return false;
 		} else 
@@ -176,8 +175,7 @@ public abstract class SchemaManager {
 		if(defaultSC != null) {
 			if(table != null && !existsTable(databaseName, table.getName())
 					&& !table.getName().trim().equals("")) {
-				getAllTables(databaseName).add(table);
-				return true;
+				return getAllTables(databaseName).add(table);
 			}
 			return false;
 		} else 
@@ -197,8 +195,7 @@ public abstract class SchemaManager {
 		if(exists(schemaName)) {
 			if(table != null && !existsTableDefaultDB(schemaName, table.getName())
 					&& !table.getName().trim().equals("")) {
-				getAllTablesDefaultDB(schemaName).add(table);
-				return true;
+				return getAllTablesDefaultDB(schemaName).add(table);
 			}
 			return false;
 		} else 
@@ -218,8 +215,7 @@ public abstract class SchemaManager {
 		if(defaultSC != null) {
 			if(table != null && !existsTable(table.getName())
 					&& !table.getName().trim().equals("")) {
-				getAllTables().add(table);
-				return true;
+				return getAllTables().add(table);
 			}
 			return false;
 		} else 
