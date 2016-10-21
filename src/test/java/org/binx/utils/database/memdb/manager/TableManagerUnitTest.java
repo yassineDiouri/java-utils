@@ -45,6 +45,7 @@ public class TableManagerUnitTest extends TestCase {
 		
 		createNewTableWithDefaultDbScTabReturnNull();
 		createNewTableWithDefaultDbDefaultScTabReturnNull();
+		getAllTablesWithDefaultDbDefaultScTabReturnNull();
 		
 		DatabaseManager.setToDefault(defaultdb);
 		SchemaManager.createNewSchema(simpleSchema);
@@ -55,6 +56,9 @@ public class TableManagerUnitTest extends TestCase {
 		getTableWithDbDefaultScTabReturnNull();
 		getTableWithDefaultDbScTabReturnNull();
 		getTableWithDefaultDbDefaultScTabReturnNull();
+		getAllTablesWithDbScTabReturnNull();
+		getAllTablesWithDbDefaultScTabReturnNull();
+		getAllTablesWithDefaultDbScTabReturnNull();
 
 		createNewTableWithDbScTabReturnTrue();
 		createNewTableWithDbScTabReturnFalse();
@@ -68,6 +72,10 @@ public class TableManagerUnitTest extends TestCase {
 		getTableWithDbDefaultScTabReturnNotNull();
 		getTableWithDefaultDbScTabReturnNotNull();
 		getTableWithDefaultDbDefaultScTabReturnNotNull();
+		getAllTablesWithDbScTabReturnNotNull();
+		getAllTablesWithDbDefaultScTabReturnNotNull();
+		getAllTablesWithDefaultDbScTabReturnNotNull();
+		getAllTablesWithDefaultDbDefaultScTabReturnNotNull();
 	}
 	
 	public void createNewTableWithDbScTabReturnNull() {
@@ -102,11 +110,11 @@ public class TableManagerUnitTest extends TestCase {
 	}
 	
 	public void createNewTableWithDefaultDbScTabReturnFalse() {
-		assertFalse(TableManager.createNewTableDefaultDB(simpledb, simpleTab));
+		assertFalse(TableManager.createNewTableDefaultDB(simpleSchema, simpleTab));
 	}
 	
 	public void createNewTableWithDefaultDbScTabReturnTrue() {
-		assertTrue(TableManager.createNewTableDefaultDB(simpledb, simpleTab));
+		assertTrue(TableManager.createNewTableDefaultDB(simpleSchema, simpleTab));
 	}
 	
 	public void createNewTableWithDefaultDbDefaultScTabReturnNull() {
@@ -155,5 +163,38 @@ public class TableManagerUnitTest extends TestCase {
 	
 	public void getTableWithDefaultDbDefaultScTabReturnNotNull() {
 		assertNotNull(TableManager.getTable(simpleTab));
+	}
+	
+	public void getAllTablesWithDbScTabReturnNull() {
+		assertNull(TableManager.getAllTables(notexistdb, simpleSchema));
+		assertNull(TableManager.getAllTables(simpledb, notexistSchema));
+	}
+	
+	public void getAllTablesWithDbScTabReturnNotNull() {
+		assertNotNull(TableManager.getAllTables(simpledb, simpleSchema));
+	}
+	
+	public void getAllTablesWithDbDefaultScTabReturnNull() {
+		assertNull(TableManager.getAllTables(notexistdb));
+	}
+	
+	public void getAllTablesWithDbDefaultScTabReturnNotNull() {
+		assertNotNull(TableManager.getAllTables(simpledb));
+	}
+	
+	public void getAllTablesWithDefaultDbScTabReturnNull() {
+		assertNull(TableManager.getAllTablesDefaultDB(notexistSchema));
+	}
+	
+	public void getAllTablesWithDefaultDbScTabReturnNotNull() {
+		assertNotNull(TableManager.getAllTablesDefaultDB(simpleSchema));
+	}
+	
+	public void getAllTablesWithDefaultDbDefaultScTabReturnNull() {
+		assertNull(TableManager.getAllTables());
+	}
+	
+	public void getAllTablesWithDefaultDbDefaultScTabReturnNotNull() {
+		assertNotNull(TableManager.getAllTables());
 	}
 }
