@@ -1,5 +1,6 @@
 package org.binx.utils.database.memdb.model;
 
+import java.io.*;
 import java.util.*;
 
 import org.binx.utils.database.memdb.generator.*;
@@ -9,7 +10,9 @@ import org.binx.utils.database.memdb.generator.*;
  * @author Yassine Diouri
  *
  */
-public class Database {
+public class Database  implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private String name;
 	private List<Schema> schemas;

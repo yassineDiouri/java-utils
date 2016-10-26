@@ -22,6 +22,6 @@
   </tr>
   <tr>
     <td><a href="https://github.com/yassineDiouri/java-utils/tree/master/src/main/java/org/binx/utils/database/memdb">MemDB</a></td>
-    <td>0.0.13 [SNAPSHOT]</td>
+    <td>0.0.14 [SNAPSHOT]</td>
   </tr>
 </table>

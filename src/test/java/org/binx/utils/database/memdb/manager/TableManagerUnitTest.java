@@ -18,16 +18,14 @@ public class TableManagerUnitTest extends TestCase {
 	private String notexistdb;
 	//schemas
 	private String simpleSchema;
-	private String nullNameSchema;
 	private String notexistSchema;
 	//tables
 	private String simpleTab;
-	private String emptyTab;
 	private String notexistTab;
 	//columns
 	private String simpleCol;
 	private String notexistCol;
-	private Column<?> simpleColumn;
+	private Column simpleColumn;
 	
 	@Override
 	protected void setUp() throws Exception {
@@ -36,11 +34,9 @@ public class TableManagerUnitTest extends TestCase {
 		notexistdb = "notexistdb";
 		
 		simpleSchema = "simpleSchema";
-		nullNameSchema = null;
 		notexistSchema = "notexistSchema";
 		
 		simpleTab = "simpleTab";
-		emptyTab = " ";
 		notexistTab = "notexistTab";
 		
 		simpleCol = "simpleCol";
@@ -56,7 +52,6 @@ public class TableManagerUnitTest extends TestCase {
 		
 		createNewTableWithDefaultDbScTabReturnNull();
 		createNewTableWithDefaultDbDefaultScTabReturnNull();
-		getAllTablesWithDefaultDbDefaultScTabReturnNull();
 		deleteWithDefaultDbDefaultScTabReturnNull();
 		existsWithDefaultDbDefaultScTabReturnFalse();
 		
@@ -69,9 +64,6 @@ public class TableManagerUnitTest extends TestCase {
 		getTableWithDbDefaultScTabReturnNull();
 		getTableWithDefaultDbScTabReturnNull();
 		getTableWithDefaultDbDefaultScTabReturnNull();
-		getAllTablesWithDbScTabReturnNull();
-		getAllTablesWithDbDefaultScTabReturnNull();
-		getAllTablesWithDefaultDbScTabReturnNull();
 
 		createNewTableWithDbScTabReturnTrue();
 		createNewTableWithDbScTabReturnFalse();
@@ -85,10 +77,6 @@ public class TableManagerUnitTest extends TestCase {
 		getTableWithDbDefaultScTabReturnNotNull();
 		getTableWithDefaultDbScTabReturnNotNull();
 		getTableWithDefaultDbDefaultScTabReturnNotNull();
-		getAllTablesWithDbScTabReturnNotNull();
-		getAllTablesWithDbDefaultScTabReturnNotNull();
-		getAllTablesWithDefaultDbScTabReturnNotNull();
-		getAllTablesWithDefaultDbDefaultScTabReturnNotNull();
 		existsWithDbScTabReturnFalse();
 		existsWithDbScTabReturnTrue();
 		existsWithDbDefaultScTabReturnFalse();
@@ -98,12 +86,16 @@ public class TableManagerUnitTest extends TestCase {
 		existsWithDefaultDbDefaultScTabReturnTrue();
 		addColumnWithDbScTabReturnNull();
 		addColumnWithDbScTabReturnTrue();
+		addColumnWithDbScTabReturnFalse();
 		addColumnWithDbDefaultScTabReturnNull();
 		addColumnWithDbDefaultScTabReturnTrue();
+		addColumnWithDbDefaultScTabReturnFalse();
 		addColumnWithDefaultDbScTabReturnNull();
 		addColumnWithDefaultDbScTabReturnTrue();
+		addColumnWithDefaultDbScTabReturnFalse();
 		addColumnWithDefaultDbDefaultScTabReturnNull();
 		addColumnWithDefaultDbDefaultScTabReturnTrue();
+		addColumnWithDefaultDbDefaultScTabReturnFalse();
 		getColumnWithDbScTabReturnNull();
 		getColumnWithDbScTabReturnNotNull();
 		getColumnWithDbDefaultScTabReturnNull();
@@ -249,39 +241,6 @@ public class TableManagerUnitTest extends TestCase {
 		assertNotNull(TableManager.getTable(simpleTab));
 	}
 	
-	public void getAllTablesWithDbScTabReturnNull() {
-		assertNull(TableManager.getAllTables(notexistdb, simpleSchema));
-		assertNull(TableManager.getAllTables(simpledb, notexistSchema));
-	}
-	
-	public void getAllTablesWithDbScTabReturnNotNull() {
-		assertNotNull(TableManager.getAllTables(simpledb, simpleSchema));
-	}
-	
-	public void getAllTablesWithDbDefaultScTabReturnNull() {
-		assertNull(TableManager.getAllTables(notexistdb));
-	}
-	
-	public void getAllTablesWithDbDefaultScTabReturnNotNull() {
-		assertNotNull(TableManager.getAllTables(simpledb));
-	}
-	
-	public void getAllTablesWithDefaultDbScTabReturnNull() {
-		assertNull(TableManager.getAllTablesDefaultDB(notexistSchema));
-	}
-	
-	public void getAllTablesWithDefaultDbScTabReturnNotNull() {
-		assertNotNull(TableManager.getAllTablesDefaultDB(simpleSchema));
-	}
-	
-	public void getAllTablesWithDefaultDbDefaultScTabReturnNull() {
-		assertNull(TableManager.getAllTables());
-	}
-	
-	public void getAllTablesWithDefaultDbDefaultScTabReturnNotNull() {
-		assertNotNull(TableManager.getAllTables());
-	}
-	
 	public void deleteWithDbScTabReturnNull() {
 		assertNull(TableManager.delete(notexistdb, simpleSchema, simpleTab));
 		assertNull(TableManager.delete(simpledb, notexistSchema, simpleTab));
@@ -374,7 +333,10 @@ public class TableManagerUnitTest extends TestCase {
 		assertNull(TableManager.addColumn(simpledb, simpleSchema, notexistTab, simpleColumn));
 	}
 	
-	// False test : depends on test the add of the Collection
+	public void addColumnWithDbScTabReturnFalse() {
+		assertFalse(TableManager.addColumn(simpledb, simpleSchema, simpleTab, simpleColumn));
+	}
+	
 	public void addColumnWithDbScTabReturnTrue() {
 		assertTrue(TableManager.addColumn(simpledb, simpleSchema, simpleTab, simpleColumn));
 	}
@@ -384,7 +346,10 @@ public class TableManagerUnitTest extends TestCase {
 		assertNull(TableManager.addColumn(simpledb, notexistTab, simpleColumn));
 	}
 	
-	// False test : depends on test the add of the Collection
+	public void addColumnWithDbDefaultScTabReturnFalse() {
+		assertFalse(TableManager.addColumn(simpledb, simpleTab, simpleColumn));
+	}
+	
 	public void addColumnWithDbDefaultScTabReturnTrue() {
 		assertTrue(TableManager.addColumn(simpledb, simpleTab, simpleColumn));
 	}
@@ -394,7 +359,10 @@ public class TableManagerUnitTest extends TestCase {
 		assertNull(TableManager.addColumnDefaultDB(simpleSchema, notexistTab, simpleColumn));
 	}
 	
-	// False test : depends on test the add of the Collection
+	public void addColumnWithDefaultDbScTabReturnFalse() {
+		assertFalse(TableManager.addColumnDefaultDB(simpleSchema, simpleTab, simpleColumn));
+	}
+	
 	public void addColumnWithDefaultDbScTabReturnTrue() {
 		assertTrue(TableManager.addColumnDefaultDB(simpleSchema, simpleTab, simpleColumn));
 	}
@@ -403,7 +371,10 @@ public class TableManagerUnitTest extends TestCase {
 		assertNull(TableManager.addColumn(notexistTab, simpleColumn));
 	}
 	
-	// False test : depends on test the add of the Collection
+	public void addColumnWithDefaultDbDefaultScTabReturnFalse() {
+		assertFalse(TableManager.addColumn(simpleTab, simpleColumn));
+	}
+	
 	public void addColumnWithDefaultDbDefaultScTabReturnTrue() {
 		assertTrue(TableManager.addColumn(simpleTab, simpleColumn));
 	}

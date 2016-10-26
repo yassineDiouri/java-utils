@@ -9,11 +9,11 @@ import org.binx.utils.database.memdb.model.*;
  */
 public abstract class ColumnGenerator {
 
-	public static <T> Column<T> getColumn(String name) {
-		return new Column<T>(name);
+	public static Column getColumn(String name) {
+		return new Column(name);
 	}
 	
-	public static <T> Column<T> getColumn(String name, T value) {
-		return new Column<T>(name, value);
+	public static Column getColumn(String name, Class<?> type) {
+		return new Column(name, type);
 	}
 }

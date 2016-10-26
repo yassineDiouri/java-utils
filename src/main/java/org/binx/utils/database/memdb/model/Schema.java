@@ -1,5 +1,6 @@
 package org.binx.utils.database.memdb.model;
 
+import java.io.*;
 import java.util.*;
 
 /**
@@ -7,7 +8,9 @@ import java.util.*;
  * @author Yassine Diouri
  *
  */
-public class Schema {
+public class Schema  implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	public final static String DEFAULT_NAME = "public";
 	

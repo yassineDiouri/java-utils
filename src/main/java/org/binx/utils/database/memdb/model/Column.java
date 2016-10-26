@@ -1,5 +1,6 @@
 package org.binx.utils.database.memdb.model;
 
+import java.io.*;
 import java.util.*;
 
 /**
@@ -7,21 +8,26 @@ import java.util.*;
  * @author Yassine Diouri
  *
  */
-public class Column<T> {
+public class Column implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	private String name;
-	private T value;
+	private Class<?> type;
+	private List<ColumnValue> values;
 	private List<Constraint> constraints;
 	
 	public Column(String name) {
 		this.name = name;
-		constraints = new ArrayList<>();
+		this.values = new ArrayList<>();
+		this.constraints = new ArrayList<>();
 	}
 	
-	public Column(String name, T value) {
+	public Column(String name, Class<?> type) {
 		this.name = name;
-		this.value = value;
-		constraints = new ArrayList<>();
+		this.type = type;
+		this.values = new ArrayList<>();
+		this.constraints = new ArrayList<>();
 	}
 
 	public String getName() {
@@ -32,12 +38,16 @@ public class Column<T> {
 		this.name = name;
 	}
 
-	public T getValue() {
-		return value;
+	public Class<?> getType() {
+		return type;
 	}
 
-	public void setValue(T value) {
-		this.value = value;
+	public void setType(Class<?> type) {
+		this.type = type;
+	}
+
+	public List<ColumnValue> getValues() {
+		return values;
 	}
 
 	public List<Constraint> getConstraints() {

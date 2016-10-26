@@ -1,11 +1,15 @@
 package org.binx.utils.database.memdb.model;
 
+import java.io.*;
+
 /**
  * 
  * @author Yassine Diouri
  *
  */
-public class Constraint {
+public class Constraint  implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private String name;
 	private ContraintType type;

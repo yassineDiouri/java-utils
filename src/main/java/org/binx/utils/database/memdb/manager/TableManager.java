@@ -111,49 +111,6 @@ public abstract class TableManager {
 	public static Table getTable(String tableName) {
 		return SchemaManager.getTable(tableName);
 	}
-	
-	/**
-	 * Return List of Tables on specified database..schema
-	 * 
-	 * @param databaseName
-	 * @param schemaName
-	 * @return
-	 * Null if database..schema not exist
-	 */
-	public static List<Table> getAllTables(String databaseName, String schemaName) {
-		return SchemaManager.getAllTables(databaseName, schemaName);
-	}
-	/**
-	 * Return List of Tables on specified database..default(schema)
-	 * 
-	 * @param databaseName
-	 * @return
-	 * Null if database not exist
-	 */
-	public static List<Table> getAllTables(String databaseName) {
-		return SchemaManager.getAllTables(databaseName);
-	}
-
-	/**
-	 * Return List of Tables on specified default(database)..schema
-	 * 
-	 * @param schemaName
-	 * @return
-	 * Null if no default(database)..schema
-	 */
-	public static List<Table> getAllTablesDefaultDB(String schemaName) {
-		return SchemaManager.getAllTablesDefaultDB(schemaName);
-	}
-
-	/**
-	 * Return List of Tables on specified default(database)..default(schema)
-	 * 
-	 * @return
-	 * Null if no default(database)
-	 */
-	public static List<Table> getAllTables() {
-		return SchemaManager.getAllTables();
-	}
 
 	/**
 	 * Delete Table from specified database..schema
@@ -275,7 +232,9 @@ public abstract class TableManager {
 	 * False if not<br/>
 	 * null if table, schema or database not exists
 	 */
-	public static Boolean addColumn(String databaseName, String schemaName, String tableName, Column<?> column) {
+	public static Boolean addColumn(String databaseName, String schemaName, String tableName, Column column) {
+		if(existsColumn(databaseName, schemaName, tableName, column.getName()))
+			return false;
 		Table tab = getTable(databaseName, schemaName, tableName);
 		if(tab != null) {
 			return tab.getColumns().add(column);
@@ -294,7 +253,9 @@ public abstract class TableManager {
 	 * False if not<br/>
 	 * null if table or database not exists
 	 */
-	public static Boolean addColumn(String databaseName, String tableName, Column<?> column) {
+	public static Boolean addColumn(String databaseName, String tableName, Column column) {
+		if(existsColumn(databaseName, tableName, column.getName()))
+			return false;
 		Table tab = getTable(databaseName, tableName);
 		if(tab != null) {
 			return tab.getColumns().add(column);
@@ -313,7 +274,9 @@ public abstract class TableManager {
 	 * False if not<br/>
 	 * null if table, schema or default database not exists
 	 */
-	public static Boolean addColumnDefaultDB(String schemaName, String tableName, Column<?> column) {
+	public static Boolean addColumnDefaultDB(String schemaName, String tableName, Column column) {
+		if(existsColumnDefaultDB(schemaName, tableName, column.getName()))
+			return false;
 		Table tab = getTableDefaultDB(schemaName, tableName);
 		if(tab != null) {
 			return tab.getColumns().add(column);
@@ -331,7 +294,9 @@ public abstract class TableManager {
 	 * False if not<br/>
 	 * null if table or default database not exists
 	 */
-	public static Boolean addColumn(String tableName, Column<?> column) {
+	public static Boolean addColumn(String tableName, Column column) {
+		if(existsColumn(tableName, column.getName()))
+			return false;
 		Table tab = getTable(tableName);
 		if(tab != null) {
 			return tab.getColumns().add(column);
@@ -349,9 +314,9 @@ public abstract class TableManager {
 	 * @return
 	 * Null if table not exist or database..schema not exist
 	 */
-	public static Column<?> getColumn(String databaseName, String schemaName, String tableName, String columnName) {
+	public static Column getColumn(String databaseName, String schemaName, String tableName, String columnName) {
 		if(existsColumn(databaseName, schemaName, tableName, columnName)) {
-			for(Column<?> col : getAllColumns(databaseName, schemaName, tableName))
+			for(Column col : getAllColumns(databaseName, schemaName, tableName))
 				if(col.getName().equals(columnName))
 					return col;
 		}
@@ -367,9 +332,9 @@ public abstract class TableManager {
 	 * @return
 	 * Null if table or database not exist
 	 */
-	public static Column<?> getColumn(String databaseName, String tableName, String columnName) {
+	public static Column getColumn(String databaseName, String tableName, String columnName) {
 		if(existsColumn(databaseName, tableName, columnName)) {
-			for(Column<?> col : getAllColumns(databaseName, tableName))
+			for (Column col : getAllColumns(databaseName, tableName))
 				if(col.getName().equals(columnName))
 					return col;
 		}
@@ -385,9 +350,9 @@ public abstract class TableManager {
 	 * @return
 	 * Null if table or schema not exist, or no default database
 	 */
-	public static Column<?> getColumnDefaultDB(String schemaName, String tableName, String columnName) {
+	public static Column getColumnDefaultDB(String schemaName, String tableName, String columnName) {
 		if(existsColumnDefaultDB(schemaName, tableName, columnName)) {
-			for(Column<?> col : getAllColumnsDefaultDB(schemaName, tableName))
+			for(Column col : getAllColumnsDefaultDB(schemaName, tableName))
 				if(col.getName().equals(columnName))
 					return col;
 		}
@@ -403,9 +368,9 @@ public abstract class TableManager {
 	 * @return
 	 * Null if table not exist, or no default database
 	 */
-	public static Column<?> getColumn(String tableName, String columnName) {
+	public static Column getColumn(String tableName, String columnName) {
 		if(existsColumn(tableName, columnName)) {
-			for(Column<?> col : getAllColumns(tableName))
+			for(Column col : getAllColumns(tableName))
 				if(col.getName().equals(columnName))
 					return col;
 		}
@@ -421,7 +386,7 @@ public abstract class TableManager {
 	 * @return
 	 * Null if table or database..schema not exist
 	 */
-	public static List<Column<?>> getAllColumns(String databaseName, String schemaName, String tableName) {
+	public static List<Column> getAllColumns(String databaseName, String schemaName, String tableName) {
 		if(exists(databaseName, schemaName, tableName)) {
 			return getTable(databaseName, schemaName, tableName).getColumns();
 		}
@@ -436,7 +401,7 @@ public abstract class TableManager {
 	 * @return
 	 * Null if table or database not exist
 	 */
-	public static List<Column<?>> getAllColumns(String databaseName, String tableName) {
+	public static List<Column> getAllColumns(String databaseName, String tableName) {
 		if(exists(databaseName, tableName)) {
 			return getTable(databaseName, tableName).getColumns();
 		}
@@ -451,7 +416,7 @@ public abstract class TableManager {
 	 * @return
 	 * Null if table or schema not exist or no default database
 	 */
-	public static List<Column<?>> getAllColumnsDefaultDB(String schemaName, String tableName) {
+	public static List<Column> getAllColumnsDefaultDB(String schemaName, String tableName) {
 		if(existsDefaultDB(schemaName, tableName)) {
 			return getTableDefaultDB(schemaName, tableName).getColumns();
 		}
@@ -467,7 +432,7 @@ public abstract class TableManager {
 	 * @return
 	 * Null if table not exist or no default database
 	 */
-	public static List<Column<?>> getAllColumns(String tableName) {
+	public static List<Column> getAllColumns(String tableName) {
 		if(exists(tableName)) {
 			return getTable(tableName).getColumns();
 		}
@@ -488,7 +453,7 @@ public abstract class TableManager {
 	 */
 	public static Boolean deleteColumn(String databaseName, String schemaName, String tableName, String columnName) {
 		if(exists(databaseName, schemaName, tableName)) {
-			for(Column<?> col : getAllColumns(databaseName, schemaName, tableName)) {
+			for(Column col : getAllColumns(databaseName, schemaName, tableName)) {
 				if(col.getName().equals(columnName)) {
 					return getAllColumns(databaseName, schemaName, tableName).remove(col);
 				}
@@ -511,7 +476,7 @@ public abstract class TableManager {
 	 */
 	public static Boolean deleteColumn(String databaseName, String tableName, String columnName) {
 		if(exists(databaseName, tableName)) {
-			for(Column<?> col : getAllColumns(databaseName, tableName)) {
+			for(Column col : getAllColumns(databaseName, tableName)) {
 				if(col.getName().equals(columnName)) {
 					return getAllColumns(databaseName, tableName).remove(col);
 				}
@@ -534,7 +499,7 @@ public abstract class TableManager {
 	 */
 	public static Boolean deleteColumnDefaultDB(String schemaName, String tableName, String columnName) {
 		if(existsDefaultDB(schemaName, tableName)) {
-			for(Column<?> col : getAllColumnsDefaultDB(schemaName, tableName)) {
+			for(Column col : getAllColumnsDefaultDB(schemaName, tableName)) {
 				if(col.getName().equals(columnName)) {
 					return getAllColumnsDefaultDB(schemaName, tableName).remove(col);
 				}
@@ -556,7 +521,7 @@ public abstract class TableManager {
 	 */
 	public static Boolean deleteColumn(String tableName, String columnName) {
 		if(exists(tableName)) {
-			for(Column<?> col : getAllColumns(tableName)) {
+			for(Column col : getAllColumns(tableName)) {
 				if(col.getName().equals(columnName)) {
 					return getAllColumns(tableName).remove(col);
 				}
@@ -647,7 +612,7 @@ public abstract class TableManager {
 	public static List<String> getAllNamesColumns(String databaseName, String schemaName, String tableName) {
 		List<String> names = new ArrayList<>();
 		if(exists(databaseName, schemaName, tableName)) {
-			for(Column<?> col : getTable(databaseName, schemaName, tableName).getColumns()) {
+			for(Column col : getTable(databaseName, schemaName, tableName).getColumns()) {
 				names.add(col.getName());
 			}
 			return names;
@@ -664,7 +629,7 @@ public abstract class TableManager {
 	public static List<String> getAllNamesColumns(String databaseName, String tableName) {
 		List<String> names = new ArrayList<>();
 		if(exists(databaseName, tableName)) {
-			for(Column<?> col : getTable(databaseName, tableName).getColumns()) {
+			for(Column col : getTable(databaseName, tableName).getColumns()) {
 				names.add(col.getName());
 			}
 			return names;
@@ -681,7 +646,7 @@ public abstract class TableManager {
 	public static List<String> getAllNamesColumnsDefaultDB(String schemaName, String tableName) {
 		List<String> names = new ArrayList<>();
 		if(existsDefaultDB(schemaName, tableName)) {
-			for(Column<?> col : getTableDefaultDB(schemaName, tableName).getColumns()) {
+			for(Column col : getTableDefaultDB(schemaName, tableName).getColumns()) {
 				names.add(col.getName());
 			}
 			return names;
@@ -698,7 +663,7 @@ public abstract class TableManager {
 	public static List<String> getAllNamesColumns(String tableName) {
 		List<String> names = new ArrayList<>();
 		if(exists(tableName)) {
-			for(Column<?> col : getTable(tableName).getColumns()) {
+			for(Column col : getTable(tableName).getColumns()) {
 				names.add(col.getName());
 			}
 			return names;
