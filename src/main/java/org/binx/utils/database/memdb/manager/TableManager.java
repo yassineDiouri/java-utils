@@ -243,7 +243,7 @@ public abstract class TableManager {
 		}
 		return null;
 	}
-
+	
 	/**
 	 * add column into specified table on database..default(schema)<br/>
 	 * It make the order of new column as last index of the list of table columns
@@ -736,6 +736,82 @@ public abstract class TableManager {
 				names.add(col.getName());
 			}
 			return names;
+		}
+		return null;
+	}
+	
+	/**
+	 * add line into specified table on database..schema<br/>
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param column
+	 * @return
+	 * True if added<br/>
+	 * False if not<br/>
+	 * Null if table do not contains columns or if table, schema or database not exists
+	 */
+	public static Boolean addLine(String databaseName, String schemaName, String tableName, Line line) {
+		Table tab = getTable(databaseName, schemaName, tableName);
+		if(tab != null && tab.getColumns().size() > 0) {
+			return tab.getLines().add(line);
+		}
+		return null;
+	}
+	
+	/**
+	 * add line into specified table on database..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param tableName
+	 * @param column
+	 * @return
+	 * True if added<br/>
+	 * False if not<br/>
+	 * Null if table do not contains columns or if table or database not exists
+	 */
+	public static Boolean addLine(String databaseName, String tableName, Line line) {
+		Table tab = getTable(databaseName, tableName);
+		if(tab != null && tab.getColumns().size() > 0) {
+			return tab.getLines().add(line);
+		}
+		return null;
+	}
+	
+	/**
+	 * add line into specified table on default(database)..schema
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @param column
+	 * @return
+	 * True if added<br/>
+	 * False if not<br/>
+	 * Null if table do not contains columns or if table, schema or default database not exists
+	 */
+	public static Boolean addLineDefaultDB(String schemaName, String tableName, Line line) {
+		Table tab = getTableDefaultDB(schemaName, tableName);
+		if(tab != null && tab.getColumns().size() > 0) {
+			return tab.getLines().add(line);
+		}
+		return null;
+	}
+	
+	/**
+	 * add line into specified table on default(database)..default(schema)
+	 * 
+	 * @param tableName
+	 * @param column
+	 * @return
+	 * True if added<br/>
+	 * False if not<br/>
+	 * Null if table do not contains columns or if table or default database not exists
+	 */
+	public static Boolean addLine(String tableName, Line line) {
+		Table tab = getTable(tableName);
+		if(tab != null && tab.getColumns().size() > 0) {
+			return tab.getLines().add(line);
 		}
 		return null;
 	}

@@ -22,14 +22,6 @@
   </tr>
   <tr>
     <td><a href="https://github.com/yassineDiouri/java-utils/tree/master/src/main/java/org/binx/utils/database/memdb">MemDB</a></td>
-    <td>0.0.15 [SNAPSHOT]</td>
+    <td>0.0.16 [SNAPSHOT]</td>
   </tr>
 </table>
-## Module MemDB
-### Model Architecture
-<ul>
-<li><strong><i>DatabaseList : </i></strong> Container of databases (It can contain a unique default database)</li>
-<li><strong><i>Database : </i></strong> Container of schemas (It contain a default "public" schema)</li>
-<li><strong><i>Schema : </i></strong> Container of tables</li>
-<li><strong><i>Table : </i></strong> Container of Columns and Lines (Columns represents Table header, Lines its content)</li>
-</ul>

@@ -1,7 +1,7 @@
 package org.binx.utils.database.memdb.manager;
 
-import org.binx.utils.database.memdb.generator.ColumnGenerator;
-import org.binx.utils.database.memdb.model.Column;
+import org.binx.utils.database.memdb.generator.*;
+import org.binx.utils.database.memdb.model.*;
 
 import junit.framework.TestCase;
 
@@ -26,6 +26,8 @@ public class TableManagerUnitTest extends TestCase {
 	private String simpleCol;
 	private String notexistCol;
 	private Column simpleColumn;
+	//lines
+	private Line simpleLine;
 	
 	@Override
 	protected void setUp() throws Exception {
@@ -42,6 +44,8 @@ public class TableManagerUnitTest extends TestCase {
 		simpleCol = "simpleCol";
 		notexistCol = "notexistCol";
 		simpleColumn = ColumnGenerator.getColumn(simpleCol);
+		
+		simpleLine = LineGenerator.getLine();
 	}
 	
 	public void testTableManager() {
@@ -84,6 +88,10 @@ public class TableManagerUnitTest extends TestCase {
 		existsWithDefaultDbScTabReturnFalse();
 		existsWithDefaultDbScTabReturnTrue();
 		existsWithDefaultDbDefaultScTabReturnTrue();
+		addLineWithDbScTabReturnNull();
+		addLineWithDbDefaultScTabReturnNull();
+		addLineWithDefaultDbtScTabReturnNull();
+		addLineWithDefaultDbDefaultScTabReturnNull();
 		addColumnWithDbScTabReturnNull();
 		addColumnWithDbScTabReturnTrue();
 		addColumnWithDbScTabReturnFalse();
@@ -144,6 +152,10 @@ public class TableManagerUnitTest extends TestCase {
 		countLinesWithDefaultDbScTabReturnNotNull();
 		countLinesWithDefaultDbDefaultScTabReturnNull();
 		countLinesWithDefaultDbDefaultScTabReturnNotNull();
+		addLineWithDbScTabReturnTrue();
+		addLineWithDbDefaultScTabReturnTrue();
+		addLineWithDefaultDbScTabReturnTrue();
+		addLineWithDefaultDbDefaultScTabReturnTrue();
 		
 		deleteColumnWithDbScTabReturnNull();
 		deleteColumnWithDbScTabReturnFalse();
@@ -629,6 +641,50 @@ public class TableManagerUnitTest extends TestCase {
 	
 	public void getAllNamesColumnsWithDefaultDbDefaultScTabReturnNotNull() {
 		assertNotNull(TableManager.getAllNamesColumns(simpleTab));
+	}
+	
+	public void addLineWithDbScTabReturnNull() {
+		assertNull(TableManager.addLine(notexistdb, simpleSchema, simpleTab, simpleLine));
+		assertNull(TableManager.addLine(simpledb, notexistSchema, simpleTab, simpleLine));
+		assertNull(TableManager.addLine(simpledb, simpleSchema, notexistTab, simpleLine));
+		assertNull(TableManager.addLine(simpledb, simpleSchema, simpleTab, simpleLine));
+	}
+	
+	/*not needed False test*/
+	public void addLineWithDbScTabReturnTrue() {
+		assertTrue(TableManager.addLine(simpledb, simpleSchema, simpleTab, simpleLine));
+	}
+	
+	public void addLineWithDbDefaultScTabReturnNull() {
+		assertNull(TableManager.addLine(notexistdb, simpleTab, simpleLine));
+		assertNull(TableManager.addLine(simpledb, notexistTab, simpleLine));
+		assertNull(TableManager.addLine(simpledb, simpleTab, simpleLine));
+	}
+	
+	/*not needed False test*/
+	public void addLineWithDbDefaultScTabReturnTrue() {
+		assertTrue(TableManager.addLine(simpledb, simpleTab, simpleLine));
+	}
+	
+	public void addLineWithDefaultDbtScTabReturnNull() {
+		assertNull(TableManager.addLineDefaultDB(notexistSchema, simpleTab, simpleLine));
+		assertNull(TableManager.addLineDefaultDB(simpleSchema, notexistTab, simpleLine));
+		assertNull(TableManager.addLineDefaultDB(simpleSchema, simpleTab, simpleLine));
+	}
+	
+	/*not needed False test*/
+	public void addLineWithDefaultDbScTabReturnTrue() {
+		assertTrue(TableManager.addLineDefaultDB(simpleSchema, simpleTab, simpleLine));
+	}
+	
+	public void addLineWithDefaultDbDefaultScTabReturnNull() {
+		assertNull(TableManager.addLine(notexistTab, simpleLine));
+		assertNull(TableManager.addLine(simpleTab, simpleLine));
+	}
+	
+	/*not needed False test*/
+	public void addLineWithDefaultDbDefaultScTabReturnTrue() {
+		assertTrue(TableManager.addLine(simpleTab, simpleLine));
 	}
 	
 	public void countLinesWithDbScTabReturnNull() {
