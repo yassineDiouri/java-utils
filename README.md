@@ -25,3 +25,15 @@
     <td>0.0.16 [SNAPSHOT]</td>
   </tr>
 </table>
+## Module MemDB
+### Model Architecture
+<ul>
+  <li><strong><i>DatabaseList : </i></strong> Container of databases (It can contain a unique default database).</li>
+  <li><strong><i>Database : </i></strong> Container of schemas (It contain a default "public" schema).</li>
+  <li><strong><i>Schema : </i></strong> Container of tables.</li>
+  <li><strong><i>Table : </i></strong> Container of Columns and Lines (Columns represents Table header, Lines its content).</li>
+  <li><strong><i>Column : </i></strong> Represents Table header, it contains column name and type and Constraints.</li>
+  <li><strong><i>Constraint : </i></strong> Represents SQL constraints of columns to be applied to ColumnValue.</li>
+  <li><strong><i>Line : </i></strong> Represents Table content and a container of values (ColumnValue), it is the records inserted into tables (related to column table by contraint type and SQL contraints).</li>
+  <li><strong><i>ColumnValue : </i></strong> Represents Value of columns of table, it respect type and Constraints specified on columns.</li>
+</ul>
