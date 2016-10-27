@@ -128,6 +128,22 @@ public class TableManagerUnitTest extends TestCase {
 		getAllNamesColumnsWithDefaultDbScTabReturnNotNull();
 		getAllNamesColumnsWithDefaultDbDefaultScTabReturnNull();
 		getAllNamesColumnsWithDefaultDbDefaultScTabReturnNotNull();
+		countColumnsWithDbScTabReturnNull();
+		countColumnsWithDbScTabReturnNotNull();
+		countColumnsWithDbDefaultScTabReturnNull();
+		countColumnsWithDbDefaultScTabReturnNotNull();
+		countColumnsWithDefaultDbScTabReturnNull();
+		countColumnsWithDefaultDbScTabReturnNotNull();
+		countColumnsWithDefaultDbDefaultScTabReturnNull();
+		countColumnsWithDefaultDbDefaultScTabReturnNotNull();
+		countLinesWithDbScTabReturnNull();
+		countLinesWithDbScTabReturnNotNull();
+		countLinesWithDbDefaultScTabReturnNull();
+		countLinesWithDbDefaultScTabReturnNotNull();
+		countLinesWithDefaultDbScTabReturnNull();
+		countLinesWithDefaultDbScTabReturnNotNull();
+		countLinesWithDefaultDbDefaultScTabReturnNull();
+		countLinesWithDefaultDbDefaultScTabReturnNotNull();
 		
 		deleteColumnWithDbScTabReturnNull();
 		deleteColumnWithDbScTabReturnFalse();
@@ -543,6 +559,42 @@ public class TableManagerUnitTest extends TestCase {
 		assertTrue(TableManager.existsColumn(simpleTab, simpleCol));
 	}
 	
+	public void countColumnsWithDbScTabReturnNull() {
+		assertNull(TableManager.countColumns(notexistdb, simpleSchema, simpleTab));
+		assertNull(TableManager.countColumns(simpledb, notexistSchema, simpleTab));
+		assertNull(TableManager.countColumns(simpledb, simpleSchema, notexistTab));
+	}
+	
+	public void countColumnsWithDbScTabReturnNotNull() {
+		assertNotNull(TableManager.countColumns(simpledb, simpleSchema, simpleTab));
+	}
+	
+	public void countColumnsWithDbDefaultScTabReturnNull() {
+		assertNull(TableManager.countColumns(notexistdb, simpleTab));
+		assertNull(TableManager.countColumns(simpledb, notexistTab));
+	}
+	
+	public void countColumnsWithDbDefaultScTabReturnNotNull() {
+		assertNotNull(TableManager.countColumns(simpledb, simpleTab));
+	}
+	
+	public void countColumnsWithDefaultDbScTabReturnNull() {
+		assertNull(TableManager.countColumnsDefaultDB(notexistSchema, simpleTab));
+		assertNull(TableManager.countColumnsDefaultDB(simpleSchema, notexistTab));
+	}
+	
+	public void countColumnsWithDefaultDbScTabReturnNotNull() {
+		assertNotNull(TableManager.countColumnsDefaultDB(simpleSchema, simpleTab));
+	}
+	
+	public void countColumnsWithDefaultDbDefaultScTabReturnNull() {
+		assertNull(TableManager.countColumns(notexistTab));
+	}
+	
+	public void countColumnsWithDefaultDbDefaultScTabReturnNotNull() {
+		assertNotNull(TableManager.countColumns(simpleTab));
+	}
+	
 	public void getAllNamesColumnsWithDbScTabReturnNull() {
 		assertNull(TableManager.getAllNamesColumns(notexistdb, simpleSchema, simpleTab));
 		assertNull(TableManager.getAllNamesColumns(simpledb, notexistSchema, simpleTab));
@@ -577,5 +629,41 @@ public class TableManagerUnitTest extends TestCase {
 	
 	public void getAllNamesColumnsWithDefaultDbDefaultScTabReturnNotNull() {
 		assertNotNull(TableManager.getAllNamesColumns(simpleTab));
+	}
+	
+	public void countLinesWithDbScTabReturnNull() {
+		assertNull(TableManager.countLines(notexistdb, simpleSchema, simpleTab));
+		assertNull(TableManager.countLines(simpledb, notexistSchema, simpleTab));
+		assertNull(TableManager.countLines(simpledb, simpleSchema, notexistTab));
+	}
+	
+	public void countLinesWithDbScTabReturnNotNull() {
+		assertNotNull(TableManager.countLines(simpledb, simpleSchema, simpleTab));
+	}
+	
+	public void countLinesWithDbDefaultScTabReturnNull() {
+		assertNull(TableManager.countLines(notexistdb, simpleTab));
+		assertNull(TableManager.countLines(simpledb, notexistTab));
+	}
+	
+	public void countLinesWithDbDefaultScTabReturnNotNull() {
+		assertNotNull(TableManager.countLines(simpledb, simpleTab));
+	}
+	
+	public void countLinesWithDefaultDbScTabReturnNull() {
+		assertNull(TableManager.countLinesDefaultDB(notexistSchema, simpleTab));
+		assertNull(TableManager.countLinesDefaultDB(simpleSchema, notexistTab));
+	}
+	
+	public void countLinesWithDefaultDbScTabReturnNotNull() {
+		assertNotNull(TableManager.countLinesDefaultDB(simpleSchema, simpleTab));
+	}
+	
+	public void countLinesWithDefaultDbDefaultScTabReturnNull() {
+		assertNull(TableManager.countLines(notexistTab));
+	}
+	
+	public void countLinesWithDefaultDbDefaultScTabReturnNotNull() {
+		assertNotNull(TableManager.countLines(simpleTab));
 	}
 }

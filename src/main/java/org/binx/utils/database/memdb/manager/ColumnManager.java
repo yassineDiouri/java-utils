@@ -25,7 +25,7 @@ public abstract class ColumnManager {
 	 */
 	public static Boolean createNewColumn(String databaseName, String schemaName, String tableName, String columnName, Class<?> columnType) {
 		return TableManager.addColumn(databaseName, schemaName, tableName, ColumnGenerator.getColumn(columnName, columnType));
-	}
+	} // TODO createNewColuln with specified order
 
 	/**
 	 * Create a new column on specified table in database..Default(schema) with given name & type
@@ -135,7 +135,6 @@ public abstract class ColumnManager {
 	 * @param tableName
 	 * @param columnName
 	 * @return
-	 * Type of specified column<br/>
 	 * Null if not exists column, table, schema or database
 	 */
 	public static Class<?> getType(String databaseName, String schemaName, String tableName, String columnName) {
@@ -153,7 +152,6 @@ public abstract class ColumnManager {
 	 * @param tableName
 	 * @param columnName
 	 * @return
-	 * Object containing Column Value<br/>
 	 * Null if not exists column, table or database
 	 */
 	public static Class<?> getType(String databaseName, String tableName, String columnName) {
@@ -171,7 +169,6 @@ public abstract class ColumnManager {
 	 * @param tableName
 	 * @param columnName
 	 * @return
-	 * Object containing Column Value<br/>
 	 * Null if not exists column, table, schema or no default database
 	 */
 	public static Class<?> getTypeDefaultDB(String schemaName, String tableName, String columnName) {
@@ -180,22 +177,89 @@ public abstract class ColumnManager {
 			return column.getType();
 		return null;
 	}	
-
+	
 	/**
-	 * Get value of specified columnName from table in default(database)..default(schema)
+	 * Get type of specified columnName from table in default(database)..default(schema)
 	 * 
 	 * @param databaseName
 	 * @param schemaName
 	 * @param tableName
 	 * @param columnName
 	 * @return
-	 * Object containing Column Value<br/>
 	 * Null if value is null, or not exists column, table or no default database
 	 */
 	public static Class<?> getType(String tableName, String columnName) {
 		Column column = getColumn(tableName, columnName);
 		if(column != null)
 			return column.getType();
+		return null;
+	}
+
+	/**
+	 * Get order of specified columnName from table in database..schema
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnName
+	 * @return
+	 * Null if not exists column, table, schema or database
+	 */
+	public static Integer getOrder(String databaseName, String schemaName, String tableName, String columnName) {
+		Column column = getColumn(databaseName, schemaName, tableName, columnName);
+		if(column != null)
+			return column.getOrder();
+		return null;
+	}
+
+	/**
+	 * Get order of specified columnName from table in database..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnName
+	 * @return
+	 * Null if not exists column, table or database
+	 */
+	public static Integer getOrder(String databaseName, String tableName, String columnName) {
+		Column column = getColumn(databaseName, tableName, columnName);
+		if(column != null)
+			return column.getOrder();
+		return null;
+	}
+
+	/**
+	 * Get order of specified columnName from table in default(database)..schema
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnName
+	 * @return
+	 * Null if not exists column, table, schema or no default database
+	 */
+	public static Integer getOrderDefaultDB(String schemaName, String tableName, String columnName) {
+		Column column = getColumnDefaultDB(schemaName, tableName, columnName);
+		if(column != null)
+			return column.getOrder();
+		return null;
+	}
+
+	/**
+	 * Get order of specified columnName from table in default(database)..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnName
+	 * @return
+	 * Null if value is null, or not exists column, table or no default database
+	 */
+	public static Integer getOrder(String tableName, String columnName) {
+		Column column = getColumn(tableName, columnName);
+		if(column != null)
+			return column.getOrder();
 		return null;
 	}
 	

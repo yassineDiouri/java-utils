@@ -221,7 +221,8 @@ public abstract class TableManager {
 	}
 	
 	/**
-	 * add column into specified table on database..schema 
+	 * add column into specified table on database..schema<br/>
+	 * It make the order of new column as last index of the list of table columns
 	 * 
 	 * @param databaseName
 	 * @param schemaName
@@ -237,13 +238,15 @@ public abstract class TableManager {
 			return false;
 		Table tab = getTable(databaseName, schemaName, tableName);
 		if(tab != null) {
+			column.setOrder(tab.getColumns().size());
 			return tab.getColumns().add(column);
 		}
 		return null;
 	}
 
 	/**
-	 * add column into specified table on database..default(schema) 
+	 * add column into specified table on database..default(schema)<br/>
+	 * It make the order of new column as last index of the list of table columns
 	 * 
 	 * @param databaseName
 	 * @param tableName
@@ -258,13 +261,15 @@ public abstract class TableManager {
 			return false;
 		Table tab = getTable(databaseName, tableName);
 		if(tab != null) {
+			column.setOrder(tab.getColumns().size());
 			return tab.getColumns().add(column);
 		}
 		return null;
 	}
 
 	/**
-	 * add column into specified table on default(database)..schema 
+	 * add column into specified table on default(database)..schema<br/>
+	 * It make the order of new column as last index of the list of table columns
 	 * 
 	 * @param schemaName
 	 * @param tableName
@@ -279,13 +284,15 @@ public abstract class TableManager {
 			return false;
 		Table tab = getTableDefaultDB(schemaName, tableName);
 		if(tab != null) {
+			column.setOrder(tab.getColumns().size());
 			return tab.getColumns().add(column);
 		}
 		return null;
 	}
 
 	/**
-	 * add column into specified table on default(database)..default(schema) 
+	 * add column into specified table on default(database)..default(schema)<br/>
+	 * It make the order of new column as last index of the list of table columns
 	 * 
 	 * @param tableName
 	 * @param column
@@ -299,6 +306,7 @@ public abstract class TableManager {
 			return false;
 		Table tab = getTable(tableName);
 		if(tab != null) {
+			column.setOrder(tab.getColumns().size());
 			return tab.getColumns().add(column);
 		}
 		return null;
@@ -604,6 +612,67 @@ public abstract class TableManager {
 	}
 	
 	/**
+	 * Get number of columns in specified table on database..schema
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @return
+	 * Null if table, schema or database not exist
+	 */
+	public static Integer countColumns(String databaseName, String schemaName, String tableName) {
+		Table tab = getTable(databaseName, schemaName, tableName);
+		if(tab != null)
+			return tab.getColumns().size();
+		return null;
+	}
+	
+	/**
+	 * Get number of columns in specified table on database..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param tableName
+	 * @return
+	 * Null if table or database not exist
+	 */
+	public static Integer countColumns(String databaseName, String tableName) {
+		Table tab = getTable(databaseName, tableName);
+		if(tab != null)
+			return tab.getColumns().size();
+		return null;
+	}
+	
+	/**
+	 * Get number of columns in specified table on default(database)..schema
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @return
+	 * Null if table, schema or default database not exist
+	 */
+	public static Integer countColumnsDefaultDB(String schemaName, String tableName) {
+		Table tab = getTableDefaultDB(schemaName, tableName);
+		if(tab != null)
+			return tab.getColumns().size();
+		return null;
+	}
+	
+	/**
+	 * Get number of columns in specified table on default(database)..default(schema)
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @return
+	 * Null if table or default database not exist
+	 */
+	public static Integer countColumns(String tableName) {
+		Table tab = getTable(tableName);
+		if(tab != null)
+			return tab.getColumns().size();
+		return null;
+	}
+	
+	/**
 	 * List all names of existing columns on specified table from database..schema
 	 * 
 	 * @return
@@ -668,6 +737,67 @@ public abstract class TableManager {
 			}
 			return names;
 		}
+		return null;
+	}
+	
+	/**
+	 * Get number of lines in specified table on database..schema
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @return
+	 * Null if table, schema or database not exist
+	 */
+	public static Long countLines(String databaseName, String schemaName, String tableName) {
+		Table tab = getTable(databaseName, schemaName, tableName);
+		if(tab != null)
+			return (long) tab.getLines().size();
+		return null;
+	}
+	
+	/**
+	 * Get number of lines in specified table on database..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param tableName
+	 * @return
+	 * Null if table or database not exist
+	 */
+	public static Long countLines(String databaseName, String tableName) {
+		Table tab = getTable(databaseName, tableName);
+		if(tab != null)
+			return (long) tab.getLines().size();
+		return null;
+	}
+	
+	/**
+	 * Get number of lines in specified table on default(database)..schema
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @return
+	 * Null if table, schema or default database not exist
+	 */
+	public static Long countLinesDefaultDB(String schemaName, String tableName) {
+		Table tab = getTableDefaultDB(schemaName, tableName);
+		if(tab != null)
+			return (long) tab.getLines().size();
+		return null;
+	}
+	
+	/**
+	 * Get number of lines in specified table on default(database)..default(schema)
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @return
+	 * Null if table or default database not exist
+	 */
+	public static Long countLines(String tableName) {
+		Table tab = getTable(tableName);
+		if(tab != null)
+			return (long) tab.getLines().size();
 		return null;
 	}
 }

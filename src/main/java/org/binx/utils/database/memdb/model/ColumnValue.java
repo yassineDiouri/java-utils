@@ -12,6 +12,7 @@ public class ColumnValue  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long index;
+	private Integer order;
 	private Object value;
 	
 	public ColumnValue() {
@@ -28,6 +29,14 @@ public class ColumnValue  implements Serializable {
 
 	public void setIndex(Long index) {
 		this.index = index;
+	}
+
+	public Integer getOrder() {
+		return order;
+	}
+
+	public void setOrder(Integer order) {
+		this.order = order;
 	}
 
 	public Object getValue() {

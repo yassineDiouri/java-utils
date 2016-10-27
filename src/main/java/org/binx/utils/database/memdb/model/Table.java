@@ -14,10 +14,12 @@ public class Table  implements Serializable {
 
 	private String name;
 	private List<Column> columns;
+	private List<Line> lines;
 	
 	public Table(String name) {
 		this.name = name;
-		columns = new ArrayList<>();
+		this.columns = new ArrayList<>();
+		this.lines = new ArrayList<>();
 	}
 
 	public String getName() {
@@ -30,5 +32,9 @@ public class Table  implements Serializable {
 
 	public List<Column> getColumns() {
 		return columns;
+	}
+
+	public List<Line> getLines() {
+		return lines;
 	}
 }

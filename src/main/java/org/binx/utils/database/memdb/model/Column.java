@@ -14,19 +14,17 @@ public class Column implements Serializable {
 	
 	private String name;
 	private Class<?> type;
-	private List<ColumnValue> values;
+	private Integer order;
 	private List<Constraint> constraints;
 	
 	public Column(String name) {
 		this.name = name;
-		this.values = new ArrayList<>();
 		this.constraints = new ArrayList<>();
 	}
 	
 	public Column(String name, Class<?> type) {
 		this.name = name;
 		this.type = type;
-		this.values = new ArrayList<>();
 		this.constraints = new ArrayList<>();
 	}
 
@@ -46,8 +44,12 @@ public class Column implements Serializable {
 		this.type = type;
 	}
 
-	public List<ColumnValue> getValues() {
-		return values;
+	public Integer getOrder() {
+		return order;
+	}
+
+	public void setOrder(Integer order) {
+		this.order = order;
 	}
 
 	public List<Constraint> getConstraints() {
