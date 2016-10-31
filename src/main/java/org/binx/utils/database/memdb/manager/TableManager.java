@@ -313,7 +313,7 @@ public abstract class TableManager {
 	}
 	
 	/**
-	 * Get Column from specified table on database..schema
+	 * Get Column with name from specified table on database..schema
 	 * 
 	 * @param databaseName
 	 * @param schemaName
@@ -332,7 +332,7 @@ public abstract class TableManager {
 	}
 
 	/**
-	 * Get Column from specified table on database..default(schema)
+	 * Get Column with name from specified table on database..default(schema)
 	 * 
 	 * @param databaseName
 	 * @param tableName
@@ -350,7 +350,7 @@ public abstract class TableManager {
 	}
 	
 	/**
-	 * Get Column from specified table on default(database)..schema
+	 * Get Column with name from specified table on default(database)..schema
 	 * 
 	 * @param schemaName
 	 * @param tableName
@@ -368,7 +368,7 @@ public abstract class TableManager {
 	}
 
 	/**
-	 * Get Column from specified table on default(database)..default(schema)
+	 * Get Column with name from specified table on default(database)..default(schema)
 	 * 
 	 * @param schemaName
 	 * @param tableName
@@ -380,6 +380,79 @@ public abstract class TableManager {
 		if(existsColumn(tableName, columnName)) {
 			for(Column col : getAllColumns(tableName))
 				if(col.getName().equals(columnName))
+					return col;
+		}
+		return null;
+	}
+	
+	/**
+	 * Get Column with order from specified table on database..schema
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param order
+	 * @return
+	 * Null if table not exist or database..schema not exist
+	 */
+	public static Column getColumn(String databaseName, String schemaName, String tableName, Integer order) {
+		if(order >= 0 && order < countColumns(databaseName, schemaName, tableName)) {
+			for(Column col : getAllColumns(databaseName, schemaName, tableName))
+				if(col.getOrder().equals(order))
+					return col;
+		}
+		return null;
+	}
+	
+	/**
+	 * Get Column with order from specified table on database..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param tableName
+	 * @param order
+	 * @return
+	 * Null if table or database not exist
+	 */
+	public static Column getColumn(String databaseName, String tableName, Integer order) {
+		if(order >= 0 && order < countColumns(databaseName, tableName)) {
+			for(Column col : getAllColumns(databaseName, tableName))
+				if(col.getOrder().equals(order))
+					return col;
+		}
+		return null;
+	}
+	
+	/**
+	 * Get Column with order from specified table on default(database)..schema
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @param order
+	 * @return
+	 * Null if table or schema not exist, or no default database
+	 */
+	public static Column getColumnDefaultDB(String schemaName, String tableName, Integer order) {
+		if(order >= 0 && order < countColumnsDefaultDB(schemaName, tableName)) {
+			for(Column col : getAllColumnsDefaultDB(schemaName, tableName))
+				if(col.getOrder().equals(order))
+					return col;
+		}
+		return null;
+	}
+	
+	/**
+	 * Get Column with order from specified table on default(database)..default(schema)
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @param order
+	 * @return
+	 * Null if table not exist, or no default database
+	 */
+	public static Column getColumn(String tableName, Integer order) {
+		if(order >= 0 && order < countColumns(tableName)) {
+			for(Column col : getAllColumns(tableName))
+				if(col.getOrder().equals(order))
 					return col;
 		}
 		return null;
@@ -618,13 +691,13 @@ public abstract class TableManager {
 	 * @param schemaName
 	 * @param tableName
 	 * @return
-	 * Null if table, schema or database not exist
+	 * -1 if table, schema or database not exist
 	 */
 	public static Integer countColumns(String databaseName, String schemaName, String tableName) {
 		Table tab = getTable(databaseName, schemaName, tableName);
 		if(tab != null)
 			return tab.getColumns().size();
-		return null;
+		return -1;
 	}
 	
 	/**
@@ -633,13 +706,13 @@ public abstract class TableManager {
 	 * @param databaseName
 	 * @param tableName
 	 * @return
-	 * Null if table or database not exist
+	 * -1 if table or database not exist
 	 */
 	public static Integer countColumns(String databaseName, String tableName) {
 		Table tab = getTable(databaseName, tableName);
 		if(tab != null)
 			return tab.getColumns().size();
-		return null;
+		return -1;
 	}
 	
 	/**
@@ -648,13 +721,13 @@ public abstract class TableManager {
 	 * @param schemaName
 	 * @param tableName
 	 * @return
-	 * Null if table, schema or default database not exist
+	 * -1 if table, schema or default database not exist
 	 */
 	public static Integer countColumnsDefaultDB(String schemaName, String tableName) {
 		Table tab = getTableDefaultDB(schemaName, tableName);
 		if(tab != null)
 			return tab.getColumns().size();
-		return null;
+		return -1;
 	}
 	
 	/**
@@ -663,13 +736,13 @@ public abstract class TableManager {
 	 * @param schemaName
 	 * @param tableName
 	 * @return
-	 * Null if table or default database not exist
+	 * -1 if table or default database not exist
 	 */
 	public static Integer countColumns(String tableName) {
 		Table tab = getTable(tableName);
 		if(tab != null)
 			return tab.getColumns().size();
-		return null;
+		return -1;
 	}
 	
 	/**
@@ -755,6 +828,7 @@ public abstract class TableManager {
 	public static Boolean addLine(String databaseName, String schemaName, String tableName, Line line) {
 		Table tab = getTable(databaseName, schemaName, tableName);
 		if(tab != null && tab.getColumns().size() > 0) {
+			line.setIndex(countLines(databaseName, schemaName, tableName));
 			return tab.getLines().add(line);
 		}
 		return null;
@@ -774,6 +848,7 @@ public abstract class TableManager {
 	public static Boolean addLine(String databaseName, String tableName, Line line) {
 		Table tab = getTable(databaseName, tableName);
 		if(tab != null && tab.getColumns().size() > 0) {
+			line.setIndex(countLines(databaseName, tableName));
 			return tab.getLines().add(line);
 		}
 		return null;
@@ -793,6 +868,7 @@ public abstract class TableManager {
 	public static Boolean addLineDefaultDB(String schemaName, String tableName, Line line) {
 		Table tab = getTableDefaultDB(schemaName, tableName);
 		if(tab != null && tab.getColumns().size() > 0) {
+			line.setIndex(countLinesDefaultDB(schemaName, tableName));
 			return tab.getLines().add(line);
 		}
 		return null;
@@ -811,7 +887,142 @@ public abstract class TableManager {
 	public static Boolean addLine(String tableName, Line line) {
 		Table tab = getTable(tableName);
 		if(tab != null && tab.getColumns().size() > 0) {
+			line.setIndex(countLines(tableName));
 			return tab.getLines().add(line);
+		}
+		return null;
+	}
+	
+	/**
+	 * Get Line on index from specified table on database..schema
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param index
+	 * @return
+	 * Null if table not exist or database..schema not exist
+	 */
+	public static Line getLine(String databaseName, String schemaName, String tableName, Long index) {
+		if(index >= 0 && index < countLines(databaseName, schemaName, tableName)) {
+			for(Line line : getAllLines(databaseName, schemaName, tableName))
+				if(line.getIndex().equals(index))
+					return line;
+		}
+		return null;
+	}
+	
+	/**
+	 * Get Line on index from specified table on database..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param tableName
+	 * @param index
+	 * @return
+	 * Null if table or database not exist
+	 */
+	public static Line getLine(String databaseName, String tableName, Long index) {
+		if(index >= 0 && index < countLines(databaseName, tableName)) {
+			for(Line line : getAllLines(databaseName, tableName))
+				if(line.getIndex().equals(index))
+					return line;
+		}
+		return null;
+	}
+	
+	/**
+	 * Get Line on index from specified table on default(database)..schema
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @param index
+	 * @return
+	 * Null if table or schema not exist, or no default database
+	 */
+	public static Line getLineDefaultDB(String schemaName, String tableName, Long index) {
+		if(index >= 0 && index < countLinesDefaultDB(schemaName, tableName)) {
+			for(Line line : getAllLinesDefaultDB(schemaName, tableName))
+				if(line.getIndex().equals(index))
+					return line;
+		}
+		return null;
+	}
+	
+	/**
+	 * Get Line on index from specified table on default(database)..default(schema)
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @param index
+	 * @return
+	 * Null if table not exist, or no default database
+	 */
+	public static Line getLine(String tableName, Long index) {
+		if(index >= 0 && index < countLines(tableName)) {
+			for(Line line : getAllLines(tableName))
+				if(line.getIndex().equals(index))
+					return line;
+		}
+		return null;
+	}
+	
+	/**
+	 * Return List of Lines from specified table on database..schema
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @return
+	 * Null if table or database..schema not exist
+	 */
+	public static List<Line> getAllLines(String databaseName, String schemaName, String tableName) {
+		if(exists(databaseName, schemaName, tableName)) {
+			return getTable(databaseName, schemaName, tableName).getLines();
+		}
+		return null;
+	}
+	
+	/**
+	 * Return List of Lines from specified table on database..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param tableName
+	 * @return
+	 * Null if table or database not exist
+	 */
+	public static List<Line> getAllLines(String databaseName, String tableName) {
+		if(exists(databaseName, tableName)) {
+			return getTable(databaseName, tableName).getLines();
+		}
+		return null;
+	}
+	
+	/**
+	 * Return List of Lines from specified table on default(database)..schema
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @return
+	 * Null if table or schema not exist or no default database
+	 */
+	public static List<Line> getAllLinesDefaultDB(String schemaName, String tableName) {
+		if(existsDefaultDB(schemaName, tableName)) {
+			return getTableDefaultDB(schemaName, tableName).getLines();
+		}
+		return null;
+	}
+	
+	/**
+	 * Return List of Lines from specified table on default(database)..default(schema)
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @return
+	 * Null if table not exist or no default database
+	 */
+	public static List<Line> getAllLines(String tableName) {
+		if(exists(tableName)) {
+			return getTable(tableName).getLines();
 		}
 		return null;
 	}
@@ -823,13 +1034,13 @@ public abstract class TableManager {
 	 * @param schemaName
 	 * @param tableName
 	 * @return
-	 * Null if table, schema or database not exist
+	 * -1 if table, schema or database not exist
 	 */
 	public static Long countLines(String databaseName, String schemaName, String tableName) {
 		Table tab = getTable(databaseName, schemaName, tableName);
 		if(tab != null)
 			return (long) tab.getLines().size();
-		return null;
+		return -1L;
 	}
 	
 	/**
@@ -838,13 +1049,13 @@ public abstract class TableManager {
 	 * @param databaseName
 	 * @param tableName
 	 * @return
-	 * Null if table or database not exist
+	 * -1 if table or database not exist
 	 */
 	public static Long countLines(String databaseName, String tableName) {
 		Table tab = getTable(databaseName, tableName);
 		if(tab != null)
 			return (long) tab.getLines().size();
-		return null;
+		return -1L;
 	}
 	
 	/**
@@ -853,13 +1064,13 @@ public abstract class TableManager {
 	 * @param schemaName
 	 * @param tableName
 	 * @return
-	 * Null if table, schema or default database not exist
+	 * -1 if table, schema or default database not exist
 	 */
 	public static Long countLinesDefaultDB(String schemaName, String tableName) {
 		Table tab = getTableDefaultDB(schemaName, tableName);
 		if(tab != null)
 			return (long) tab.getLines().size();
-		return null;
+		return -1L;
 	}
 	
 	/**
@@ -868,12 +1079,12 @@ public abstract class TableManager {
 	 * @param schemaName
 	 * @param tableName
 	 * @return
-	 * Null if table or default database not exist
+	 * -1 if table or default database not exist
 	 */
 	public static Long countLines(String tableName) {
 		Table tab = getTable(tableName);
 		if(tab != null)
 			return (long) tab.getLines().size();
-		return null;
+		return -1L;
 	}
 }
