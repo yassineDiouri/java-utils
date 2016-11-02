@@ -17,11 +17,6 @@ public class Column implements Serializable {
 	private Integer order;
 	private List<Constraint> constraints;
 	
-	public Column(String name) {
-		this.name = name;
-		this.constraints = new ArrayList<>();
-	}
-	
 	public Column(String name, Class<?> type) {
 		this.name = name;
 		this.type = type;

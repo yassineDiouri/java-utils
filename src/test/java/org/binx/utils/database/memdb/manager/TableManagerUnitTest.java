@@ -43,7 +43,7 @@ public class TableManagerUnitTest extends TestCase {
 		
 		simpleCol = "simpleCol";
 		notexistCol = "notexistCol";
-		simpleColumn = ColumnGenerator.getColumn(simpleCol);
+		simpleColumn = ColumnGenerator.getColumn(simpleCol, String.class);
 		
 		simpleLine = LineGenerator.getLine();
 	}

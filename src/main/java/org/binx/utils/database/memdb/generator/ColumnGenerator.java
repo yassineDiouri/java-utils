@@ -8,10 +8,6 @@ import org.binx.utils.database.memdb.model.*;
  *
  */
 public abstract class ColumnGenerator {
-
-	public static Column getColumn(String name) {
-		return new Column(name);
-	}
 	
 	public static Column getColumn(String name, Class<?> type) {
 		return new Column(name, type);

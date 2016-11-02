@@ -1,5 +1,7 @@
 package org.binx.utils.database.memdb.manager;
 
+import java.util.*;
+
 import org.binx.utils.database.memdb.generator.*;
 import org.binx.utils.database.memdb.model.*;
 
@@ -25,7 +27,7 @@ public abstract class ColumnManager {
 	 */
 	public static Boolean createNewColumn(String databaseName, String schemaName, String tableName, String columnName, Class<?> columnType) {
 		return TableManager.addColumn(databaseName, schemaName, tableName, ColumnGenerator.getColumn(columnName, columnType));
-	} // TODO createNewColuln with specified order
+	} // TODO createNewColumn with specified order
 
 	/**
 	 * Create a new column on specified table in database..Default(schema) with given name & type
@@ -545,5 +547,407 @@ public abstract class ColumnManager {
 	 */
 	public static Boolean exists(String tableName, String columnName) {
 		return TableManager.existsColumn(tableName, columnName);
+	}
+	
+	/**
+	 * add Constraint into specified column of table on database..schema
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnName
+	 * @param constraint
+	 * @return
+	 * True if added<br/>
+	 * False if not<br/>
+	 * Null if column, table, schema or database not exists
+	 */
+	public static Boolean addConstraint(String databaseName, String schemaName, String tableName, String columnName, Constraint constraint) {
+		if(existsConstraint(databaseName, schemaName, tableName, columnName, constraint.getName()))
+			return false;
+		Column column = getColumn(databaseName, schemaName, tableName, columnName);
+		if(column != null) {
+			return column.getConstraints().add(constraint);
+		}
+		return null;
+	}
+	
+	/**
+	 * add Constraint into specified column of table on database..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param tableName
+	 * @param columnName
+	 * @param constraint
+	 * @return
+	 * True if added<br/>
+	 * False if not<br/>
+	 * Null if column, table or database not exists
+	 */
+	public static Boolean addConstraint(String databaseName, String tableName, String columnName, Constraint constraint) {
+		if(existsConstraint(databaseName, tableName, columnName, constraint.getName()))
+			return false;
+		Column column = getColumn(databaseName, tableName, columnName);
+		if(column != null) {
+			return column.getConstraints().add(constraint);
+		}
+		return null;
+	}
+	
+	/**
+	 * add Constraint into specified column of table on default(database)..schema
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnName
+	 * @param constraint
+	 * @return
+	 * True if added<br/>
+	 * False if not<br/>
+	 * Null if column, table, schema or default database not exists
+	 */
+	public static Boolean addConstraintDefaultDB(String schemaName, String tableName, String columnName, Constraint constraint) {
+		if(existsConstraintDefaultDB(schemaName, tableName, columnName, constraint.getName()))
+			return false;
+		Column column = getColumnDefaultDB(schemaName, tableName, columnName);
+		if(column != null) {
+			return column.getConstraints().add(constraint);
+		}
+		return null;
+	}
+	
+	/**
+	 * add Constraint into specified column of table on default(database)..default(schema)
+	 * 
+	 * @param tableName
+	 * @param columnName
+	 * @param constraint
+	 * @return
+	 * True if added<br/>
+	 * False if not<br/>
+	 * Null if column, table or default database not exists
+	 */
+	public static Boolean addConstraint(String tableName, String columnName, Constraint constraint) {
+		if(existsConstraint(tableName, columnName, constraint.getName()))
+			return false;
+		Column column = getColumn(tableName, columnName);
+		if(column != null) {
+			return column.getConstraints().add(constraint);
+		}
+		return null;
+	}
+	
+	/**
+	 * Get all constraints from specified Column of table on database..schema
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnName
+	 * @return
+	 * Null if table not exist or database..schema not exist
+	 */
+	public static List<Constraint> getAllConstraints(String databaseName, String schemaName, String tableName, String columnName) {
+		if(exists(databaseName, schemaName, tableName, columnName)) {
+			return getColumn(databaseName, schemaName, tableName, columnName).getConstraints();
+		}
+		return null;
+	}
+	
+	/**
+	 * Get all constraints from specified Column of table on database..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param tableName
+	 * @param columnName
+	 * @return
+	 * Null if table or database not exist
+	 */
+	public static List<Constraint> getAllConstraints(String databaseName, String tableName, String columnName) {
+		if(exists(databaseName, tableName, columnName)) {
+			return getColumn(databaseName, tableName, columnName).getConstraints();
+		}
+		return null;
+	}
+	
+	/**
+	 * Get all constraints from specified Column of table on default(database)..schema
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnName
+	 * @return
+	 * Null if table or schema not exist, or no default database
+	 */
+	public static List<Constraint> getAllConstraintsDefaultDB(String schemaName, String tableName, String columnName) {
+		if(existsDefaultDB(schemaName, tableName, columnName)) {
+			return getColumnDefaultDB(schemaName, tableName, columnName).getConstraints();
+		}
+		return null;
+	}
+	
+	/**
+	 * Get all constraints from specified Column of table on default(database)..default(schema)
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnName
+	 * @return
+	 * Null if table not exist, or no default database
+	 */
+	public static List<Constraint> getAllConstraints(String tableName, String columnName) {
+		if(exists(tableName, columnName)) {
+			return getColumn(tableName, columnName).getConstraints();
+		}
+		return null;
+	}
+	
+	/**
+	 * Remove constraint from specified column of table on database..schema
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnName
+	 * @param constraintName
+	 * @return
+	 * True if removed<br/>
+	 * False if not<br/>
+	 * Null if column, table, schema or database not exist
+	 */
+	public static Boolean deleteConstraint(String databaseName, String schemaName, String tableName, String columnName, String constraintName) {
+		List<Constraint> constraints = getAllConstraints(databaseName, schemaName, tableName, columnName);
+		if(constraints != null) {
+			for(Constraint constraint : constraints) {
+				if(constraint.getName().equals(constraintName))
+					return constraints.remove(constraint);
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Remove constraint from specified column of table on database..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnName
+	 * @param constraintName
+	 * @return
+	 * True if removed<br/>
+	 * False if not<br/>
+	 * Null if column, table or database not exist
+	 */
+	public static Boolean deleteConstraint(String databaseName, String tableName, String columnName, String constraintName) {
+		List<Constraint> constraints = getAllConstraints(databaseName, tableName, columnName);
+		if(constraints != null) {
+			for(Constraint constraint : constraints) {
+				if(constraint.getName().equals(constraintName))
+					return constraints.remove(constraint);
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Remove constraint from specified column of table on default(database)..schema
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnName
+	 * @param constraintName
+	 * @return
+	 * True if removed<br/>
+	 * False if not<br/>
+	 * Null if column, table, schema or default database not exist
+	 */
+	public static Boolean deleteConstraintDefaultDB(String schemaName, String tableName, String columnName, String constraintName) {
+		List<Constraint> constraints = getAllConstraintsDefaultDB(schemaName, tableName, columnName);
+		if(constraints != null) {
+			for(Constraint constraint : constraints) {
+				if(constraint.getName().equals(constraintName))
+					return constraints.remove(constraint);
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Remove constraint from specified column of table on default(database)..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnName
+	 * @param constraintName
+	 * @return
+	 * True if removed<br/>
+	 * False if not<br/>
+	 * Null if column, table or default database not exist
+	 */
+	public static Boolean deleteConstraint(String tableName, String columnName, String constraintName) {
+		List<Constraint> constraints = getAllConstraints(tableName, columnName);
+		if(constraints != null) {
+			for(Constraint constraint : constraints) {
+				if(constraint.getName().equals(constraintName))
+					return constraints.remove(constraint);
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Verify if constraint exists on specified column of table in database..schema
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnName
+	 * @param constraintName
+	 * @return
+	 * True if exist<br/>
+	 * else False
+	 */
+	public static Boolean existsConstraint(String databaseName, String schemaName, String tableName, String columnName, String constraintName) {
+		List<String> names = getAllNamesConstraints(databaseName, schemaName, tableName, columnName);
+		if(names != null) {
+			return names.contains(constraintName);
+		}
+		return false;
+	}
+	
+	/**
+	 * Verify if constraint exists on specified column of table in database..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param tableName
+	 * @param columnName
+	 * @param constraintName
+	 * @return
+	 * True if exist<br/>
+	 * else False
+	 */
+	public static Boolean existsConstraint(String databaseName, String tableName, String columnName, String constraintName) {
+		List<String> names = getAllNamesConstraints(databaseName, tableName, columnName);
+		if(names != null) {
+			return names.contains(constraintName);
+		}
+		return false;
+	}
+	
+	/**
+	 * Verify if constraint exists on specified column of table in default(database)..schema
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnName
+	 * @param constraintName
+	 * @return
+	 * True if exist<br/>
+	 * else False
+	 */
+	public static Boolean existsConstraintDefaultDB(String schemaName, String tableName, String columnName, String constraintName) {
+		List<String> names = getAllNamesConstraintsDefaultDB(schemaName, tableName, columnName);
+		if(names != null) {
+			return names.contains(constraintName);
+		}
+		return false;
+	}
+	
+	/**
+	 * Verify if constraint exists on specified column of table in default(database)..default(schema)
+	 * 
+	 * @param tableName
+	 * @param columnName
+	 * @param constraintName
+	 * @return
+	 * True if exist<br/>
+	 * else False
+	 */
+	public static Boolean existsConstraint(String tableName, String columnName, String constraintName) {
+		List<String> names = getAllNamesConstraints(tableName, columnName);
+		if(names != null) {
+			return names.contains(constraintName);
+		}
+		return false;
+	}
+	
+	/**
+	 * Get all names constraints from specified Column of table on database..schema
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnName
+	 * @return
+	 * Null if table not exist or database..schema not exist
+	 */
+	public static List<String> getAllNamesConstraints(String databaseName, String schemaName, String tableName, String columnName) {
+		List<String> names = new ArrayList<>();
+		if(exists(databaseName, schemaName, tableName, columnName)) {
+			for(Constraint constraint : getColumn(databaseName, schemaName, tableName, columnName).getConstraints()) {
+				names.add(constraint.getName());
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Get all names constraints from specified Column of table on database..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param tableName
+	 * @param columnName
+	 * @return
+	 * Null if table or database not exist
+	 */
+	public static List<String> getAllNamesConstraints(String databaseName, String tableName, String columnName) {
+		List<String> names = new ArrayList<>();
+		if(exists(databaseName, tableName, columnName)) {
+			for(Constraint constraint : getColumn(databaseName, tableName, columnName).getConstraints()) {
+				names.add(constraint.getName());
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Get all names constraints from specified Column of table on default(database)..schema
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnName
+	 * @return
+	 * Null if table or schema not exist, or no default database
+	 */
+	public static List<String> getAllNamesConstraintsDefaultDB(String schemaName, String tableName, String columnName) {
+		List<String> names = new ArrayList<>();
+		if(existsDefaultDB(schemaName, tableName, columnName)) {
+			for(Constraint constraint : getColumnDefaultDB(schemaName, tableName, columnName).getConstraints()) {
+				names.add(constraint.getName());
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Get all names constraints from specified Column of table on default(database)..default(schema)
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnName
+	 * @return
+	 * Null if table not exist, or no default database
+	 */
+	public static List<String> getAllNamesConstraints(String tableName, String columnName) {
+		List<String> names = new ArrayList<>();
+		if(exists(tableName, columnName)) {
+			for(Constraint constraint : getColumn(tableName, columnName).getConstraints()) {
+				names.add(constraint.getName());
+			}
+		}
+		return null;
 	}
 }
