@@ -181,6 +181,14 @@ public class TableManagerUnitTest extends TestCase {
 		getAllLinesWithDefaultDbDefaultScTabReturnNull();
 		getAllLinesWithDefaultDbDefaultScTabReturnNotNull();
 		
+		deleteLineWithDefaultDbDefaultScTabReturnNull();
+		deleteLineWithDefaultDbDefaultScTabReturnNotNull();
+		deleteLineWithDefaultDbScTabReturnNull();
+		deleteLineWithDefaultDbScTabReturnNotNull();
+		deleteLineWithDbDefaultScTabReturnNull();
+		deleteLineWithDbDefaultScTabReturnNotNull();
+		deleteLineWithDbScTabReturnNull();
+		deleteLineWithDbScTabReturnNotNull();
 		deleteColumnWithDbScTabReturnNull();
 		deleteColumnWithDbScTabReturnFalse();
 		deleteColumnWithDbScTabReturnTrue();
@@ -833,6 +841,50 @@ public class TableManagerUnitTest extends TestCase {
 	
 	public void getAllLinesWithDefaultDbDefaultScTabReturnNotNull() {
 		assertNotNull(TableManager.getAllLines(simpleTab));
+	}
+	
+	public void deleteLineWithDbScTabReturnNull() {
+		assertNull(TableManager.deleteLine(notexistdb, simpleSchema, simpleTab, 0L));
+		assertNull(TableManager.deleteLine(simpledb, notexistSchema, simpleTab, 0L));
+		assertNull(TableManager.deleteLine(simpledb, simpleSchema, notexistTab, 0L));
+		assertNull(TableManager.deleteLine(simpledb, simpleSchema, simpleTab, -1L));
+		assertNull(TableManager.deleteLine(simpledb, simpleSchema, simpleTab, 100000L));
+	}
+	
+	public void deleteLineWithDbScTabReturnNotNull() {
+		assertNotNull(TableManager.deleteLine(simpledb, simpleSchema, simpleTab, 0L));
+	}
+	
+	public void deleteLineWithDbDefaultScTabReturnNull() {
+		assertNull(TableManager.deleteLine(notexistdb, simpleTab, 0L));
+		assertNull(TableManager.deleteLine(simpledb, notexistTab, 0L));
+		assertNull(TableManager.deleteLine(simpledb, simpleTab, -1L));
+		assertNull(TableManager.deleteLine(simpledb, simpleTab, 100000L));
+	}
+	
+	public void deleteLineWithDbDefaultScTabReturnNotNull() {
+		assertNotNull(TableManager.deleteLine(simpledb, simpleTab, 0L));
+	}
+	
+	public void deleteLineWithDefaultDbScTabReturnNull() {
+		assertNull(TableManager.deleteLineDefaultDB(notexistSchema, simpleTab, 0L));
+		assertNull(TableManager.deleteLineDefaultDB(simpleSchema, notexistTab, 0L));
+		assertNull(TableManager.deleteLineDefaultDB(simpleSchema, simpleTab, -1L));
+		assertNull(TableManager.deleteLineDefaultDB(simpleSchema, simpleTab, 100000L));
+	}
+	
+	public void deleteLineWithDefaultDbScTabReturnNotNull() {
+		assertNotNull(TableManager.deleteLineDefaultDB(simpleSchema, simpleTab, 0L));
+	}
+	
+	public void deleteLineWithDefaultDbDefaultScTabReturnNull() {
+		assertNull(TableManager.deleteLine(notexistTab, 0L));
+		assertNull(TableManager.deleteLine(simpleTab, -1L));
+		assertNull(TableManager.deleteLine(simpleTab, 100000L));
+	}
+	
+	public void deleteLineWithDefaultDbDefaultScTabReturnNotNull() {
+		assertNotNull(TableManager.deleteLine(simpleTab, 0L));
 	}
 	
 	public void countLinesWithDbScTabReturnMinus1() {

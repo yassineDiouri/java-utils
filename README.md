@@ -22,7 +22,7 @@
   </tr>
   <tr>
     <td><a href="https://github.com/yassineDiouri/java-utils/tree/master/src/main/java/org/binx/utils/database/memdb">MemDB</a></td>
-    <td>0.0.17 [SNAPSHOT]</td>
+    <td>0.0.18 [SNAPSHOT]</td>
   </tr>
 </table>
 ## Module MemDB
@@ -33,7 +33,7 @@
   <li><strong><i>Schema : </i></strong> Container of tables.</li>
   <li><strong><i>Table : </i></strong> Container of Columns and Lines (Columns represents Table header, Lines its content).</li>
   <li><strong><i>Column : </i></strong> Represents Table header, it contains column name and type and Constraints.</li>
-  <li><strong><i>Constraint : </i></strong> Represents SQL constraints of columns to be applied to ColumnValue.</li>
+  <li><strong><i>Constraint : </i></strong> Represents SQL constraints of Columns to be applied to ColumnValues.</li>
   <li><strong><i>Line : </i></strong> Represents Table content and a container of values (ColumnValue), it is the records inserted into tables (related to column table by contraint type and SQL contraints).</li>
   <li><strong><i>ColumnValue : </i></strong> Represents Value of columns of table, it respect type and Constraints specified on columns.</li>
 </ul>

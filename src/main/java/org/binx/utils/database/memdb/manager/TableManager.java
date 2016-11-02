@@ -828,7 +828,7 @@ public abstract class TableManager {
 	public static Boolean addLine(String databaseName, String schemaName, String tableName, Line line) {
 		Table tab = getTable(databaseName, schemaName, tableName);
 		if(tab != null && tab.getColumns().size() > 0) {
-			line.setIndex(countLines(databaseName, schemaName, tableName));
+			line.setIndex(getLastLineIndex(databaseName, schemaName, tableName) + 1);
 			return tab.getLines().add(line);
 		}
 		return null;
@@ -848,7 +848,7 @@ public abstract class TableManager {
 	public static Boolean addLine(String databaseName, String tableName, Line line) {
 		Table tab = getTable(databaseName, tableName);
 		if(tab != null && tab.getColumns().size() > 0) {
-			line.setIndex(countLines(databaseName, tableName));
+			line.setIndex(getLastLineIndex(databaseName, tableName) + 1);
 			return tab.getLines().add(line);
 		}
 		return null;
@@ -868,7 +868,7 @@ public abstract class TableManager {
 	public static Boolean addLineDefaultDB(String schemaName, String tableName, Line line) {
 		Table tab = getTableDefaultDB(schemaName, tableName);
 		if(tab != null && tab.getColumns().size() > 0) {
-			line.setIndex(countLinesDefaultDB(schemaName, tableName));
+			line.setIndex(getLastLineIndexDefaultDB(schemaName, tableName) + 1);
 			return tab.getLines().add(line);
 		}
 		return null;
@@ -887,7 +887,7 @@ public abstract class TableManager {
 	public static Boolean addLine(String tableName, Line line) {
 		Table tab = getTable(tableName);
 		if(tab != null && tab.getColumns().size() > 0) {
-			line.setIndex(countLines(tableName));
+			line.setIndex(getLastLineIndex(tableName) + 1);
 			return tab.getLines().add(line);
 		}
 		return null;
@@ -1028,6 +1028,82 @@ public abstract class TableManager {
 	}
 	
 	/**
+	 * Remove line from specified table on database..schema
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @return
+	 * Null if table not exist or no default database
+	 */
+	public static Boolean deleteLine(String databaseName, String schemaName, String tableName, Long index) {
+		if(index >= 0 && index < countLines(databaseName, schemaName, tableName)) {
+			List<Line> lines = getAllLines(databaseName, schemaName, tableName);
+			for(Line line : lines) {
+				if(line.getIndex().equals(index))
+					return lines.remove(line);
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Remove line from specified table on database..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param tableName
+	 * @return
+	 * Null if table or database not exist
+	 */
+	public static Boolean deleteLine(String databaseName, String tableName, Long index) {
+		if(index >= 0 && index < countLines(databaseName, tableName)) {
+			List<Line> lines = getAllLines(databaseName, tableName);
+			for(Line line : lines) {
+				if(line.getIndex().equals(index))
+					return lines.remove(line);
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Remove line from specified table on default(database)..schema
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @return
+	 * Null if table or schema not exist or no default database
+	 */
+	public static Boolean deleteLineDefaultDB(String schemaName, String tableName, Long index) {
+		if(index >= 0 && index < countLinesDefaultDB(schemaName, tableName)) {
+			List<Line> lines = getAllLinesDefaultDB(schemaName, tableName);
+			for(Line line : lines) {
+				if(line.getIndex().equals(index))
+					return lines.remove(line);
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Remove line from specified table on default(database)..default(schema)
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @return
+	 * Null if table not exist or no default database
+	 */
+	public static Boolean deleteLine(String tableName, Long index) {
+		if(index >= 0 && index < countLines(tableName)) {
+			List<Line> lines = getAllLines(tableName);
+			for(Line line : lines) {
+				if(line.getIndex().equals(index))
+					return lines.remove(line);
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * Get number of lines in specified table on database..schema
 	 * 
 	 * @param databaseName
@@ -1086,5 +1162,29 @@ public abstract class TableManager {
 		if(tab != null)
 			return (long) tab.getLines().size();
 		return -1L;
+	}
+	
+	private static Long getLastLineIndex(String databaseName, String schemaName, String tableName) {
+		List<Line> lines = getAllLines(databaseName, schemaName, tableName);
+		if(lines.size() == 0) return -1L;
+		return lines.get(lines.size() - 1).getIndex();
+	}
+	
+	private static Long getLastLineIndex(String databaseName, String tableName) {
+		List<Line> lines = getAllLines(databaseName, tableName);
+		if(lines.size() == 0) return -1L;
+		return lines.get(lines.size() - 1).getIndex();
+	}
+	
+	private static Long getLastLineIndexDefaultDB(String schemaName, String tableName) {
+		List<Line> lines = getAllLinesDefaultDB(schemaName, tableName);
+		if(lines.size() == 0) return -1L;
+		return lines.get(lines.size() - 1).getIndex();
+	}
+	
+	private static Long getLastLineIndex(String tableName) {
+		List<Line> lines = getAllLines(tableName);
+		if(lines.size() == 0) return -1L;
+		return lines.get(lines.size() - 1).getIndex();
 	}
 }
