@@ -277,11 +277,14 @@ public abstract class ColumnManager {
 	 * True if updated<br/>
 	 * Null if column, table, schema or database not exist
 	 */
-	public static Boolean updateColumnName(String databaseName, String schemaName, String tableName, String oldName, String newName) {
+	public static Boolean updateName(String databaseName, String schemaName, String tableName, String oldName, String newName) {
 		Column column = getColumn(databaseName, schemaName, tableName, oldName);
 		if(column != null) {
-			column.setName(newName);
-			return true;
+			if(!exists(databaseName, schemaName, tableName, newName)) {
+				column.setName(newName);
+				return true;
+			}
+			return false;
 		}
 		return null;
 	}
@@ -298,11 +301,14 @@ public abstract class ColumnManager {
 	 * True if updated<br/>
 	 * Null if column, table or database not exist
 	 */
-	public static Boolean updateColumnName(String databaseName, String tableName, String oldName, String newName) {
+	public static Boolean updateName(String databaseName, String tableName, String oldName, String newName) {
 		Column column = getColumn(databaseName, tableName, oldName);
 		if(column != null) {
-			column.setName(newName);
-			return true;
+			if(!exists(databaseName, tableName, newName)) {
+				column.setName(newName);
+				return true;
+			}
+			return false;
 		}
 		return null;
 	}
@@ -319,11 +325,14 @@ public abstract class ColumnManager {
 	 * True if updated<br/>
 	 * Null if column, table, schema or default database not exist
 	 */
-	public static Boolean updateColumnNameDefaultDB(String schemaName, String tableName, String oldName, String newName) {
+	public static Boolean updateNameDefaultDB(String schemaName, String tableName, String oldName, String newName) {
 		Column column = getColumnDefaultDB(schemaName, tableName, oldName);
 		if(column != null) {
-			column.setName(newName);
-			return true;
+			if(!existsDefaultDB(schemaName, tableName, newName)) {
+				column.setName(newName);
+				return true;
+			}
+			return false;
 		}
 		return null;
 	}
@@ -340,11 +349,14 @@ public abstract class ColumnManager {
 	 * True if updated<br/>
 	 * Null if column, table, schema or default database not exist
 	 */
-	public static Boolean updateColumnName(String tableName, String oldName, String newName) {
+	public static Boolean updateName(String tableName, String oldName, String newName) {
 		Column column = getColumn(tableName, oldName);
 		if(column != null) {
-			column.setName(newName);
-			return true;
+			if(!exists(tableName, newName)) {
+				column.setName(newName);
+				return true;
+			}
+			return false;
 		}
 		return null;
 	}
@@ -361,7 +373,7 @@ public abstract class ColumnManager {
 	 * True if updated<br/>
 	 * Null if column, table, schema or database not exist
 	 */
-	public static Boolean updateColumnType(String databaseName, String schemaName, String tableName, String columnName, Class<?> newType) {
+	public static Boolean updateType(String databaseName, String schemaName, String tableName, String columnName, Class<?> newType) {
 		Column column = getColumn(databaseName, schemaName, tableName, columnName);
 		if(column != null) {
 			column.setType(newType);
@@ -382,7 +394,7 @@ public abstract class ColumnManager {
 	 * True if updated<br/>
 	 * Null if column, table or database not exist
 	 */
-	public static Boolean updateColumnType(String databaseName, String tableName, String columnName, Class<?> newType) {
+	public static Boolean updateType(String databaseName, String tableName, String columnName, Class<?> newType) {
 		Column column = getColumn(databaseName, tableName, columnName);
 		if(column != null) {
 			column.setType(newType);
@@ -403,7 +415,7 @@ public abstract class ColumnManager {
 	 * True if updated<br/>
 	 * Null if column, table, schema or default database not exist
 	 */
-	public static Boolean updateColumnTypeDefaultDB(String schemaName, String tableName, String columnName, Class<?> newType) {
+	public static Boolean updateTypeDefaultDB(String schemaName, String tableName, String columnName, Class<?> newType) {
 		Column column = getColumnDefaultDB(schemaName, tableName, columnName);
 		if(column != null) {
 			column.setType(newType);
@@ -424,7 +436,7 @@ public abstract class ColumnManager {
 	 * True if updated<br/>
 	 * Null if column, table, schema or default database not exist
 	 */
-	public static Boolean updateColumnType(String tableName, String columnName, Class<?> newType) {
+	public static Boolean updateType(String tableName, String columnName, Class<?> newType) {
 		Column column = getColumn(tableName, columnName);
 		if(column != null) {
 			column.setType(newType);
@@ -633,6 +645,90 @@ public abstract class ColumnManager {
 		Column column = getColumn(tableName, columnName);
 		if(column != null) {
 			return column.getConstraints().add(constraint);
+		}
+		return null;
+	}
+	
+	/**
+	 * Get Constraint of specified column from table on database..schema
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnName
+	 * @param constraintName
+	 * @return
+	 * Null if constraint, column, table or database..schema not exist
+	 */
+	public static Constraint getConstraint(String databaseName, String schemaName, String tableName, String columnName, String constraintName) {
+		Column column = getColumn(databaseName, schemaName, tableName, columnName);
+		if(column != null) {
+			for(Constraint constraint : column.getConstraints()) {
+				if(constraint.getName().equals(constraintName))
+					return constraint;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Get Constraint of specified column from table on database..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param tableName
+	 * @param columnName
+	 * @param constraintName
+	 * @return
+	 * Null if constraint, column, table or database..default(schema) not exist
+	 */
+	public static Constraint getConstraint(String databaseName, String tableName, String columnName, String constraintName) {
+		Column column = getColumn(databaseName, tableName, columnName);
+		if(column != null) {
+			for(Constraint constraint : column.getConstraints()) {
+				if(constraint.getName().equals(constraintName))
+					return constraint;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Get Constraint of specified column from table on default(database)..schema
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnName
+	 * @param constraintName
+	 * @return
+	 * Null if constraint, column, table or default(database)..schema not exist
+	 */
+	public static Constraint getConstraintDefaultDB(String schemaName, String tableName, String columnName, String constraintName) {
+		Column column = getColumnDefaultDB(schemaName, tableName, columnName);
+		if(column != null) {
+			for(Constraint constraint : column.getConstraints()) {
+				if(constraint.getName().equals(constraintName))
+					return constraint;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Get Constraint of specified column from table on default(database)..default(schema)
+	 * 
+	 * @param tableName
+	 * @param columnName
+	 * @param constraintName
+	 * @return
+	 * Null if constraint, column, table or default(database)..default(schema) not exist
+	 */
+	public static Constraint getConstraint(String tableName, String columnName, String constraintName) {
+		Column column = getColumn(tableName, columnName);
+		if(column != null) {
+			for(Constraint constraint : column.getConstraints()) {
+				if(constraint.getName().equals(constraintName))
+					return constraint;
+			}
 		}
 		return null;
 	}

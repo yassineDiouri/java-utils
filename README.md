@@ -22,7 +22,7 @@
   </tr>
   <tr>
     <td><a href="https://github.com/yassineDiouri/java-utils/tree/master/src/main/java/org/binx/utils/database/memdb">MemDB</a></td>
-    <td>0.0.19 [SNAPSHOT]</td>
+    <td>0.0.20 [SNAPSHOT]</td>
   </tr>
 </table>
 ## Module MemDB
@@ -38,3 +38,5 @@
   <li><strong><i>ColumnValue : </i></strong> Represents Value of columns of table, it respect type and Constraints specified on columns.</li>
 </ul>
 
+### Model Generators
+<p><i>MemDB</i> instantiate all Models by Generators, which add tests on given arguments beside the creation of objects.</p>

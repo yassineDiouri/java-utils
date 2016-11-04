@@ -1164,24 +1164,55 @@ public abstract class TableManager {
 		return -1L;
 	}
 	
+	/**
+	 * Used to get the last index of current table
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @return
+	 * last index
+	 */
 	private static Long getLastLineIndex(String databaseName, String schemaName, String tableName) {
 		List<Line> lines = getAllLines(databaseName, schemaName, tableName);
 		if(lines.size() == 0) return -1L;
 		return lines.get(lines.size() - 1).getIndex();
 	}
 	
+	/**
+	 * Used to get the last index of current table
+	 * 
+	 * @param databaseName
+	 * @param tableName
+	 * @return
+	 * last index
+	 */
 	private static Long getLastLineIndex(String databaseName, String tableName) {
 		List<Line> lines = getAllLines(databaseName, tableName);
 		if(lines.size() == 0) return -1L;
 		return lines.get(lines.size() - 1).getIndex();
 	}
 	
+	/**
+	 * Used to get the last index of current table
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @return
+	 * last index
+	 */
 	private static Long getLastLineIndexDefaultDB(String schemaName, String tableName) {
 		List<Line> lines = getAllLinesDefaultDB(schemaName, tableName);
 		if(lines.size() == 0) return -1L;
 		return lines.get(lines.size() - 1).getIndex();
 	}
 	
+	/**
+	 * Used to get the last index of current table
+	 * 
+	 * @param tableName
+	 * @return
+	 * last index
+	 */
 	private static Long getLastLineIndex(String tableName) {
 		List<Line> lines = getAllLines(tableName);
 		if(lines.size() == 0) return -1L;
