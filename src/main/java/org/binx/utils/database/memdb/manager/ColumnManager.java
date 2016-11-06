@@ -58,7 +58,7 @@ public abstract class ColumnManager {
 	 * Null if table or schema or default database not exist
 	 */
 	public static Boolean createNewColumnDefaultDB(String schemaName, String tableName, String columnName, Class<?> columnType) {
-		return TableManager.addColumn(schemaName, tableName, ColumnGenerator.getColumn(columnName, columnType));
+		return TableManager.addColumnDefaultDB(schemaName, tableName, ColumnGenerator.getColumn(columnName, columnType));
 	}
 	
 	/**

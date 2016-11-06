@@ -1,9 +1,6 @@
 package org.binx.utils.database.memdb.manager;
 
-import org.binx.utils.database.memdb.generator.*;
-import org.binx.utils.database.memdb.model.*;
-
-import junit.framework.*;
+import junit.framework.TestCase;
 
 public class ColumnManagerUnitTest extends TestCase {
 
@@ -18,7 +15,7 @@ public class ColumnManagerUnitTest extends TestCase {
 	private String tableName;
 	private String notexistTab;
 	//columns
-	private String simpleCol;
+	private String columnName;
 	private String notexistCol;
 	//constraints
 	
@@ -34,7 +31,7 @@ public class ColumnManagerUnitTest extends TestCase {
 		tableName = "tableName";
 		notexistTab = "notexistTab";
 		
-		simpleCol = "simpleCol";
+		columnName = "columnName";
 		notexistCol = "notexistCol";
 	}
 	
@@ -52,7 +49,71 @@ public class ColumnManagerUnitTest extends TestCase {
 		TableManager.createNewTable(databaseName, tableName);
 		TableManager.createNewTableDefaultDB(schemaName, tableName);
 		TableManager.createNewTable(tableName);
+		
+		createNewColumnWithDbScTabReturnNull();
+		createNewColumnWithDbDefaultScTabReturnNull();
+		createNewColumnWithDefaultDbScTabReturnNull();
+		createNewColumnWithDefaultDbDefaultScTabReturnNull();
+		
+		createNewColumnWithDbScTabReturnTrue();
+		createNewColumnWithDbScTabReturnFalse();
+		createNewColumnWithDbDefaultScTabReturnTrue();
+		createNewColumnWithDbDefaultScTabReturnFalse();
+		createNewColumnWithDefaultDbScTabReturnTrue();
+		createNewColumnWithDefaultDbScTabReturnFalse();
+		createNewColumnWithDefaultDbDefaultScTabReturnTrue();
+		createNewColumnWithDefaultDbDefaultScTabReturnFalse();
 	}
 	
+	public void createNewColumnWithDbScTabReturnNull() {
+		assertNull(ColumnManager.createNewColumn(notexistdb, schemaName, tableName, columnName, String.class));
+		assertNull(ColumnManager.createNewColumn(databaseName, notexistSchema, tableName, columnName, String.class));
+		assertNull(ColumnManager.createNewColumn(databaseName, schemaName, notexistTab, columnName, String.class));
+	}
 	
+	public void createNewColumnWithDbScTabReturnFalse() {
+		assertFalse(ColumnManager.createNewColumn(databaseName, schemaName, tableName, columnName, String.class));
+	}
+	
+	public void createNewColumnWithDbScTabReturnTrue() {
+		assertTrue(ColumnManager.createNewColumn(databaseName, schemaName, tableName, columnName, String.class));
+	}
+	
+	public void createNewColumnWithDbDefaultScTabReturnNull() {
+		assertNull(ColumnManager.createNewColumn(notexistdb, tableName, columnName, String.class));
+		assertNull(ColumnManager.createNewColumn(databaseName, notexistTab, columnName, String.class));
+	}
+	
+	public void createNewColumnWithDbDefaultScTabReturnFalse() {
+		assertFalse(ColumnManager.createNewColumn(databaseName, tableName, columnName, String.class));
+	}
+	
+	public void createNewColumnWithDbDefaultScTabReturnTrue() {
+		assertTrue(ColumnManager.createNewColumn(databaseName, tableName, columnName, String.class));
+	}
+	
+	public void createNewColumnWithDefaultDbScTabReturnNull() {
+		assertNull(ColumnManager.createNewColumnDefaultDB(notexistSchema, tableName, columnName, String.class));
+		assertNull(ColumnManager.createNewColumnDefaultDB(schemaName, notexistTab, columnName, String.class));
+	}
+	
+	public void createNewColumnWithDefaultDbScTabReturnFalse() {
+		assertFalse(ColumnManager.createNewColumnDefaultDB(schemaName, tableName, columnName, String.class));
+	}
+	
+	public void createNewColumnWithDefaultDbScTabReturnTrue() {
+		assertTrue(ColumnManager.createNewColumnDefaultDB(schemaName, tableName, columnName, String.class));
+	}
+	
+	public void createNewColumnWithDefaultDbDefaultScTabReturnNull() {
+		assertNull(ColumnManager.createNewColumn(notexistTab, columnName, String.class));
+	}
+	
+	public void createNewColumnWithDefaultDbDefaultScTabReturnFalse() {
+		assertFalse(ColumnManager.createNewColumn(tableName, columnName, String.class));
+	}
+	
+	public void createNewColumnWithDefaultDbDefaultScTabReturnTrue() {
+		assertTrue(ColumnManager.createNewColumn(tableName, columnName, String.class));
+	}
 }
