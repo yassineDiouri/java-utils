@@ -54,6 +54,14 @@ public class ColumnManagerUnitTest extends TestCase {
 		createNewColumnWithDbDefaultScTabReturnNull();
 		createNewColumnWithDefaultDbScTabReturnNull();
 		createNewColumnWithDefaultDbDefaultScTabReturnNull();
+		getColumnWithDbScTabReturnNull();
+		getColumnWithDbDefaultScTabReturnNull();
+		getColumnWithDefaultDbScTabReturnNull();
+		getColumnWithDefaultDbDefaultScTabReturnNull();
+		getTypeWithDbScTabReturnNull();
+		getTypeWithDbDefaultScTabReturnNull();
+		getTypeWithDefaultDbScTabReturnNull();
+		getTypeWithDefaultDbDefaultScTabReturnNull();
 		
 		createNewColumnWithDbScTabReturnTrue();
 		createNewColumnWithDbScTabReturnFalse();
@@ -63,6 +71,14 @@ public class ColumnManagerUnitTest extends TestCase {
 		createNewColumnWithDefaultDbScTabReturnFalse();
 		createNewColumnWithDefaultDbDefaultScTabReturnTrue();
 		createNewColumnWithDefaultDbDefaultScTabReturnFalse();
+		getColumnWithDbScTabReturnNotNull();
+		getColumnWithDbDefaultScTabReturnNotNull();
+		getColumnWithDefaultDbScTabReturnNotNull();
+		getColumnWithDefaultDbDefaultScTabReturnNotNull();
+		getTypeWithDbScTabReturnNotNull();
+		getTypeWithDbDefaultScTabReturnNotNull();
+		getTypeWithDefaultDbScTabReturnNotNull();
+		getTypeWithDefaultDbDefaultScTabReturnNotNull();
 	}
 	
 	public void createNewColumnWithDbScTabReturnNull() {
@@ -115,5 +131,85 @@ public class ColumnManagerUnitTest extends TestCase {
 	
 	public void createNewColumnWithDefaultDbDefaultScTabReturnTrue() {
 		assertTrue(ColumnManager.createNewColumn(tableName, columnName, String.class));
+	}
+	
+	public void getColumnWithDbScTabReturnNull() {
+		assertNull(ColumnManager.getColumn(notexistdb, schemaName, tableName, columnName));
+		assertNull(ColumnManager.getColumn(databaseName, notexistSchema, tableName, columnName));
+		assertNull(ColumnManager.getColumn(databaseName, schemaName, notexistTab, columnName));
+		assertNull(ColumnManager.getColumn(databaseName, schemaName, tableName, notexistCol));
+	}
+	
+	public void getColumnWithDbScTabReturnNotNull() {
+		assertNotNull(ColumnManager.getColumn(databaseName, schemaName, tableName, columnName));
+	}
+	
+	public void getColumnWithDbDefaultScTabReturnNull() {
+		assertNull(ColumnManager.getColumn(notexistdb, tableName, columnName));
+		assertNull(ColumnManager.getColumn(databaseName, notexistTab, columnName));
+		assertNull(ColumnManager.getColumn(databaseName, tableName, notexistCol));
+	}
+	
+	public void getColumnWithDbDefaultScTabReturnNotNull() {
+		assertNotNull(ColumnManager.getColumn(databaseName, tableName, columnName));
+	}
+	
+	public void getColumnWithDefaultDbScTabReturnNull() {
+		assertNull(ColumnManager.getColumnDefaultDB(notexistSchema, tableName, columnName));
+		assertNull(ColumnManager.getColumnDefaultDB(schemaName, notexistTab, columnName));
+		assertNull(ColumnManager.getColumnDefaultDB(schemaName, tableName, notexistCol));
+	}
+	
+	public void getColumnWithDefaultDbScTabReturnNotNull() {
+		assertNotNull(ColumnManager.getColumnDefaultDB(schemaName, tableName, columnName));
+	}
+	
+	public void getColumnWithDefaultDbDefaultScTabReturnNull() {
+		assertNull(ColumnManager.getColumn(notexistTab, columnName));
+		assertNull(ColumnManager.getColumn(tableName, notexistCol));
+	}
+	
+	public void getColumnWithDefaultDbDefaultScTabReturnNotNull() {
+		assertNotNull(ColumnManager.getColumn(tableName, columnName));
+	}
+	
+	public void getTypeWithDbScTabReturnNull() {
+		assertNull(ColumnManager.getType(notexistdb, schemaName, tableName, columnName));
+		assertNull(ColumnManager.getType(databaseName, notexistSchema, tableName, columnName));
+		assertNull(ColumnManager.getType(databaseName, schemaName, notexistTab, columnName));
+		assertNull(ColumnManager.getType(databaseName, schemaName, tableName, notexistCol));
+	}
+	
+	public void getTypeWithDbScTabReturnNotNull() {
+		assertNotNull(ColumnManager.getType(databaseName, schemaName, tableName, columnName));
+	}
+	
+	public void getTypeWithDbDefaultScTabReturnNull() {
+		assertNull(ColumnManager.getType(notexistdb, tableName, columnName));
+		assertNull(ColumnManager.getType(databaseName, notexistTab, columnName));
+		assertNull(ColumnManager.getType(databaseName, tableName, notexistCol));
+	}
+	
+	public void getTypeWithDbDefaultScTabReturnNotNull() {
+		assertNotNull(ColumnManager.getType(databaseName, tableName, columnName));
+	}
+	
+	public void getTypeWithDefaultDbScTabReturnNull() {
+		assertNull(ColumnManager.getTypeDefaultDB(notexistSchema, tableName, columnName));
+		assertNull(ColumnManager.getTypeDefaultDB(schemaName, notexistTab, columnName));
+		assertNull(ColumnManager.getTypeDefaultDB(schemaName, tableName, notexistCol));
+	}
+	
+	public void getTypeWithDefaultDbScTabReturnNotNull() {
+		assertNotNull(ColumnManager.getTypeDefaultDB(schemaName, tableName, columnName));
+	}
+	
+	public void getTypeWithDefaultDbDefaultScTabReturnNull() {
+		assertNull(ColumnManager.getType(notexistTab, columnName));
+		assertNull(ColumnManager.getType(tableName, notexistCol));
+	}
+	
+	public void getTypeWithDefaultDbDefaultScTabReturnNotNull() {
+		assertNotNull(ColumnManager.getType(tableName, columnName));
 	}
 }
