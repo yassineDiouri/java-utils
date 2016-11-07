@@ -539,7 +539,6 @@ public abstract class TableManager {
 					return getAllColumns(databaseName, schemaName, tableName).remove(col);
 				}
 			}
-			return false;
 		}
 		return null;
 	}
@@ -562,7 +561,6 @@ public abstract class TableManager {
 					return getAllColumns(databaseName, tableName).remove(col);
 				}
 			}
-			return false;
 		}
 		return null;
 	}
@@ -585,7 +583,6 @@ public abstract class TableManager {
 					return getAllColumnsDefaultDB(schemaName, tableName).remove(col);
 				}
 			}
-			return false;
 		}
 		return null;
 	}
@@ -607,7 +604,6 @@ public abstract class TableManager {
 					return getAllColumns(tableName).remove(col);
 				}
 			}
-			return false;
 		}
 		return null;
 	}

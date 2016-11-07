@@ -190,16 +190,12 @@ public class TableManagerUnitTest extends TestCase {
 		deleteLineWithDbScTabReturnNull();
 		deleteLineWithDbScTabReturnNotNull();
 		deleteColumnWithDbScTabReturnNull();
-		deleteColumnWithDbScTabReturnFalse();
 		deleteColumnWithDbScTabReturnTrue();
 		deleteColumnWithDbDefaultScTabReturnNull();
-		deleteColumnWithDbDefaultScTabReturnFalse();
 		deleteColumnWithDbDefaultScTabReturnTrue();
 		deleteColumnWithDefaultDbScTabReturnNull();
-		deleteColumnWithDefaultDbScTabReturnFalse();
 		deleteColumnWithDefaultDbScTabReturnTrue();
 		deleteColumnWithDefaultDbDefaultScTabReturnNull();
-		deleteColumnWithDefaultDbDefaultScTabReturnFalse();
 		deleteColumnWithDefaultDbDefaultScTabReturnTrue();
 		deleteWithDbScTabReturnNull();
 		deleteWithDbScTabReturnFalse();
@@ -559,10 +555,7 @@ public class TableManagerUnitTest extends TestCase {
 		assertNull(TableManager.deleteColumn(notexistdb, simpleSchema, simpleTab, simpleCol));
 		assertNull(TableManager.deleteColumn(simpledb, notexistSchema, simpleTab, simpleCol));
 		assertNull(TableManager.deleteColumn(simpledb, simpleSchema, notexistTab, simpleCol));
-	}
-	
-	public void deleteColumnWithDbScTabReturnFalse() {
-		assertFalse(TableManager.deleteColumn(simpledb, simpleSchema, simpleTab, notexistCol));
+		assertNull(TableManager.deleteColumn(simpledb, simpleSchema, simpleTab, notexistCol));
 	}
 	
 	public void deleteColumnWithDbScTabReturnTrue() {
@@ -572,10 +565,7 @@ public class TableManagerUnitTest extends TestCase {
 	public void deleteColumnWithDbDefaultScTabReturnNull() {
 		assertNull(TableManager.deleteColumn(notexistdb, simpleTab, simpleCol));
 		assertNull(TableManager.deleteColumn(simpledb, notexistTab, simpleCol));
-	}
-	
-	public void deleteColumnWithDbDefaultScTabReturnFalse() {
-		assertFalse(TableManager.deleteColumn(simpledb, simpleTab, notexistCol));
+		assertNull(TableManager.deleteColumn(simpledb, simpleTab, notexistCol));
 	}
 	
 	public void deleteColumnWithDbDefaultScTabReturnTrue() {
@@ -585,10 +575,7 @@ public class TableManagerUnitTest extends TestCase {
 	public void deleteColumnWithDefaultDbScTabReturnNull() {
 		assertNull(TableManager.deleteColumnDefaultDB(notexistSchema, simpleTab, simpleCol));
 		assertNull(TableManager.deleteColumnDefaultDB(simpleSchema, notexistTab, simpleCol));
-	}
-	
-	public void deleteColumnWithDefaultDbScTabReturnFalse() {
-		assertFalse(TableManager.deleteColumnDefaultDB(simpleSchema, simpleTab, notexistCol));
+		assertNull(TableManager.deleteColumnDefaultDB(simpleSchema, simpleTab, notexistCol));
 	}
 	
 	public void deleteColumnWithDefaultDbScTabReturnTrue() {
@@ -597,10 +584,7 @@ public class TableManagerUnitTest extends TestCase {
 	
 	public void deleteColumnWithDefaultDbDefaultScTabReturnNull() {
 		assertNull(TableManager.deleteColumn(notexistTab, simpleCol));
-	}
-	
-	public void deleteColumnWithDefaultDbDefaultScTabReturnFalse() {
-		assertFalse(TableManager.deleteColumn(simpleTab, notexistCol));
+		assertNull(TableManager.deleteColumn(simpleTab, notexistCol));
 	}
 	
 	public void deleteColumnWithDefaultDbDefaultScTabReturnTrue() {

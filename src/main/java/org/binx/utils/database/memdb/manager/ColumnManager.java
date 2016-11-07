@@ -376,8 +376,11 @@ public abstract class ColumnManager {
 	public static Boolean updateType(String databaseName, String schemaName, String tableName, String columnName, Class<?> newType) {
 		Column column = getColumn(databaseName, schemaName, tableName, columnName);
 		if(column != null) {
-			column.setType(newType);
-			return true;
+			if(!column.getType().equals(newType)) {
+				column.setType(newType);
+				return true;
+			}
+			return false;
 		}
 		return null;
 	}
@@ -397,8 +400,11 @@ public abstract class ColumnManager {
 	public static Boolean updateType(String databaseName, String tableName, String columnName, Class<?> newType) {
 		Column column = getColumn(databaseName, tableName, columnName);
 		if(column != null) {
-			column.setType(newType);
-			return true;
+			if(!column.getType().equals(newType)) {
+				column.setType(newType);
+				return true;
+			}
+			return false;
 		}
 		return null;
 	}
@@ -418,8 +424,11 @@ public abstract class ColumnManager {
 	public static Boolean updateTypeDefaultDB(String schemaName, String tableName, String columnName, Class<?> newType) {
 		Column column = getColumnDefaultDB(schemaName, tableName, columnName);
 		if(column != null) {
-			column.setType(newType);
-			return true;
+			if(!column.getType().equals(newType)) {
+				column.setType(newType);
+				return true;
+			}
+			return false;
 		}
 		return null;
 	}
@@ -439,8 +448,11 @@ public abstract class ColumnManager {
 	public static Boolean updateType(String tableName, String columnName, Class<?> newType) {
 		Column column = getColumn(tableName, columnName);
 		if(column != null) {
-			column.setType(newType);
-			return true;
+			if(!column.getType().equals(newType)) {
+				column.setType(newType);
+				return true;
+			}
+			return false;
 		}
 		return null;
 	}
