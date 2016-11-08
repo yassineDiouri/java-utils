@@ -45,10 +45,8 @@ public class ColumnManagerUnitTest extends TestCase {
 		constraintName = "constraintName";
 		notexistConstraint = "notexistConstraint";
 		constraint = ConstraintGenerator.getConstraint(constraintName, ContraintType.PRIMARY_KEY);
-	}
-	
-	public void testColumnManager() {
-		DatabaseListManager.getDatabaseList();
+		
+		DatabaseListManager.initDatabaseList();
 		
 		DatabaseManager.createNewDatabase(databaseName);
 		DatabaseManager.createNewDatabase(defaultdb);
@@ -61,7 +59,9 @@ public class ColumnManagerUnitTest extends TestCase {
 		TableManager.createNewTable(databaseName, tableName);
 		TableManager.createNewTableDefaultDB(schemaName, tableName);
 		TableManager.createNewTable(tableName);
-		
+	}
+	
+	public void testColumnManager() {
 		createNewColumnWithDbScTabReturnNull();
 		createNewColumnWithDbDefaultScTabReturnNull();
 		createNewColumnWithDefaultDbScTabReturnNull();

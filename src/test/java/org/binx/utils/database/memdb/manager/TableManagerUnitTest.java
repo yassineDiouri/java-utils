@@ -49,7 +49,7 @@ public class TableManagerUnitTest extends TestCase {
 	}
 	
 	public void testTableManager() {
-		DatabaseListManager.getDatabaseList();
+		DatabaseListManager.initDatabaseList();
 		DatabaseManager.createNewDatabase(simpledb);
 		DatabaseManager.createNewDatabase(defaultdb);
 		SchemaManager.createNewSchema(simpledb, simpleSchema);

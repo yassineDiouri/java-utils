@@ -15,6 +15,14 @@ public abstract class DatabaseListManager {
 	private static DatabaseList databaseList = null;
 	
 	/**
+	 * initialize databases
+	 */
+	public static void initDatabaseList() {
+		if(databaseList == null) 
+			databaseList = DatabaseListGenerator.getDatabaseList();
+	}
+	
+	/**
 	 * initialize and get databases
 	 * 
 	 * @return

@@ -25,7 +25,8 @@ public class DatabaseManagerUnitTest extends TestCase {
 	
 	@Override
 	protected void setUp() throws Exception {
-		DatabaseListManager.getDatabaseList();
+		DatabaseListManager.initDatabaseList();
+		
 		nul = null;
 		dbName = " newDb ";
 		defaultDbName = "defaultDB";

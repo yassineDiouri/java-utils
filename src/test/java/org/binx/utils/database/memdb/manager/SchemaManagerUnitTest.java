@@ -27,7 +27,8 @@ public class SchemaManagerUnitTest extends TestCase {
 		simpledb = "simpledb";
 		defaultdb = "defaultdb";
 		notexistdb = "notexistdb";
-		DatabaseListManager.getDatabaseList();
+		
+		DatabaseListManager.initDatabaseList();
 		DatabaseManager.createNewDatabase(simpledb);
 		DatabaseManager.createNewDatabase(defaultdb);
 		
