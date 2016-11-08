@@ -820,7 +820,7 @@ public abstract class ColumnManager {
 	 * @param constraintName
 	 * @return
 	 * True if removed<br/>
-	 * False if not<br/>
+	 * False if not or constraint not exists<br/>
 	 * Null if column, table, schema or database not exist
 	 */
 	public static Boolean deleteConstraint(String databaseName, String schemaName, String tableName, String columnName, String constraintName) {
@@ -830,6 +830,7 @@ public abstract class ColumnManager {
 				if(constraint.getName().equals(constraintName))
 					return constraints.remove(constraint);
 			}
+			return false;
 		}
 		return null;
 	}
@@ -844,7 +845,7 @@ public abstract class ColumnManager {
 	 * @param constraintName
 	 * @return
 	 * True if removed<br/>
-	 * False if not<br/>
+	 * False if not or constraint not exists<br/>
 	 * Null if column, table or database not exist
 	 */
 	public static Boolean deleteConstraint(String databaseName, String tableName, String columnName, String constraintName) {
@@ -854,6 +855,7 @@ public abstract class ColumnManager {
 				if(constraint.getName().equals(constraintName))
 					return constraints.remove(constraint);
 			}
+			return false;
 		}
 		return null;
 	}
@@ -868,7 +870,7 @@ public abstract class ColumnManager {
 	 * @param constraintName
 	 * @return
 	 * True if removed<br/>
-	 * False if not<br/>
+	 * False if not or constraint not exists<br/>
 	 * Null if column, table, schema or default database not exist
 	 */
 	public static Boolean deleteConstraintDefaultDB(String schemaName, String tableName, String columnName, String constraintName) {
@@ -878,6 +880,7 @@ public abstract class ColumnManager {
 				if(constraint.getName().equals(constraintName))
 					return constraints.remove(constraint);
 			}
+			return false;
 		}
 		return null;
 	}
@@ -892,7 +895,7 @@ public abstract class ColumnManager {
 	 * @param constraintName
 	 * @return
 	 * True if removed<br/>
-	 * False if not<br/>
+	 * False if not or constraint not exists<br/>
 	 * Null if column, table or default database not exist
 	 */
 	public static Boolean deleteConstraint(String tableName, String columnName, String constraintName) {
@@ -902,6 +905,7 @@ public abstract class ColumnManager {
 				if(constraint.getName().equals(constraintName))
 					return constraints.remove(constraint);
 			}
+			return false;
 		}
 		return null;
 	}
@@ -998,6 +1002,7 @@ public abstract class ColumnManager {
 			for(Constraint constraint : getColumn(databaseName, schemaName, tableName, columnName).getConstraints()) {
 				names.add(constraint.getName());
 			}
+			return names;
 		}
 		return null;
 	}
@@ -1017,6 +1022,7 @@ public abstract class ColumnManager {
 			for(Constraint constraint : getColumn(databaseName, tableName, columnName).getConstraints()) {
 				names.add(constraint.getName());
 			}
+			return names;
 		}
 		return null;
 	}
@@ -1036,6 +1042,7 @@ public abstract class ColumnManager {
 			for(Constraint constraint : getColumnDefaultDB(schemaName, tableName, columnName).getConstraints()) {
 				names.add(constraint.getName());
 			}
+			return names;
 		}
 		return null;
 	}
@@ -1055,6 +1062,7 @@ public abstract class ColumnManager {
 			for(Constraint constraint : getColumn(tableName, columnName).getConstraints()) {
 				names.add(constraint.getName());
 			}
+			return names;
 		}
 		return null;
 	}

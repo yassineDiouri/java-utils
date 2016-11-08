@@ -1,5 +1,8 @@
 package org.binx.utils.database.memdb.manager;
 
+import org.binx.utils.database.memdb.generator.*;
+import org.binx.utils.database.memdb.model.*;
+
 import junit.framework.TestCase;
 
 public class ColumnManagerUnitTest extends TestCase {
@@ -19,6 +22,9 @@ public class ColumnManagerUnitTest extends TestCase {
 	private String newColumnName;
 	private String notexistCol;
 	//constraints
+	private String constraintName;
+	private String notexistConstraint;
+	private Constraint constraint;
 	
 	@Override
 	protected void setUp() throws Exception {
@@ -35,6 +41,10 @@ public class ColumnManagerUnitTest extends TestCase {
 		columnName = "columnName";
 		newColumnName = "newColumnName";
 		notexistCol = "notexistCol";
+		
+		constraintName = "constraintName";
+		notexistConstraint = "notexistConstraint";
+		constraint = ConstraintGenerator.getConstraint(constraintName, ContraintType.PRIMARY_KEY);
 	}
 	
 	public void testColumnManager() {
@@ -85,6 +95,27 @@ public class ColumnManagerUnitTest extends TestCase {
 		existsWithDefaultDbScTabReturnFalse();
 		existsWithDefaultDbDefaultScTabReturnFalse();
 		
+		addConstraintWithDbScTabReturnNull();
+		addConstraintWithDbDefaultScTabReturnNull();
+		addConstraintWithDefaultDbScTabReturnNull();
+		addConstraintWithDefaultDbDefaultScTabReturnNull();
+		getConstraintWithDbScTabReturnNull();
+		getConstraintWithDbDefaultScTabReturnNull();
+		getConstraintWithDefaultDbScTabReturnNull();
+		getConstraintWithDefaultDbDefaultScTabReturnNull();
+		getAllConstraintsWithDbScTabReturnNull();
+		getAllConstraintsWithDbDefaultScTabReturnNull();
+		getAllConstraintsWithDefaultDbScTabReturnNull();
+		getAllConstraintsWithDefaultDbDefaultScTabReturnNull();
+		deleteConstraintWithDbScTabReturnNull();
+		deleteConstraintWithDbDefaultScTabReturnNull();
+		deleteConstraintWithDefaultDbScTabReturnNull();
+		deleteConstraintWithDefaultDbDefaultScTabReturnNull();
+		getAllNamesConstraintsWithDbScTabReturnNull();
+		getAllNamesConstraintsWithDbDefaultScTabReturnNull();
+		getAllNamesConstraintsWithDefaultDbScTabReturnNull();
+		getAllNamesConstraintsWithDefaultDbDefaultScTabReturnNull();
+		
 		createNewColumnWithDbScTabReturnTrue();
 		createNewColumnWithDbScTabReturnFalse();
 		createNewColumnWithDbDefaultScTabReturnTrue();
@@ -109,6 +140,44 @@ public class ColumnManagerUnitTest extends TestCase {
 		existsWithDbDefaultScTabReturnTrue();
 		existsWithDefaultDbScTabReturnTrue();
 		existsWithDefaultDbDefaultScTabReturnTrue();
+
+		addConstraintWithDbScTabReturnTrue();
+		addConstraintWithDbScTabReturnFalse();
+		addConstraintWithDbDefaultScTabReturnTrue();
+		addConstraintWithDbDefaultScTabReturnFalse();
+		addConstraintWithDefaultDbScTabReturnTrue();
+		addConstraintWithDefaultDbScTabReturnFalse();
+		addConstraintWithDefaultDbDefaultScTabReturnTrue();
+		addConstraintWithDefaultDbDefaultScTabReturnFalse();
+		getConstraintWithDbScTabReturnNotNull();
+		getConstraintWithDbDefaultScTabReturnNotNull();
+		getConstraintWithDefaultDbScTabReturnNotNull();
+		getConstraintWithDefaultDbDefaultScTabReturnNotNull();
+		getAllConstraintsWithDbScTabReturnNotNull();
+		getAllConstraintsWithDbDefaultScTabReturnNotNull();
+		getAllConstraintsWithDefaultDbScTabReturnNotNull();
+		getAllConstraintsWithDefaultDbDefaultScTabReturnNotNull();
+		deleteConstraintWithDbScTabReturnFalse();
+		deleteConstraintWithDbDefaultScTabReturnFalse();
+		deleteConstraintWithDefaultDbScTabReturnFalse();
+		deleteConstraintWithDefaultDbDefaultScTabReturnFalse();
+		existsConstraintWithDbScTabReturnFalse();
+		existsConstraintWithDbDefaultScTabReturnFalse();
+		existsConstraintWithDefaultDbScTabReturnFalse();
+		existsConstraintWithDefaultDbDefaultScTabReturnFalse();
+		existsConstraintWithDbScTabReturnTrue();
+		existsConstraintWithDbDefaultScTabReturnTrue();
+		existsConstraintWithDefaultDbScTabReturnTrue();
+		existsConstraintWithDefaultDbDefaultScTabReturnTrue();
+		getAllNamesConstraintsWithDbScTabReturnNotNull();
+		getAllNamesConstraintsWithDbDefaultScTabReturnNotNull();
+		getAllNamesConstraintsWithDefaultDbScTabReturnNotNull();
+		getAllNamesConstraintsWithDefaultDbDefaultScTabReturnNotNull();
+		
+		deleteConstraintWithDbScTabReturnTrue();
+		deleteConstraintWithDbDefaultScTabReturnTrue();
+		deleteConstraintWithDefaultDbScTabReturnTrue();
+		deleteConstraintWithDefaultDbDefaultScTabReturnTrue();
 
 		updateTypeWithDbScTabReturnFalse();
 		updateTypeWithDbScTabReturnTrue();
@@ -495,5 +564,285 @@ public class ColumnManagerUnitTest extends TestCase {
 	
 	public void existsWithDefaultDbDefaultScTabReturnTrue() {
 		assertTrue(ColumnManager.exists(tableName, columnName));
+	}
+	
+	public void addConstraintWithDbScTabReturnNull() {
+		assertNull(ColumnManager.addConstraint(notexistdb, schemaName, tableName, columnName, constraint));
+		assertNull(ColumnManager.addConstraint(databaseName, notexistSchema, tableName, columnName, constraint));
+		assertNull(ColumnManager.addConstraint(databaseName, schemaName, notexistTab, columnName, constraint));
+		assertNull(ColumnManager.addConstraint(databaseName, schemaName, tableName, notexistCol, constraint));
+	}
+	
+	public void addConstraintWithDbScTabReturnFalse() {
+		assertFalse(ColumnManager.addConstraint(databaseName, schemaName, tableName, columnName, constraint));
+	}
+	
+	public void addConstraintWithDbScTabReturnTrue() {
+		assertTrue(ColumnManager.addConstraint(databaseName, schemaName, tableName, columnName, constraint));
+	}
+	
+	public void addConstraintWithDbDefaultScTabReturnNull() {
+		assertNull(ColumnManager.addConstraint(notexistdb, tableName, columnName, constraint));
+		assertNull(ColumnManager.addConstraint(databaseName, notexistTab, columnName, constraint));
+		assertNull(ColumnManager.addConstraint(databaseName, tableName, notexistCol, constraint));
+	}
+	
+	public void addConstraintWithDbDefaultScTabReturnFalse() {
+		assertFalse(ColumnManager.addConstraint(databaseName, tableName, columnName, constraint));
+	}
+	
+	public void addConstraintWithDbDefaultScTabReturnTrue() {
+		assertTrue(ColumnManager.addConstraint(databaseName, tableName, columnName, constraint));
+	}
+	
+	public void addConstraintWithDefaultDbScTabReturnNull() {
+		assertNull(ColumnManager.addConstraintDefaultDB(notexistSchema, tableName, columnName, constraint));
+		assertNull(ColumnManager.addConstraintDefaultDB(schemaName, notexistTab, columnName, constraint));
+		assertNull(ColumnManager.addConstraintDefaultDB(schemaName, tableName, notexistCol, constraint));
+	}
+	
+	public void addConstraintWithDefaultDbScTabReturnFalse() {
+		assertFalse(ColumnManager.addConstraintDefaultDB(schemaName, tableName, columnName, constraint));
+	}
+	
+	public void addConstraintWithDefaultDbScTabReturnTrue() {
+		assertTrue(ColumnManager.addConstraintDefaultDB(schemaName, tableName, columnName, constraint));
+	}
+	
+	public void addConstraintWithDefaultDbDefaultScTabReturnNull() {
+		assertNull(ColumnManager.addConstraint(notexistTab, columnName, constraint));
+		assertNull(ColumnManager.addConstraint(tableName, notexistCol, constraint));
+	}
+	
+	public void addConstraintWithDefaultDbDefaultScTabReturnFalse() {
+		assertFalse(ColumnManager.addConstraint(tableName, columnName, constraint));
+	}
+	
+	public void addConstraintWithDefaultDbDefaultScTabReturnTrue() {
+		assertTrue(ColumnManager.addConstraint(tableName, columnName, constraint));
+	}
+	
+	public void getConstraintWithDbScTabReturnNull() {
+		assertNull(ColumnManager.getConstraint(notexistdb, schemaName, tableName, columnName, constraintName));
+		assertNull(ColumnManager.getConstraint(databaseName, notexistSchema, tableName, columnName, constraintName));
+		assertNull(ColumnManager.getConstraint(databaseName, schemaName, notexistTab, columnName, constraintName));
+		assertNull(ColumnManager.getConstraint(databaseName, schemaName, tableName, notexistCol, constraintName));
+		assertNull(ColumnManager.getConstraint(databaseName, schemaName, tableName, columnName, notexistConstraint));
+	}
+	
+	public void getConstraintWithDbScTabReturnNotNull() {
+		assertNotNull(ColumnManager.getConstraint(databaseName, schemaName, tableName, columnName, constraintName));
+	}
+	
+	public void getConstraintWithDbDefaultScTabReturnNull() {
+		assertNull(ColumnManager.getConstraint(notexistdb, tableName, columnName, constraintName));
+		assertNull(ColumnManager.getConstraint(databaseName, notexistTab, columnName, constraintName));
+		assertNull(ColumnManager.getConstraint(databaseName, tableName, notexistCol, constraintName));
+		assertNull(ColumnManager.getConstraint(databaseName, tableName, columnName, notexistConstraint));
+	}
+	
+	public void getConstraintWithDbDefaultScTabReturnNotNull() {
+		assertNotNull(ColumnManager.getConstraint(databaseName, tableName, columnName, constraintName));
+	}
+	
+	public void getConstraintWithDefaultDbScTabReturnNull() {
+		assertNull(ColumnManager.getConstraintDefaultDB(notexistSchema, tableName, columnName, constraintName));
+		assertNull(ColumnManager.getConstraintDefaultDB(schemaName, notexistTab, columnName, constraintName));
+		assertNull(ColumnManager.getConstraintDefaultDB(schemaName, tableName, notexistCol, constraintName));
+		assertNull(ColumnManager.getConstraintDefaultDB(schemaName, tableName, columnName, notexistConstraint));
+	}
+	
+	public void getConstraintWithDefaultDbScTabReturnNotNull() {
+		assertNotNull(ColumnManager.getConstraintDefaultDB(schemaName, tableName, columnName, constraintName));
+	}
+	
+	public void getConstraintWithDefaultDbDefaultScTabReturnNull() {
+		assertNull(ColumnManager.getConstraint(notexistTab, columnName, constraintName));
+		assertNull(ColumnManager.getConstraint(tableName, notexistCol, constraintName));
+		assertNull(ColumnManager.getConstraint(tableName, columnName, notexistConstraint));
+	}
+	
+	public void getConstraintWithDefaultDbDefaultScTabReturnNotNull() {
+		assertNotNull(ColumnManager.getConstraint(tableName, columnName, constraintName));
+	}
+	
+	public void getAllConstraintsWithDbScTabReturnNull() {
+		assertNull(ColumnManager.getAllConstraints(notexistdb, schemaName, tableName, columnName));
+		assertNull(ColumnManager.getAllConstraints(databaseName, notexistSchema, tableName, columnName));
+		assertNull(ColumnManager.getAllConstraints(databaseName, schemaName, notexistTab, columnName));
+		assertNull(ColumnManager.getAllConstraints(databaseName, schemaName, tableName, notexistCol));
+	}
+	
+	public void getAllConstraintsWithDbScTabReturnNotNull() {
+		assertNotNull(ColumnManager.getAllConstraints(databaseName, schemaName, tableName, columnName));
+	}
+	
+	public void getAllConstraintsWithDbDefaultScTabReturnNull() {
+		assertNull(ColumnManager.getAllConstraints(notexistdb, tableName, columnName));
+		assertNull(ColumnManager.getAllConstraints(databaseName, notexistTab, columnName));
+		assertNull(ColumnManager.getAllConstraints(databaseName, tableName, notexistCol));
+	}
+	
+	public void getAllConstraintsWithDbDefaultScTabReturnNotNull() {
+		assertNotNull(ColumnManager.getAllConstraints(databaseName, tableName, columnName));
+	}
+	
+	public void getAllConstraintsWithDefaultDbScTabReturnNull() {
+		assertNull(ColumnManager.getAllConstraintsDefaultDB(notexistSchema, tableName, columnName));
+		assertNull(ColumnManager.getAllConstraintsDefaultDB(schemaName, notexistTab, columnName));
+		assertNull(ColumnManager.getAllConstraintsDefaultDB(schemaName, tableName, notexistCol));
+	}
+	
+	public void getAllConstraintsWithDefaultDbScTabReturnNotNull() {
+		assertNotNull(ColumnManager.getAllConstraintsDefaultDB(schemaName, tableName, columnName));
+	}
+	
+	public void getAllConstraintsWithDefaultDbDefaultScTabReturnNull() {
+		assertNull(ColumnManager.getAllConstraints(notexistTab, columnName));
+		assertNull(ColumnManager.getAllConstraints(tableName, notexistCol));
+	}
+	
+	public void getAllConstraintsWithDefaultDbDefaultScTabReturnNotNull() {
+		assertNotNull(ColumnManager.getAllConstraints(tableName, columnName));
+	}
+	
+	public void deleteConstraintWithDbScTabReturnNull() {
+		assertNull(ColumnManager.deleteConstraint(notexistdb, schemaName, tableName, columnName, constraintName));
+		assertNull(ColumnManager.deleteConstraint(databaseName, notexistSchema, tableName, columnName, constraintName));
+		assertNull(ColumnManager.deleteConstraint(databaseName, schemaName, notexistTab, columnName, constraintName));
+		assertNull(ColumnManager.deleteConstraint(databaseName, schemaName, tableName, notexistCol, constraintName));
+	}
+	
+	public void deleteConstraintWithDbScTabReturnFalse() {
+		assertFalse(ColumnManager.deleteConstraint(databaseName, schemaName, tableName, columnName, notexistConstraint));
+	}
+	
+	public void deleteConstraintWithDbScTabReturnTrue() {
+		assertTrue(ColumnManager.deleteConstraint(databaseName, schemaName, tableName, columnName, constraintName));
+	}
+	
+	public void deleteConstraintWithDbDefaultScTabReturnNull() {
+		assertNull(ColumnManager.deleteConstraint(notexistdb, tableName, columnName, constraintName));
+		assertNull(ColumnManager.deleteConstraint(databaseName, notexistTab, columnName, constraintName));
+		assertNull(ColumnManager.deleteConstraint(databaseName, tableName, notexistCol, constraintName));
+	}
+	
+	public void deleteConstraintWithDbDefaultScTabReturnFalse() {
+		assertFalse(ColumnManager.deleteConstraint(databaseName, tableName, columnName, notexistConstraint));
+	}
+	
+	public void deleteConstraintWithDbDefaultScTabReturnTrue() {
+		assertTrue(ColumnManager.deleteConstraint(databaseName, tableName, columnName, constraintName));
+	}
+	
+	public void deleteConstraintWithDefaultDbScTabReturnNull() {
+		assertNull(ColumnManager.deleteConstraintDefaultDB(notexistSchema, tableName, columnName, constraintName));
+		assertNull(ColumnManager.deleteConstraintDefaultDB(schemaName, notexistTab, columnName, constraintName));
+		assertNull(ColumnManager.deleteConstraintDefaultDB(schemaName, tableName, notexistCol, constraintName));
+	}
+	
+	public void deleteConstraintWithDefaultDbScTabReturnFalse() {
+		assertFalse(ColumnManager.deleteConstraintDefaultDB(schemaName, tableName, columnName, notexistConstraint));
+	}
+	
+	public void deleteConstraintWithDefaultDbScTabReturnTrue() {
+		assertTrue(ColumnManager.deleteConstraintDefaultDB(schemaName, tableName, columnName, constraintName));
+	}
+	
+	public void deleteConstraintWithDefaultDbDefaultScTabReturnNull() {
+		assertNull(ColumnManager.deleteConstraint(notexistTab, columnName, constraintName));
+		assertNull(ColumnManager.deleteConstraint(tableName, notexistCol, constraintName));
+	}
+	
+	public void deleteConstraintWithDefaultDbDefaultScTabReturnFalse() {
+		assertFalse(ColumnManager.deleteConstraint(tableName, columnName, notexistConstraint));
+	}
+	
+	public void deleteConstraintWithDefaultDbDefaultScTabReturnTrue() {
+		assertTrue(ColumnManager.deleteConstraint(tableName, columnName, constraintName));
+	}
+	
+	public void existsConstraintWithDbScTabReturnFalse() {
+		assertFalse(ColumnManager.existsConstraint(notexistdb, schemaName, tableName, columnName, constraintName));
+		assertFalse(ColumnManager.existsConstraint(databaseName, notexistSchema, tableName, columnName, constraintName));
+		assertFalse(ColumnManager.existsConstraint(databaseName, schemaName, notexistTab, columnName, constraintName));
+		assertFalse(ColumnManager.existsConstraint(databaseName, schemaName, tableName, notexistCol, constraintName));
+		assertFalse(ColumnManager.existsConstraint(databaseName, schemaName, tableName, columnName, notexistConstraint));
+	}
+	
+	public void existsConstraintWithDbScTabReturnTrue() {
+		assertTrue(ColumnManager.existsConstraint(databaseName, schemaName, tableName, columnName, constraintName));
+	}
+	
+	public void existsConstraintWithDbDefaultScTabReturnFalse() {
+		assertFalse(ColumnManager.existsConstraint(notexistdb, tableName, columnName, constraintName));
+		assertFalse(ColumnManager.existsConstraint(databaseName, notexistTab, columnName, constraintName));
+		assertFalse(ColumnManager.existsConstraint(databaseName, tableName, notexistCol, constraintName));
+		assertFalse(ColumnManager.existsConstraint(databaseName, tableName, columnName, notexistConstraint));
+	}
+	
+	public void existsConstraintWithDbDefaultScTabReturnTrue() {
+		assertTrue(ColumnManager.existsConstraint(databaseName, tableName, columnName, constraintName));
+	}
+	
+	public void existsConstraintWithDefaultDbScTabReturnFalse() {
+		assertFalse(ColumnManager.existsConstraintDefaultDB(notexistSchema, tableName, columnName, constraintName));
+		assertFalse(ColumnManager.existsConstraintDefaultDB(schemaName, notexistTab, columnName, constraintName));
+		assertFalse(ColumnManager.existsConstraintDefaultDB(schemaName, tableName, notexistCol, constraintName));
+		assertFalse(ColumnManager.existsConstraintDefaultDB(schemaName, tableName, columnName, notexistConstraint));
+	}
+	
+	public void existsConstraintWithDefaultDbScTabReturnTrue() {
+		assertTrue(ColumnManager.existsConstraintDefaultDB(schemaName, tableName, columnName, constraintName));
+	}
+	
+	public void existsConstraintWithDefaultDbDefaultScTabReturnFalse() {
+		assertFalse(ColumnManager.existsConstraint(notexistTab, columnName, constraintName));
+		assertFalse(ColumnManager.existsConstraint(tableName, notexistCol, constraintName));
+		assertFalse(ColumnManager.existsConstraint(tableName, columnName, notexistConstraint));
+	}
+	
+	public void existsConstraintWithDefaultDbDefaultScTabReturnTrue() {
+		assertTrue(ColumnManager.existsConstraint(tableName, columnName, constraintName));
+	}
+	
+	public void getAllNamesConstraintsWithDbScTabReturnNull() {
+		assertNull(ColumnManager.getAllNamesConstraints(notexistdb, schemaName, tableName, columnName));
+		assertNull(ColumnManager.getAllNamesConstraints(databaseName, notexistSchema, tableName, columnName));
+		assertNull(ColumnManager.getAllNamesConstraints(databaseName, schemaName, notexistTab, columnName));
+		assertNull(ColumnManager.getAllNamesConstraints(databaseName, schemaName, tableName, notexistCol));
+	}
+	
+	public void getAllNamesConstraintsWithDbScTabReturnNotNull() {
+		assertNotNull(ColumnManager.getAllNamesConstraints(databaseName, schemaName, tableName, columnName));
+	}
+	
+	public void getAllNamesConstraintsWithDbDefaultScTabReturnNull() {
+		assertNull(ColumnManager.getAllNamesConstraints(notexistdb, tableName, columnName));
+		assertNull(ColumnManager.getAllNamesConstraints(databaseName, notexistTab, columnName));
+		assertNull(ColumnManager.getAllNamesConstraints(databaseName, tableName, notexistCol));
+	}
+	
+	public void getAllNamesConstraintsWithDbDefaultScTabReturnNotNull() {
+		assertNotNull(ColumnManager.getAllNamesConstraints(databaseName, tableName, columnName));
+	}
+	
+	public void getAllNamesConstraintsWithDefaultDbScTabReturnNull() {
+		assertNull(ColumnManager.getAllNamesConstraintsDefaultDB(notexistSchema, tableName, columnName));
+		assertNull(ColumnManager.getAllNamesConstraintsDefaultDB(schemaName, notexistTab, columnName));
+		assertNull(ColumnManager.getAllNamesConstraintsDefaultDB(schemaName, tableName, notexistCol));
+	}
+	
+	public void getAllNamesConstraintsWithDefaultDbScTabReturnNotNull() {
+		assertNotNull(ColumnManager.getAllNamesConstraintsDefaultDB(schemaName, tableName, columnName));
+	}
+	
+	public void getAllNamesConstraintsWithDefaultDbDefaultScTabReturnNull() {
+		assertNull(ColumnManager.getAllNamesConstraints(notexistTab, columnName));
+		assertNull(ColumnManager.getAllNamesConstraints(tableName, notexistCol));
+	}
+	
+	public void getAllNamesConstraintsWithDefaultDbDefaultScTabReturnNotNull() {
+		assertNotNull(ColumnManager.getAllNamesConstraints(tableName, columnName));
 	}
 }
