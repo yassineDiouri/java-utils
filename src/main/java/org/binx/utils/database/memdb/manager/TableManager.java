@@ -391,14 +391,14 @@ public abstract class TableManager {
 	 * @param databaseName
 	 * @param schemaName
 	 * @param tableName
-	 * @param order
+	 * @param columnOrder
 	 * @return
 	 * Null if table not exist or database..schema not exist
 	 */
-	public static Column getColumn(String databaseName, String schemaName, String tableName, Integer order) {
-		if(order >= 0 && order < countColumns(databaseName, schemaName, tableName)) {
+	public static Column getColumn(String databaseName, String schemaName, String tableName, Integer columnOrder) {
+		if(columnOrder >= 0 && columnOrder < countColumns(databaseName, schemaName, tableName)) {
 			for(Column col : getAllColumns(databaseName, schemaName, tableName))
-				if(col.getOrder().equals(order))
+				if(col.getOrder().equals(columnOrder))
 					return col;
 		}
 		return null;
@@ -409,14 +409,14 @@ public abstract class TableManager {
 	 * 
 	 * @param databaseName
 	 * @param tableName
-	 * @param order
+	 * @param columnOrder
 	 * @return
 	 * Null if table or database not exist
 	 */
-	public static Column getColumn(String databaseName, String tableName, Integer order) {
-		if(order >= 0 && order < countColumns(databaseName, tableName)) {
+	public static Column getColumn(String databaseName, String tableName, Integer columnOrder) {
+		if(columnOrder >= 0 && columnOrder < countColumns(databaseName, tableName)) {
 			for(Column col : getAllColumns(databaseName, tableName))
-				if(col.getOrder().equals(order))
+				if(col.getOrder().equals(columnOrder))
 					return col;
 		}
 		return null;
@@ -427,14 +427,14 @@ public abstract class TableManager {
 	 * 
 	 * @param schemaName
 	 * @param tableName
-	 * @param order
+	 * @param columnOrder
 	 * @return
 	 * Null if table or schema not exist, or no default database
 	 */
-	public static Column getColumnDefaultDB(String schemaName, String tableName, Integer order) {
-		if(order >= 0 && order < countColumnsDefaultDB(schemaName, tableName)) {
+	public static Column getColumnDefaultDB(String schemaName, String tableName, Integer columnOrder) {
+		if(columnOrder >= 0 && columnOrder < countColumnsDefaultDB(schemaName, tableName)) {
 			for(Column col : getAllColumnsDefaultDB(schemaName, tableName))
-				if(col.getOrder().equals(order))
+				if(col.getOrder().equals(columnOrder))
 					return col;
 		}
 		return null;
@@ -445,14 +445,14 @@ public abstract class TableManager {
 	 * 
 	 * @param schemaName
 	 * @param tableName
-	 * @param order
+	 * @param columnOrder
 	 * @return
 	 * Null if table not exist, or no default database
 	 */
-	public static Column getColumn(String tableName, Integer order) {
-		if(order >= 0 && order < countColumns(tableName)) {
+	public static Column getColumn(String tableName, Integer columnOrder) {
+		if(columnOrder >= 0 && columnOrder < countColumns(tableName)) {
 			for(Column col : getAllColumns(tableName))
-				if(col.getOrder().equals(order))
+				if(col.getOrder().equals(columnOrder))
 					return col;
 		}
 		return null;
@@ -810,12 +810,12 @@ public abstract class TableManager {
 	}
 	
 	/**
-	 * add line into specified table on database..schema<br/>
+	 * Add line into specified table on database..schema
 	 * 
 	 * @param databaseName
 	 * @param schemaName
 	 * @param tableName
-	 * @param column
+	 * @param line
 	 * @return
 	 * True if added<br/>
 	 * False if not<br/>
@@ -825,17 +825,20 @@ public abstract class TableManager {
 		Table tab = getTable(databaseName, schemaName, tableName);
 		if(tab != null && tab.getColumns().size() > 0) {
 			line.setIndex(getLastLineIndex(databaseName, schemaName, tableName) + 1);
+			for(ColumnValue columnValue : line.getValues()){
+				columnValue.setIndex(line.getIndex());
+			}
 			return tab.getLines().add(line);
 		}
 		return null;
 	}
 	
 	/**
-	 * add line into specified table on database..default(schema)
+	 * Add line into specified table on database..default(schema)
 	 * 
 	 * @param databaseName
 	 * @param tableName
-	 * @param column
+	 * @param line
 	 * @return
 	 * True if added<br/>
 	 * False if not<br/>
@@ -845,17 +848,20 @@ public abstract class TableManager {
 		Table tab = getTable(databaseName, tableName);
 		if(tab != null && tab.getColumns().size() > 0) {
 			line.setIndex(getLastLineIndex(databaseName, tableName) + 1);
+			for(ColumnValue columnValue : line.getValues()){
+				columnValue.setIndex(line.getIndex());
+			}
 			return tab.getLines().add(line);
 		}
 		return null;
 	}
 	
 	/**
-	 * add line into specified table on default(database)..schema
+	 * Add line into specified table on default(database)..schema
 	 * 
 	 * @param schemaName
 	 * @param tableName
-	 * @param column
+	 * @param line
 	 * @return
 	 * True if added<br/>
 	 * False if not<br/>
@@ -865,16 +871,19 @@ public abstract class TableManager {
 		Table tab = getTableDefaultDB(schemaName, tableName);
 		if(tab != null && tab.getColumns().size() > 0) {
 			line.setIndex(getLastLineIndexDefaultDB(schemaName, tableName) + 1);
+			for(ColumnValue columnValue : line.getValues()){
+				columnValue.setIndex(line.getIndex());
+			}
 			return tab.getLines().add(line);
 		}
 		return null;
 	}
 	
 	/**
-	 * add line into specified table on default(database)..default(schema)
+	 * Add line into specified table on default(database)..default(schema)
 	 * 
 	 * @param tableName
-	 * @param column
+	 * @param line
 	 * @return
 	 * True if added<br/>
 	 * False if not<br/>
@@ -884,6 +893,9 @@ public abstract class TableManager {
 		Table tab = getTable(tableName);
 		if(tab != null && tab.getColumns().size() > 0) {
 			line.setIndex(getLastLineIndex(tableName) + 1);
+			for(ColumnValue columnValue : line.getValues()){
+				columnValue.setIndex(line.getIndex());
+			}
 			return tab.getLines().add(line);
 		}
 		return null;
@@ -1026,8 +1038,10 @@ public abstract class TableManager {
 	/**
 	 * Remove line from specified table on database..schema
 	 * 
+	 * @param databaseName
 	 * @param schemaName
 	 * @param tableName
+	 * @param index
 	 * @return
 	 * Null if table not exist or no default database
 	 */
@@ -1047,6 +1061,7 @@ public abstract class TableManager {
 	 * 
 	 * @param databaseName
 	 * @param tableName
+	 * @param index
 	 * @return
 	 * Null if table or database not exist
 	 */
@@ -1066,6 +1081,7 @@ public abstract class TableManager {
 	 * 
 	 * @param schemaName
 	 * @param tableName
+	 * @param index
 	 * @return
 	 * Null if table or schema not exist or no default database
 	 */
@@ -1083,8 +1099,8 @@ public abstract class TableManager {
 	/**
 	 * Remove line from specified table on default(database)..default(schema)
 	 * 
-	 * @param schemaName
 	 * @param tableName
+	 * @param index
 	 * @return
 	 * Null if table not exist or no default database
 	 */

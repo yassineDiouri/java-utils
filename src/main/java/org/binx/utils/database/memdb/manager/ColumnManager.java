@@ -130,6 +130,59 @@ public abstract class ColumnManager {
 	}
 	
 	/**
+	 * Get Column with order from specified table on database..schema
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnOrder
+	 * @return
+	 * Null if table not exist or database..schema not exist
+	 */
+	public static Column getColumn(String databaseName, String schemaName, String tableName, Integer columnOrder) {
+		return TableManager.getColumn(databaseName, schemaName, tableName, columnOrder);
+	}
+	
+	/**
+	 * Get Column with order from specified table on database..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param tableName
+	 * @param columnOrder
+	 * @return
+	 * Null if table or database not exist
+	 */
+	public static Column getColumn(String databaseName, String tableName, Integer columnOrder) {
+		return TableManager.getColumn(databaseName, tableName, columnOrder);
+	}
+	
+	/**
+	 * Get Column with order from specified table on default(database)..schema
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnOrder
+	 * @return
+	 * Null if table or schema not exist, or no default database
+	 */
+	public static Column getColumnDefaultDB(String schemaName, String tableName, Integer columnOrder) {
+		return TableManager.getColumnDefaultDB(schemaName, tableName, columnOrder);
+	}
+	
+	/**
+	 * Get Column with order from specified table on default(database)..default(schema)
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnOrder
+	 * @return
+	 * Null if table not exist, or no default database
+	 */
+	public static Column getColumn(String tableName, Integer columnOrder) {
+		return TableManager.getColumn(tableName, columnOrder);
+	}
+	
+	/**
 	 * Get type of specified columnName from table in database..schema
 	 * 
 	 * @param databaseName
