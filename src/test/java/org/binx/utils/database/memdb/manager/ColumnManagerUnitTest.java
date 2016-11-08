@@ -44,7 +44,7 @@ public class ColumnManagerUnitTest extends TestCase {
 		
 		constraintName = "constraintName";
 		notexistConstraint = "notexistConstraint";
-		constraint = ConstraintGenerator.getConstraint(constraintName, ContraintType.PRIMARY_KEY);
+		constraint = ConstraintGenerator.getConstraint(constraintName, ConstraintType.PRIMARY_KEY);
 		
 		DatabaseListManager.initDatabaseList();
 		

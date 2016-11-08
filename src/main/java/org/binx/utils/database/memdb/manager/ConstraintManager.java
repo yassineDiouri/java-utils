@@ -21,10 +21,10 @@ public abstract class ConstraintManager {
 	 * @param constraintType
 	 * @return
 	 * True if added<br/>
-	 * False if not<br/>
+	 * False if not and constraint exists<br/>
 	 * Null if column, table, schema or database not exists
 	 */
-	public static Boolean createNewConstraint(String databaseName, String schemaName, String tableName, String columnName, String constraintName, ContraintType constraintType) {
+	public static Boolean createNewConstraint(String databaseName, String schemaName, String tableName, String columnName, String constraintName, ConstraintType constraintType) {
 		return ColumnManager.addConstraint(databaseName, schemaName, tableName, columnName, ConstraintGenerator.getConstraint(constraintName, constraintType));
 	}
 	
@@ -38,10 +38,10 @@ public abstract class ConstraintManager {
 	 * @param constraintType
 	 * @return
 	 * True if added<br/>
-	 * False if not<br/>
+	 * False if not and constraint exists<br/>
 	 * Null if column, table or database not exists
 	 */
-	public static Boolean createNewConstraint(String databaseName, String tableName, String columnName, String constraintName, ContraintType constraintType) {
+	public static Boolean createNewConstraint(String databaseName, String tableName, String columnName, String constraintName, ConstraintType constraintType) {
 		return ColumnManager.addConstraint(databaseName, tableName, columnName, ConstraintGenerator.getConstraint(constraintName, constraintType));
 	}
 	
@@ -55,10 +55,10 @@ public abstract class ConstraintManager {
 	 * @param constraintType
 	 * @return
 	 * True if added<br/>
-	 * False if not<br/>
+	 * False if not and constraint exists<br/>
 	 * Null if column, table, schema or default database not exists
 	 */
-	public static Boolean createNewConstraintDefaultDB(String schemaName, String tableName, String columnName, String constraintName, ContraintType constraintType) {
+	public static Boolean createNewConstraintDefaultDB(String schemaName, String tableName, String columnName, String constraintName, ConstraintType constraintType) {
 		return ColumnManager.addConstraintDefaultDB(schemaName, tableName, columnName, ConstraintGenerator.getConstraint(constraintName, constraintType));
 	}
 	
@@ -71,10 +71,10 @@ public abstract class ConstraintManager {
 	 * @param constraintType
 	 * @return
 	 * True if added<br/>
-	 * False if not<br/>
+	 * False if not and constraint exists<br/>
 	 * Null if column, table or default database not exists
 	 */
-	public static Boolean createNewConstraint(String tableName, String columnName, String constraintName, ContraintType constraintType) {
+	public static Boolean createNewConstraint(String tableName, String columnName, String constraintName, ConstraintType constraintType) {
 		return ColumnManager.addConstraint(tableName, columnName, ConstraintGenerator.getConstraint(constraintName, constraintType));
 	}
 	
@@ -151,8 +151,10 @@ public abstract class ConstraintManager {
 	public static Boolean updateConstraintName(String databaseName, String schemaName, String tableName, String columnName, String oldName, String newName) {
 		Constraint constraint = getConstraint(databaseName, schemaName, tableName, columnName, oldName);
 		if(constraint != null) {
-			if(!exists(databaseName, schemaName, tableName, columnName, newName))
+			if(!exists(databaseName, schemaName, tableName, columnName, newName)) {
 				constraint.setName(newName);
+				return true;
+			}
 			return false;
 		}
 		return null;
@@ -174,8 +176,10 @@ public abstract class ConstraintManager {
 	public static Boolean updateConstraintName(String databaseName, String tableName, String columnName, String oldName, String newName) {
 		Constraint constraint = getConstraint(databaseName, tableName, columnName, oldName);
 		if(constraint != null) {
-			if(!exists(databaseName, tableName, columnName, newName))
+			if(!exists(databaseName, tableName, columnName, newName)) {
 				constraint.setName(newName);
+				return true;
+			}
 			return false;
 		}
 		return null;
@@ -198,8 +202,10 @@ public abstract class ConstraintManager {
 	public static Boolean updateConstraintNameDefaultDB(String schemaName, String tableName, String columnName, String oldName, String newName) {
 		Constraint constraint = getConstraintDefaultDB(schemaName, tableName, columnName, oldName);
 		if(constraint != null) {
-			if(!existsDefaultDB(schemaName, tableName, columnName, newName))
+			if(!existsDefaultDB(schemaName, tableName, columnName, newName)) {
 				constraint.setName(newName);
+				return true;
+			}
 			return false;
 		}
 		return null;
@@ -221,8 +227,10 @@ public abstract class ConstraintManager {
 	public static Boolean updateConstraintName(String tableName, String columnName, String oldName, String newName) {
 		Constraint constraint = getConstraint(tableName, columnName, oldName);
 		if(constraint != null) {
-			if(!exists(tableName, columnName, newName))
+			if(!exists(tableName, columnName, newName)) {
 				constraint.setName(newName);
+				return true;
+			}
 			return false;
 		}
 		return null;

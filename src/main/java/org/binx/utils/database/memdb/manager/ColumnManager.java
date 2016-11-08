@@ -583,7 +583,7 @@ public abstract class ColumnManager {
 	 * @param constraint
 	 * @return
 	 * True if added<br/>
-	 * False if not<br/>
+	 * False if not and constraint exists<br/>
 	 * Null if column, table, schema or database not exists
 	 */
 	public static Boolean addConstraint(String databaseName, String schemaName, String tableName, String columnName, Constraint constraint) {
@@ -605,7 +605,7 @@ public abstract class ColumnManager {
 	 * @param constraint
 	 * @return
 	 * True if added<br/>
-	 * False if not<br/>
+	 * False if not and constraint exists<br/>
 	 * Null if column, table or database not exists
 	 */
 	public static Boolean addConstraint(String databaseName, String tableName, String columnName, Constraint constraint) {
@@ -627,7 +627,7 @@ public abstract class ColumnManager {
 	 * @param constraint
 	 * @return
 	 * True if added<br/>
-	 * False if not<br/>
+	 * False if not and constraint exists<br/>
 	 * Null if column, table, schema or default database not exists
 	 */
 	public static Boolean addConstraintDefaultDB(String schemaName, String tableName, String columnName, Constraint constraint) {
@@ -648,7 +648,7 @@ public abstract class ColumnManager {
 	 * @param constraint
 	 * @return
 	 * True if added<br/>
-	 * False if not<br/>
+	 * False if not and constraint exists<br/>
 	 * Null if column, table or default database not exists
 	 */
 	public static Boolean addConstraint(String tableName, String columnName, Constraint constraint) {

@@ -12,9 +12,9 @@ public class Constraint  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String name;
-	private ContraintType type;
+	private ConstraintType type;
 	
-	public Constraint(String name, ContraintType type) {
+	public Constraint(String name, ConstraintType type) {
 		this.name = name;
 		this.type = type;
 	}
@@ -27,7 +27,7 @@ public class Constraint  implements Serializable {
 		this.name = name;
 	}
 
-	public ContraintType getType() {
+	public ConstraintType getType() {
 		return type;
 	}
 }
