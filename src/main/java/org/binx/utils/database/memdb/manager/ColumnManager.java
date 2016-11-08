@@ -574,7 +574,7 @@ public abstract class ColumnManager {
 	}
 	
 	/**
-	 * add Constraint into specified column of table on database..schema
+	 * Add Constraint into specified column of table on database..schema
 	 * 
 	 * @param databaseName
 	 * @param schemaName
@@ -597,7 +597,7 @@ public abstract class ColumnManager {
 	}
 	
 	/**
-	 * add Constraint into specified column of table on database..default(schema)
+	 * Add Constraint into specified column of table on database..default(schema)
 	 * 
 	 * @param databaseName
 	 * @param tableName
@@ -619,7 +619,7 @@ public abstract class ColumnManager {
 	}
 	
 	/**
-	 * add Constraint into specified column of table on default(database)..schema
+	 * Add Constraint into specified column of table on default(database)..schema
 	 * 
 	 * @param schemaName
 	 * @param tableName
@@ -641,7 +641,7 @@ public abstract class ColumnManager {
 	}
 	
 	/**
-	 * add Constraint into specified column of table on default(database)..default(schema)
+	 * Add Constraint into specified column of table on default(database)..default(schema)
 	 * 
 	 * @param tableName
 	 * @param columnName
