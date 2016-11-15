@@ -1,5 +1,7 @@
 package org.binx.utils.database.memdb.manager;
 
+import java.util.List;
+
 import org.binx.utils.database.memdb.generator.*;
 import org.binx.utils.database.memdb.model.*;
 
@@ -195,7 +197,7 @@ public abstract class LineManager {
 	}
 	
 	/**
-	 * Insert ColumnValue into specified Line from specified table on database..schema
+	 * Insert ColumnValue into specified Line from table on database..schema
 	 * 
 	 * @param databaseName
 	 * @param schemaName
@@ -215,7 +217,7 @@ public abstract class LineManager {
 	}
 	
 	/**
-	 * Insert ColumnValue into specified Line from specified table on database..default(schema)
+	 * Insert ColumnValue into specified Line from table on database..default(schema)
 	 * 
 	 * @param databaseName
 	 * @param tableName
@@ -234,7 +236,7 @@ public abstract class LineManager {
 	}
 	
 	/**
-	 * Insert ColumnValue into specified Line from specified table on default(database)..schema
+	 * Insert ColumnValue into specified Line from table on default(database)..schema
 	 * 
 	 * @param schemaName
 	 * @param tableName
@@ -253,7 +255,7 @@ public abstract class LineManager {
 	}
 	
 	/**
-	 * Insert ColumnValue into specified Line from specified table on default(database)..default(schema)
+	 * Insert ColumnValue into specified Line from table on default(database)..default(schema)
 	 * 
 	 * @param tableName
 	 * @param lineIndex
@@ -267,6 +269,159 @@ public abstract class LineManager {
 		Line line = getLine(tableName, lineIndex);
 		if(line != null && canBeInsertedValue(tableName, columnValue))
 			return line.getValues().add(columnValue);
+		return null;
+	}
+	
+	/**
+	 * Get ColumnValue from specified Line from table on database..schema
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param lineIndex
+	 * @param ColumnOrder
+	 * @return
+	 * Null if column order, line, table, schema or database not exists
+	 */
+	public static ColumnValue getColumnValue(String databaseName, String schemaName, String tableName, Long lineIndex, Integer ColumnOrder) {
+		Line line = getLine(databaseName, schemaName, tableName, lineIndex);
+		if(line != null) {
+			for(ColumnValue cv : line.getValues()) {
+				if(cv.getOrder().equals(ColumnOrder))
+					return cv;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Get ColumnValue from specified Line from table on database..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param tableName
+	 * @param lineIndex
+	 * @param ColumnOrder
+	 * @return
+	 * Null if column order, line, table or database not exists
+	 */
+	public static ColumnValue getColumnValue(String databaseName, String tableName, Long lineIndex, Integer ColumnOrder) {
+		Line line = getLine(databaseName, tableName, lineIndex);
+		if(line != null) {
+			for(ColumnValue cv : line.getValues()) {
+				if(cv.getOrder().equals(ColumnOrder))
+					return cv;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Get ColumnValue from specified Line from table on default(database)..schema
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @param lineIndex
+	 * @param ColumnOrder
+	 * @return
+	 * Null if column order, line, table, schema or default database not exists
+	 */
+	public static ColumnValue getColumnValueDefaultDB(String schemaName, String tableName, Long lineIndex, Integer ColumnOrder) {
+		Line line = getLineDefaultDB(schemaName, tableName, lineIndex);
+		if(line != null) {
+			for(ColumnValue cv : line.getValues()) {
+				if(cv.getOrder().equals(ColumnOrder))
+					return cv;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Get ColumnValue from specified Line from table on default(database)..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param tableName
+	 * @param lineIndex
+	 * @param ColumnOrder
+	 * @return
+	 * Null if column order, line, table or default database not exists
+	 */
+	public static ColumnValue getColumnValue(String tableName, Long lineIndex, Integer ColumnOrder) {
+		Line line = getLine(tableName, lineIndex);
+		if(line != null) {
+			for(ColumnValue cv : line.getValues()) {
+				if(cv.getOrder().equals(ColumnOrder))
+					return cv;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Get All ColumnValues of specified line from specified table on database..schema
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param lineIndex
+	 * @return
+	 * Null if line, table, schema or database not exists
+	 */
+	public static List<ColumnValue> getAllColumnValues(String databaseName, String schemaName, String tableName, Long lineIndex) {
+		Line line = getLine(databaseName, schemaName, tableName, lineIndex);
+		if(line != null) {
+			return line.getValues();
+		}
+		return null;
+	}
+	
+	/**
+	 * Get All ColumnValues of specified line from specified table on database..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param tableName
+	 * @param lineIndex
+	 * @return
+	 * Null if line, table or database not exists
+	 */
+	public static List<ColumnValue> getAllColumnValues(String databaseName, String tableName, Long lineIndex) {
+		Line line = getLine(databaseName, tableName, lineIndex);
+		if(line != null) {
+			return line.getValues();
+		}
+		return null;
+	}
+	
+	/**
+	 * Get All ColumnValues of specified line from specified table on default(database)..schema
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @param lineIndex
+	 * @return
+	 * Null if line, table, schema or default database not exists
+	 */
+	public static List<ColumnValue> getAllColumnValuesDefaultDB(String schemaName, String tableName, Long lineIndex) {
+		Line line = getLineDefaultDB(schemaName, tableName, lineIndex);
+		if(line != null) {
+			return line.getValues();
+		}
+		return null;
+	}
+	
+	/**
+	 * Get All ColumnValues of specified line from specified table on default(database)..default(schema)
+	 * 
+	 * @param tableName
+	 * @param lineIndex
+	 * @return
+	 * Null if line, table or default database not exists
+	 */
+	public static List<ColumnValue> getAllColumnValues(String tableName, Long lineIndex) {
+		Line line = getLine(tableName, lineIndex);
+		if(line != null) {
+			return line.getValues();
+		}
 		return null;
 	}
 	
