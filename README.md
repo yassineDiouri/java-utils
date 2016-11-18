@@ -22,7 +22,7 @@
   </tr>
   <tr>
     <td><a href="https://github.com/yassineDiouri/java-utils/tree/master/src/main/java/org/binx/utils/database/memdb">MemDB</a></td>
-    <td>0.0.22 [SNAPSHOT]</td>
+    <td>0.0.23 [SNAPSHOT]</td>
   </tr>
 </table>
 ## Module MemDB
@@ -50,5 +50,6 @@
   <li><strong><i>TableManager : </i></strong> Offer Operations to manage an instance of table (create new table, get it, manage his columns and lines lists ...).</li>
   <li><strong><i>ColumnManager : </i></strong> Offer Operations to manage an instance of column (create new column, get it, manage his constraints list ...).</li>
   <li><strong><i>LineManager : </i></strong> Offer Operations to manage an instance of line (create new line(empty values), get it, manage his column values list ...).</li>
+  <li><strong><i>ColumnValueManager : </i></strong> Offer Operations to manage an instance of ColumnValue (create new columnValue with null or specified value, get the ColumnValue, update his value ...).</li>
   <li><strong><i>ConstraintManager : </i></strong> Offer Operations to manage an instance of constraint (create new constraint, get, delete, update his name ...).</li>
 </ul>

@@ -226,8 +226,13 @@ public abstract class LineManager {
 	 */
 	public static Boolean addColumnValue(String databaseName, String schemaName, String tableName, Long lineIndex, ColumnValue columnValue) {
 		Line line = getLine(databaseName, schemaName, tableName, lineIndex);
-		if(line != null && canBeInsertedValue(databaseName, schemaName, tableName, columnValue))
+		if(line != null && canBeInsertedValue(databaseName, schemaName, tableName, columnValue)) {
+			if(existsColumnValue(databaseName, schemaName, tableName, lineIndex, columnValue.getOrder())) {
+				line.getValues().set(columnValue.getOrder(), columnValue);
+				return true;
+			}
 			return line.getValues().add(columnValue);
+		}
 		return null;
 	}
 	
@@ -245,8 +250,13 @@ public abstract class LineManager {
 	 */
 	public static Boolean addColumnValue(String databaseName, String tableName, Long lineIndex, ColumnValue columnValue) {
 		Line line = getLine(databaseName, tableName, lineIndex);
-		if(line != null && canBeInsertedValue(databaseName, tableName, columnValue))
+		if(line != null && canBeInsertedValue(databaseName, tableName, columnValue)) {
+			if(existsColumnValue(databaseName, tableName, lineIndex, columnValue.getOrder())) {
+				line.getValues().set(columnValue.getOrder(), columnValue);
+				return true;
+			}
 			return line.getValues().add(columnValue);
+		}
 		return null;
 	}
 	
@@ -264,8 +274,13 @@ public abstract class LineManager {
 	 */
 	public static Boolean addColumnValueDefaultDB(String schemaName, String tableName, Long lineIndex, ColumnValue columnValue) {
 		Line line = getLineDefaultDB(schemaName, tableName, lineIndex);
-		if(line != null && canBeInsertedValueDefaultDB(schemaName, tableName, columnValue))
+		if(line != null && canBeInsertedValueDefaultDB(schemaName, tableName, columnValue)) {
+			if(existsColumnValueDefaultDB(schemaName, tableName, lineIndex, columnValue.getOrder())) {
+				line.getValues().set(columnValue.getOrder(), columnValue);
+				return true;
+			}
 			return line.getValues().add(columnValue);
+		}
 		return null;
 	}
 	
@@ -282,8 +297,13 @@ public abstract class LineManager {
 	 */
 	public static Boolean addColumnValue(String tableName, Long lineIndex, ColumnValue columnValue) {
 		Line line = getLine(tableName, lineIndex);
-		if(line != null && canBeInsertedValue(tableName, columnValue))
+		if(line != null && canBeInsertedValue(tableName, columnValue)) {
+			if(existsColumnValue(tableName, lineIndex, columnValue.getOrder())) {
+				line.getValues().set(columnValue.getOrder(), columnValue);
+				return true;
+			}
 			return line.getValues().add(columnValue);
+		}
 		return null;
 	}
 	
@@ -298,11 +318,11 @@ public abstract class LineManager {
 	 * @return
 	 * Null if column order, line, table, schema or database not exists
 	 */
-	public static ColumnValue getColumnValue(String databaseName, String schemaName, String tableName, Long lineIndex, Integer ColumnOrder) {
+	public static ColumnValue getColumnValue(String databaseName, String schemaName, String tableName, Long lineIndex, Integer columnOrder) {
 		Line line = getLine(databaseName, schemaName, tableName, lineIndex);
 		if(line != null) {
 			for(ColumnValue cv : line.getValues()) {
-				if(cv.getOrder().equals(ColumnOrder))
+				if(cv.getOrder().equals(columnOrder))
 					return cv;
 			}
 		}
@@ -441,6 +461,102 @@ public abstract class LineManager {
 	}
 	
 	/**
+	 * Update value of specified columnValue of line from table from database..schema
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param lineIndex
+	 * @param columnOrder
+	 * @param value
+	 * @return
+	 * True if updated<br/>
+	 * Null if value can't be changed, or columnValue, line, table, schema or database not exists
+	 */
+	public static Boolean updateColumnValue(String databaseName, String schemaName, String tableName, Long lineIndex, Integer columnOrder, Object value) {
+		ColumnValue columnValue = getColumnValue(databaseName, schemaName, tableName, lineIndex, columnOrder);
+		if(columnValue != null) {
+			Column column = ColumnManager.getColumn(databaseName, schemaName, tableName, columnValue.getOrder());
+			if(value == null ? true : column.getType().equals(value.getClass())) {
+				columnValue.setValue(value);
+				return true;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Update value of specified columnValue of line from table from database..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param tableName
+	 * @param lineIndex
+	 * @param columnOrder
+	 * @param value
+	 * @return
+	 * True if updated<br/>
+	 * Null if value can't be changed, or columnValue, line, table or database not exists
+	 */
+	public static Boolean updateColumnValue(String databaseName, String tableName, Long lineIndex, Integer columnOrder, Object value) {
+		ColumnValue columnValue = getColumnValue(databaseName, tableName, lineIndex, columnOrder);
+		if(columnValue != null) {
+			Column column = ColumnManager.getColumn(databaseName, tableName, columnValue.getOrder());
+			if(value == null ? true : column.getType().equals(value.getClass())) {
+				columnValue.setValue(value);
+				return true;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Update value of specified columnValue of line from table from default(database)..schema
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @param lineIndex
+	 * @param columnOrder
+	 * @param value
+	 * @return
+	 * True if updated<br/>
+	 * Null if value can't be changed, or columnValue, line, table, schema or default database not exists
+	 */
+	public static Boolean updateColumnValueDefaultDB(String schemaName, String tableName, Long lineIndex, Integer columnOrder, Object value) {
+		ColumnValue columnValue = getColumnValueDefaultDB(schemaName, tableName, lineIndex, columnOrder);
+		if(columnValue != null) {
+			Column column = ColumnManager.getColumnDefaultDB(schemaName, tableName, columnValue.getOrder());
+			if(value == null ? true : column.getType().equals(value.getClass())) {
+				columnValue.setValue(value);
+				return true;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Update value of specified columnValue of line from table from default(database)..default(schema)
+	 * 
+	 * @param tableName
+	 * @param lineIndex
+	 * @param columnOrder
+	 * @param value
+	 * @return
+	 * True if updated<br/>
+	 * Null if value can't be changed, or columnValue, line, table or default database not exists
+	 */
+	public static Boolean updateColumnValue(String tableName, Long lineIndex, Integer columnOrder, Object value) {
+		ColumnValue columnValue = getColumnValue(tableName, lineIndex, columnOrder);
+		if(columnValue != null) {
+			Column column = ColumnManager.getColumn(tableName, columnValue.getOrder());
+			if(value == null ? true : column.getType().equals(value.getClass())) {
+				columnValue.setValue(value);
+				return true;
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * Remove a specified ColumnValue from line of table of database..schema
 	 * 
 	 * @param databaseName
@@ -453,11 +569,11 @@ public abstract class LineManager {
 	 * False if not<br/>
 	 * Null if column, line, table, schema or database not exists
 	 */
-	public static Boolean deleteColumnValue(String databaseName, String schemaName, String tableName, Long lineIndex, Integer ColumnOrder) {
+	public static Boolean deleteColumnValue(String databaseName, String schemaName, String tableName, Long lineIndex, Integer columnOrder) {
 		Line line = getLine(databaseName, schemaName, tableName, lineIndex);
 		if(line != null) {
 			for(ColumnValue cv : line.getValues()) {
-				if(cv.getOrder().equals(ColumnOrder))
+				if(cv.getOrder().equals(columnOrder))
 					return line.getValues().remove(cv);
 			}
 		}
@@ -476,11 +592,11 @@ public abstract class LineManager {
 	 * False if not<br/>
 	 * Null if column, line, table or database not exists
 	 */
-	public static Boolean deleteColumnValue(String databaseName, String tableName, Long lineIndex, Integer ColumnOrder) {
+	public static Boolean deleteColumnValue(String databaseName, String tableName, Long lineIndex, Integer columnOrder) {
 		Line line = getLine(databaseName, tableName, lineIndex);
 		if(line != null) {
 			for(ColumnValue cv : line.getValues()) {
-				if(cv.getOrder().equals(ColumnOrder))
+				if(cv.getOrder().equals(columnOrder))
 					return line.getValues().remove(cv);
 			}
 		}
@@ -499,11 +615,11 @@ public abstract class LineManager {
 	 * False if not<br/>
 	 * Null if column, line, table, schema or default database not exists
 	 */
-	public static Boolean deleteColumnValueDefaultDB(String schemaName, String tableName, Long lineIndex, Integer ColumnOrder) {
+	public static Boolean deleteColumnValueDefaultDB(String schemaName, String tableName, Long lineIndex, Integer columnOrder) {
 		Line line = getLineDefaultDB(schemaName, tableName, lineIndex);
 		if(line != null) {
 			for(ColumnValue cv : line.getValues()) {
-				if(cv.getOrder().equals(ColumnOrder))
+				if(cv.getOrder().equals(columnOrder))
 					return line.getValues().remove(cv);
 			}
 		}
@@ -521,15 +637,103 @@ public abstract class LineManager {
 	 * False if not<br/>
 	 * Null if column, line, table or default database not exists
 	 */
-	public static Boolean deleteColumnValue(String tableName, Long lineIndex, Integer ColumnOrder) {
+	public static Boolean deleteColumnValue(String tableName, Long lineIndex, Integer columnOrder) {
 		Line line = getLine(tableName, lineIndex);
 		if(line != null) {
 			for(ColumnValue cv : line.getValues()) {
-				if(cv.getOrder().equals(ColumnOrder))
+				if(cv.getOrder().equals(columnOrder))
 					return line.getValues().remove(cv);
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Verify if there is an instance of ColumnValue with specified order on line from table from database..schema
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param lineIndex
+	 * @param ColumnOrder
+	 * @return
+	 * True if exists<br/>
+	 * False if not
+	 */
+	public static Boolean existsColumnValue(String databaseName, String schemaName, String tableName, Long lineIndex, Integer columnOrder) {
+		Line line = getLine(databaseName, schemaName, tableName, lineIndex);
+		if(line != null) {
+			for(ColumnValue cv : line.getValues()) {
+				if(cv.getOrder().equals(columnOrder))
+					return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Verify if there is an instance of ColumnValue with specified order on line from table from database..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param tableName
+	 * @param lineIndex
+	 * @param ColumnOrder
+	 * @return
+	 * True if exists<br/>
+	 * False if not
+	 */
+	public static Boolean existsColumnValue(String databaseName, String tableName, Long lineIndex, Integer columnOrder) {
+		Line line = getLine(databaseName, tableName, lineIndex);
+		if(line != null) {
+			for(ColumnValue cv : line.getValues()) {
+				if(cv.getOrder().equals(columnOrder))
+					return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Verify if there is an instance of ColumnValue with specified order on line from table from default(database)..schema
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @param lineIndex
+	 * @param ColumnOrder
+	 * @return
+	 * True if exists<br/>
+	 * False if not
+	 */
+	public static Boolean existsColumnValueDefaultDB(String schemaName, String tableName, Long lineIndex, Integer columnOrder) {
+		Line line = getLineDefaultDB(schemaName, tableName, lineIndex);
+		if(line != null) {
+			for(ColumnValue cv : line.getValues()) {
+				if(cv.getOrder().equals(columnOrder))
+					return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Verify if there is an instance of ColumnValue with specified order on line from table from default(database)..default(schema)
+	 * 
+	 * @param tableName
+	 * @param lineIndex
+	 * @param ColumnOrder
+	 * @return
+	 * True if exists<br/>
+	 * False if not
+	 */
+	public static Boolean existsColumnValue(String tableName, Long lineIndex, Integer columnOrder) {
+		Line line = getLine(tableName, lineIndex);
+		if(line != null) {
+			for(ColumnValue cv : line.getValues()) {
+				if(cv.getOrder().equals(columnOrder))
+					return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
