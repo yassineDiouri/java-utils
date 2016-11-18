@@ -48,6 +48,7 @@
   <li><strong><i>DatabaseManager : </i></strong> Offer Operations to manage an instance of database (create new database, get it, set it to default, manage his schemas list ... ).</li>
   <li><strong><i>SchemaManager : </i></strong> Offer Operations to manage an instance of schema/default schema (create new schema, get it, manage his tables list ...).</li>
   <li><strong><i>TableManager : </i></strong> Offer Operations to manage an instance of table (create new table, get it, manage his columns and lines lists ...).</li>
-  <li><strong><i>ColumnManager : </i></strong> Offer Operations to manage an instance of colum (create new column, get it, manage his constraints list ...).</li>
+  <li><strong><i>ColumnManager : </i></strong> Offer Operations to manage an instance of column (create new column, get it, manage his constraints list ...).</li>
+  <li><strong><i>LineManager : </i></strong> Offer Operations to manage an instance of line (create new line(empty values), get it, manage his column values list ...).</li>
   <li><strong><i>ConstraintManager : </i></strong> Offer Operations to manage an instance of constraint (create new constraint, get, delete, update his name ...).</li>
 </ul>

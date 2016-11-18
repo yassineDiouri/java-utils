@@ -4,6 +4,11 @@ import org.binx.utils.database.memdb.model.*;
 
 import junit.framework.*;
 
+/**
+ * 
+ * @author Yassine Diouri
+ *
+ */
 public class ConstraintManagerUnitTest extends TestCase {
 
 	// databases

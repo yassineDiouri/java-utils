@@ -5,6 +5,11 @@ import org.binx.utils.database.memdb.model.*;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ * @author Yassine Diouri
+ *
+ */
 public class ColumnManagerUnitTest extends TestCase {
 
 	// databases

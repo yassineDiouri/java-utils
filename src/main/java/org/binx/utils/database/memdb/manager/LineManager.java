@@ -24,12 +24,16 @@ public abstract class LineManager {
 	 */
 	public static Boolean createNewEmptyLine(String databaseName, String schemaName, String tableName) {
 		Line line =  LineGenerator.getLine();
-		for(Column column : TableManager.getAllColumns(databaseName, schemaName, tableName)) {
-			ColumnValue columnValue = ColumnValueGenerator.getColumnValue();
-			columnValue.setOrder(column.getOrder());
-			line.getValues().add(columnValue);
+		List<Column> columns = TableManager.getAllColumns(databaseName, schemaName, tableName);
+		if(columns != null) {
+			for(Column column : columns) {
+				ColumnValue columnValue = ColumnValueGenerator.getColumnValue();
+				columnValue.setOrder(column.getOrder());
+				line.getValues().add(columnValue);
+			}
+			return TableManager.addLine(databaseName, schemaName, tableName, line);
 		}
-		return TableManager.addLine(databaseName, schemaName, tableName, line);
+		return null;
 	}
 	
 	/**
@@ -44,10 +48,13 @@ public abstract class LineManager {
 	 */
 	public static Boolean createNewEmptyLine(String databaseName, String tableName) {
 		Line line =  LineGenerator.getLine();
-		for(Column column : TableManager.getAllColumns(databaseName, tableName)) {
-			ColumnValue columnValue = ColumnValueGenerator.getColumnValue();
-			columnValue.setOrder(column.getOrder());
-			line.getValues().add(columnValue);
+		List<Column> columns = TableManager.getAllColumns(databaseName, tableName);
+		if(columns != null) {
+			for(Column column : columns) {
+				ColumnValue columnValue = ColumnValueGenerator.getColumnValue();
+				columnValue.setOrder(column.getOrder());
+				line.getValues().add(columnValue);
+			}
 		}
 		return TableManager.addLine(databaseName, tableName, LineGenerator.getLine());
 	}
@@ -64,12 +71,16 @@ public abstract class LineManager {
 	 */
 	public static Boolean createNewEmptyLineDefaultDB(String schemaName, String tableName) {
 		Line line =  LineGenerator.getLine();
-		for(Column column : TableManager.getAllColumnsDefaultDB(schemaName, tableName)) {
-			ColumnValue columnValue = ColumnValueGenerator.getColumnValue();
-			columnValue.setOrder(column.getOrder());
-			line.getValues().add(columnValue);
+		List<Column> columns = TableManager.getAllColumnsDefaultDB(schemaName, tableName);
+		if(columns != null) {
+			for(Column column : columns) {
+				ColumnValue columnValue = ColumnValueGenerator.getColumnValue();
+				columnValue.setOrder(column.getOrder());
+				line.getValues().add(columnValue);
+			}
+			return TableManager.addLineDefaultDB(schemaName, tableName, line);
 		}
-		return TableManager.addLineDefaultDB(schemaName, tableName, line);
+		return null;
 	}
 	
 	/**
@@ -83,12 +94,16 @@ public abstract class LineManager {
 	 */
 	public static Boolean createNewEmptyLine(String tableName) {
 		Line line =  LineGenerator.getLine();
-		for(Column column : TableManager.getAllColumns(tableName)) {
-			ColumnValue columnValue = ColumnValueGenerator.getColumnValue();
-			columnValue.setOrder(column.getOrder());
-			line.getValues().add(columnValue);
+		List<Column> columns = TableManager.getAllColumns(tableName);
+		if(columns != null) {
+			for(Column column : columns) {
+				ColumnValue columnValue = ColumnValueGenerator.getColumnValue();
+				columnValue.setOrder(column.getOrder());
+				line.getValues().add(columnValue);
+			}
+			return TableManager.addLine(tableName, LineGenerator.getLine());
 		}
-		return TableManager.addLine(tableName, LineGenerator.getLine());
+		return null;
 	}
 	
 	/**
@@ -421,6 +436,98 @@ public abstract class LineManager {
 		Line line = getLine(tableName, lineIndex);
 		if(line != null) {
 			return line.getValues();
+		}
+		return null;
+	}
+	
+	/**
+	 * Remove a specified ColumnValue from line of table of database..schema
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param lineIndex
+	 * @param ColumnOrder
+	 * @return
+	 * True if deleted<br/>
+	 * False if not<br/>
+	 * Null if column, line, table, schema or database not exists
+	 */
+	public static Boolean deleteColumnValue(String databaseName, String schemaName, String tableName, Long lineIndex, Integer ColumnOrder) {
+		Line line = getLine(databaseName, schemaName, tableName, lineIndex);
+		if(line != null) {
+			for(ColumnValue cv : line.getValues()) {
+				if(cv.getOrder().equals(ColumnOrder))
+					return line.getValues().remove(cv);
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Remove a specified ColumnValue from line of table of database..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param tableName
+	 * @param lineIndex
+	 * @param ColumnOrder
+	 * @return
+	 * True if deleted<br/>
+	 * False if not<br/>
+	 * Null if column, line, table or database not exists
+	 */
+	public static Boolean deleteColumnValue(String databaseName, String tableName, Long lineIndex, Integer ColumnOrder) {
+		Line line = getLine(databaseName, tableName, lineIndex);
+		if(line != null) {
+			for(ColumnValue cv : line.getValues()) {
+				if(cv.getOrder().equals(ColumnOrder))
+					return line.getValues().remove(cv);
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Remove a specified ColumnValue from line of table of default(database)..schema
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @param lineIndex
+	 * @param ColumnOrder
+	 * @return
+	 * True if deleted<br/>
+	 * False if not<br/>
+	 * Null if column, line, table, schema or default database not exists
+	 */
+	public static Boolean deleteColumnValueDefaultDB(String schemaName, String tableName, Long lineIndex, Integer ColumnOrder) {
+		Line line = getLineDefaultDB(schemaName, tableName, lineIndex);
+		if(line != null) {
+			for(ColumnValue cv : line.getValues()) {
+				if(cv.getOrder().equals(ColumnOrder))
+					return line.getValues().remove(cv);
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Remove a specified ColumnValue from line of table of default(database)..default(schema)
+	 * 
+	 * @param tableName
+	 * @param lineIndex
+	 * @param ColumnOrder
+	 * @return
+	 * True if deleted<br/>
+	 * False if not<br/>
+	 * Null if column, line, table or default database not exists
+	 */
+	public static Boolean deleteColumnValue(String tableName, Long lineIndex, Integer ColumnOrder) {
+		Line line = getLine(tableName, lineIndex);
+		if(line != null) {
+			for(ColumnValue cv : line.getValues()) {
+				if(cv.getOrder().equals(ColumnOrder))
+					return line.getValues().remove(cv);
+			}
 		}
 		return null;
 	}

@@ -27,7 +27,7 @@ public abstract class ColumnManager {
 	 */
 	public static Boolean createNewColumn(String databaseName, String schemaName, String tableName, String columnName, Class<?> columnType) {
 		return TableManager.addColumn(databaseName, schemaName, tableName, ColumnGenerator.getColumn(columnName, columnType));
-	} // TODO createNewColumn with specified order
+	}
 
 	/**
 	 * Create a new column on specified table in database..Default(schema) with given name & type
