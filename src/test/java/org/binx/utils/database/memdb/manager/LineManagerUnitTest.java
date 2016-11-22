@@ -114,14 +114,30 @@ public class LineManagerUnitTest extends TestCase {
 		getColumnValueWithDbDefaultScTabReturnNotNull();
 		getColumnValueWithDefaultDbScTabReturnNotNull();
 		getColumnValueWithDefaultDbDefaultScTabReturnNotNull();
-		getAllColumnValuesDbScTabReturnNull();
-		getAllColumnValuesDbDefaultScTabReturnNull();
+		getAllColumnValuesWithDbScTabReturnNull();
+		getAllColumnValuesWithDbDefaultScTabReturnNull();
 		getAllColumnValuesDefaultDbScTabReturnNull();
 		getAllColumnValuesDefaultDbDefaultScTabReturnNull();
-		getAllColumnValuesDbScTabReturnNotNull();
-		getAllColumnValuesDbDefaultScTabReturnNotNull();
+		getAllColumnValuesWithDbScTabReturnNotNull();
+		getAllColumnValuesWithDbDefaultScTabReturnNotNull();
 		getAllColumnValuesDefaultDbScTabReturnNotNull();
 		getAllColumnValuesDefaultDbDefaultScTabReturnNotNull();
+		updateColumnValueWithDbScTabReturnNull();
+		updateColumnValueWithDbDefaultScTabReturnNull();
+		updateColumnValueWithDefaultDbScTabReturnNull();
+		updateColumnValueWithDefaultDbDefaultScTabReturnNull();
+		updateColumnValueWithDbScTabReturnTrue();
+		updateColumnValueWithDbDefaultScTabReturnTrue();
+		updateColumnValueWithDefaultDbScTabReturnTrue();
+		updateColumnValueWithDefaultDbDefaultScTabReturnTrue();
+		existsColumnValueWithDbScTabReturnFalse();
+		existsColumnValueWithDbDefaultScTabReturnFalse();
+		existsColumnValueWithDefaultDbScTabReturnFalse();
+		existsColumnValueWithDefaultDbDefaultScTabReturnFalse();
+		existsColumnValueWithDbScTabReturnTrue();
+		existsColumnValueWithDbDefaultScTabReturnTrue();
+		existsColumnValueWithDefaultDbScTabReturnTrue();
+		existsColumnValueWithDefaultDbDefaultScTabReturnTrue();
 
 		deleteColumnValueWithDbScTabReturnNull();
 		deleteColumnValueWithDbDefaultScTabReturnNull();
@@ -369,7 +385,7 @@ public class LineManagerUnitTest extends TestCase {
 		assertNotNull(LineManager.getColumnValue(tableName, 0L, 0));
 	}
 	
-	private void getAllColumnValuesDbScTabReturnNull() {
+	private void getAllColumnValuesWithDbScTabReturnNull() {
 		assertNull(LineManager.getAllColumnValues(notexistdb, schemaName, tableName, 0L));
 		assertNull(LineManager.getAllColumnValues(databaseName, notexistSchema, tableName, 0L));
 		assertNull(LineManager.getAllColumnValues(databaseName, schemaName, notexistTab, 0L));
@@ -377,18 +393,18 @@ public class LineManagerUnitTest extends TestCase {
 		assertNull(LineManager.getAllColumnValues(databaseName, schemaName, tableName, 100000L));
 	}
 	
-	private void getAllColumnValuesDbScTabReturnNotNull() {
+	private void getAllColumnValuesWithDbScTabReturnNotNull() {
 		assertNotNull(LineManager.getAllColumnValues(databaseName, schemaName, tableName, 0L));
 	}
 	
-	private void getAllColumnValuesDbDefaultScTabReturnNull() {
+	private void getAllColumnValuesWithDbDefaultScTabReturnNull() {
 		assertNull(LineManager.getAllColumnValues(notexistdb, tableName, 0L));
 		assertNull(LineManager.getAllColumnValues(databaseName, notexistTab, 0L));
 		assertNull(LineManager.getAllColumnValues(databaseName, tableName, -1L));
 		assertNull(LineManager.getAllColumnValues(databaseName, tableName, 100000L));
 	}
 	
-	private void getAllColumnValuesDbDefaultScTabReturnNotNull() {
+	private void getAllColumnValuesWithDbDefaultScTabReturnNotNull() {
 		assertNotNull(LineManager.getAllColumnValues(databaseName, tableName, 0L));
 	}
 	
@@ -412,6 +428,66 @@ public class LineManagerUnitTest extends TestCase {
 	
 	private void getAllColumnValuesDefaultDbDefaultScTabReturnNotNull() {
 		assertNotNull(LineManager.getAllColumnValues(tableName, 0L));
+	}
+	
+	private void updateColumnValueWithDbScTabReturnNull() {
+		assertNull(LineManager.updateColumnValue(notexistdb, schemaName, tableName, 0L, 0, new String("value")));
+		assertNull(LineManager.updateColumnValue(databaseName, notexistSchema, tableName, 0L, 0, new String("value")));
+		assertNull(LineManager.updateColumnValue(databaseName, schemaName, notexistTab, 0L, 0, new String("value")));
+		assertNull(LineManager.updateColumnValue(databaseName, schemaName, tableName, -1L, 0, new String("value")));
+		assertNull(LineManager.updateColumnValue(databaseName, schemaName, tableName, 100000L, 0, new String("value")));
+		assertNull(LineManager.updateColumnValue(databaseName, schemaName, tableName, 0L, -1, new String("value")));
+		assertNull(LineManager.updateColumnValue(databaseName, schemaName, tableName, 0L, 10000, new String("value")));
+		assertNull(LineManager.updateColumnValue(databaseName, schemaName, tableName, 0L, 0, new Integer(10)));
+	}
+	
+	private void updateColumnValueWithDbScTabReturnTrue() {
+		assertTrue(LineManager.updateColumnValue(databaseName, schemaName, tableName, 0L, 0, null));
+		assertTrue(LineManager.updateColumnValue(databaseName, schemaName, tableName, 0L, 0, new String("value")));
+	}
+	
+	private void updateColumnValueWithDbDefaultScTabReturnNull() {
+		assertNull(LineManager.updateColumnValue(notexistdb, tableName, 0L, 0, new String("value")));
+		assertNull(LineManager.updateColumnValue(databaseName, notexistTab, 0L, 0, new String("value")));
+		assertNull(LineManager.updateColumnValue(databaseName, tableName, -1L, 0, new String("value")));
+		assertNull(LineManager.updateColumnValue(databaseName, tableName, 100000L, 0, new String("value")));
+		assertNull(LineManager.updateColumnValue(databaseName, tableName, 0L, -1, new String("value")));
+		assertNull(LineManager.updateColumnValue(databaseName, tableName, 0L, 10000, new String("value")));
+		assertNull(LineManager.updateColumnValue(databaseName, tableName, 0L, 0, new Integer(10)));
+	}
+	
+	private void updateColumnValueWithDbDefaultScTabReturnTrue() {
+		assertTrue(LineManager.updateColumnValue(databaseName, tableName, 0L, 0, null));
+		assertTrue(LineManager.updateColumnValue(databaseName, tableName, 0L, 0, new String("value")));
+	}
+	
+	private void updateColumnValueWithDefaultDbScTabReturnNull() {
+		assertNull(LineManager.updateColumnValueDefaultDB(notexistSchema, tableName, 0L, 0, new String("value")));
+		assertNull(LineManager.updateColumnValueDefaultDB(schemaName, notexistTab, 0L, 0, new String("value")));
+		assertNull(LineManager.updateColumnValueDefaultDB(schemaName, tableName, -1L, 0, new String("value")));
+		assertNull(LineManager.updateColumnValueDefaultDB(schemaName, tableName, 100000L, 0, new String("value")));
+		assertNull(LineManager.updateColumnValueDefaultDB(schemaName, tableName, 0L, -1, new String("value")));
+		assertNull(LineManager.updateColumnValueDefaultDB(schemaName, tableName, 0L, 10000, new String("value")));
+		assertNull(LineManager.updateColumnValueDefaultDB(schemaName, tableName, 0L, 0, new Integer(10)));
+	}
+	
+	private void updateColumnValueWithDefaultDbScTabReturnTrue() {
+		assertTrue(LineManager.updateColumnValueDefaultDB(schemaName, tableName, 0L, 0, null));
+		assertTrue(LineManager.updateColumnValueDefaultDB(schemaName, tableName, 0L, 0, new String("value")));
+	}
+	
+	private void updateColumnValueWithDefaultDbDefaultScTabReturnNull() {
+		assertNull(LineManager.updateColumnValue(notexistTab, 0L, 0, new String("value")));
+		assertNull(LineManager.updateColumnValue(tableName, -1L, 0, new String("value")));
+		assertNull(LineManager.updateColumnValue(tableName, 100000L, 0, new String("value")));
+		assertNull(LineManager.updateColumnValue(tableName, 0L, -1, new String("value")));
+		assertNull(LineManager.updateColumnValue(tableName, 0L, 10000, new String("value")));
+		assertNull(LineManager.updateColumnValue(tableName, 0L, 0, new Integer(10)));
+	}
+	
+	private void updateColumnValueWithDefaultDbDefaultScTabReturnTrue() {
+		assertTrue(LineManager.updateColumnValue(tableName, 0L, 0, null));
+		assertTrue(LineManager.updateColumnValue(tableName, 0L, 0, new String("value")));
 	}
 	
 	private void deleteColumnValueWithDbScTabReturnNull() {
@@ -464,5 +540,57 @@ public class LineManagerUnitTest extends TestCase {
 	
 	private void deleteColumnValueWithDefaultDbDefaultScTabReturnTrue() {
 		assertTrue(LineManager.deleteColumnValue(tableName, 0L, 0));
+	}
+	
+	private void existsColumnValueWithDbScTabReturnFalse() {
+		assertFalse(LineManager.existsColumnValue(notexistdb, schemaName, tableName, 0L, 0));
+		assertFalse(LineManager.existsColumnValue(databaseName, notexistSchema, tableName, 0L, 0));
+		assertFalse(LineManager.existsColumnValue(databaseName, schemaName, notexistTab, 0L, 0));
+		assertFalse(LineManager.existsColumnValue(databaseName, schemaName, tableName, -1L, 0));
+		assertFalse(LineManager.existsColumnValue(databaseName, schemaName, tableName, 10000L, 0));
+		assertFalse(LineManager.existsColumnValue(databaseName, schemaName, tableName, 0L, -1));
+		assertFalse(LineManager.existsColumnValue(databaseName, schemaName, tableName, 0L, 10000));
+	}
+	
+	private void existsColumnValueWithDbScTabReturnTrue() {
+		assertTrue(LineManager.existsColumnValue(databaseName, schemaName, tableName, 0L, 0));
+	}
+	
+	private void existsColumnValueWithDbDefaultScTabReturnFalse() {
+		assertFalse(LineManager.existsColumnValue(notexistdb, tableName, 0L, 0));
+		assertFalse(LineManager.existsColumnValue(databaseName, notexistTab, 0L, 0));
+		assertFalse(LineManager.existsColumnValue(databaseName, tableName, -1L, 0));
+		assertFalse(LineManager.existsColumnValue(databaseName, tableName, 10000L, 0));
+		assertFalse(LineManager.existsColumnValue(databaseName, tableName, 0L, -1));
+		assertFalse(LineManager.existsColumnValue(databaseName, tableName, 0L, 10000));
+	}
+	
+	private void existsColumnValueWithDbDefaultScTabReturnTrue() {
+		assertTrue(LineManager.existsColumnValue(databaseName, tableName, 0L, 0));
+	}
+	
+	private void existsColumnValueWithDefaultDbScTabReturnFalse() {
+		assertFalse(LineManager.existsColumnValueDefaultDB(notexistSchema, tableName, 0L, 0));
+		assertFalse(LineManager.existsColumnValueDefaultDB(schemaName, notexistTab, 0L, 0));
+		assertFalse(LineManager.existsColumnValueDefaultDB(schemaName, tableName, -1L, 0));
+		assertFalse(LineManager.existsColumnValueDefaultDB(schemaName, tableName, 10000L, 0));
+		assertFalse(LineManager.existsColumnValueDefaultDB(schemaName, tableName, 0L, -1));
+		assertFalse(LineManager.existsColumnValueDefaultDB(schemaName, tableName, 0L, 10000));
+	}
+	
+	private void existsColumnValueWithDefaultDbScTabReturnTrue() {
+		assertTrue(LineManager.existsColumnValueDefaultDB(schemaName, tableName, 0L, 0));
+	}
+	
+	private void existsColumnValueWithDefaultDbDefaultScTabReturnFalse() {
+		assertFalse(LineManager.existsColumnValue(notexistTab, 0L, 0));
+		assertFalse(LineManager.existsColumnValue(tableName, -1L, 0));
+		assertFalse(LineManager.existsColumnValue(tableName, 10000L, 0));
+		assertFalse(LineManager.existsColumnValue(tableName, 0L, -1));
+		assertFalse(LineManager.existsColumnValue(tableName, 0L, 10000));
+	}
+	
+	private void existsColumnValueWithDefaultDbDefaultScTabReturnTrue() {
+		assertTrue(LineManager.existsColumnValue(tableName, 0L, 0));
 	}
 }

@@ -39,10 +39,10 @@
 </ul>
 
 ### Model Generators
-<p><i>MemDB</i> instantiate all Models by Generators, which add tests on given arguments beside the creation of objects.</p>
+<p><strong><i>MemDB</i></strong> instantiate all Models by Generators, which add tests on given arguments beside the creation of objects.</p>
 
 ### Model Managers
-<p>MemDB manages basic operations (CRUD, get sublists, existance ...) via Model Managers.</p>
+<p><strong><i>MemDB</i></strong> manages basic operations (CRUD, get sublists, existance ...) via Model Managers.</p>
 <ul>
   <li><strong><i>DatabaseListManager : </i></strong> Offer Operations to manage list a list of databases (add new database, get database, set default database ...).</li>
   <li><strong><i>DatabaseManager : </i></strong> Offer Operations to manage an instance of database (create new database, get it, set it to default, manage his schemas list ... ).</li>
