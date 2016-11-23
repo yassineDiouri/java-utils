@@ -90,10 +90,10 @@ public class LineManagerUnitTest extends TestCase {
 		deleteWithDefaultDbScTabReturnNull();
 		deleteWithDefaultDbDefaultScTabReturnNull();
 
-		createNewEmptyLineWithDbScTabReturnTrue();
-		createNewEmptyLineWithDbDefaultScTabReturnTrue();
-		createNewEmptyLineWithDefaultDbScTabReturnTrue();
-		createNewEmptyLineWithDefaultDbDefaultScTabReturnTrue();
+		createNewEmptyLineWithDbScTabReturnNotNull();
+		createNewEmptyLineWithDbDefaultScTabReturnNotNull();
+		createNewEmptyLineWithDefaultDbScTabReturnNotNull();
+		createNewEmptyLineWithDefaultDbDefaultScTabReturnNotNull();
 		getLineWithDbScTabReturnNotNull();
 		getLineWithDbDefaultScTabReturnNotNull();
 		getLineWithDefaultDbScTabReturnNotNull();
@@ -159,8 +159,8 @@ public class LineManagerUnitTest extends TestCase {
 		assertNull(LineManager.createNewEmptyLine(databaseName, schemaName, notexistTab));
 	}
 	
-	private void createNewEmptyLineWithDbScTabReturnTrue() {
-		assertTrue(LineManager.createNewEmptyLine(databaseName, schemaName, tableName));
+	private void createNewEmptyLineWithDbScTabReturnNotNull() {
+		assertNotNull(LineManager.createNewEmptyLine(databaseName, schemaName, tableName));
 	}
 	
 	private void createNewEmptyLineWithDbDefaultScTabReturnNull() {
@@ -168,8 +168,8 @@ public class LineManagerUnitTest extends TestCase {
 		assertNull(LineManager.createNewEmptyLine(databaseName, notexistTab));
 	}
 	
-	private void createNewEmptyLineWithDbDefaultScTabReturnTrue() {
-		assertTrue(LineManager.createNewEmptyLine(databaseName, tableName));
+	private void createNewEmptyLineWithDbDefaultScTabReturnNotNull() {
+		assertNotNull(LineManager.createNewEmptyLine(databaseName, tableName));
 	}
 	
 	private void createNewEmptyLineWithDefaultDbScTabReturnNull() {
@@ -177,16 +177,16 @@ public class LineManagerUnitTest extends TestCase {
 		assertNull(LineManager.createNewEmptyLineDefaultDB(schemaName, notexistTab));
 	}
 	
-	private void createNewEmptyLineWithDefaultDbScTabReturnTrue() {
-		assertTrue(LineManager.createNewEmptyLineDefaultDB(schemaName, tableName));
+	private void createNewEmptyLineWithDefaultDbScTabReturnNotNull() {
+		assertNotNull(LineManager.createNewEmptyLineDefaultDB(schemaName, tableName));
 	}
 	
 	private void createNewEmptyLineWithDefaultDbDefaultScTabReturnNull() {
 		assertNull(LineManager.createNewEmptyLine(notexistTab));
 	}
 	
-	private void createNewEmptyLineWithDefaultDbDefaultScTabReturnTrue() {
-		assertTrue(LineManager.createNewEmptyLine(tableName));
+	private void createNewEmptyLineWithDefaultDbDefaultScTabReturnNotNull() {
+		assertNotNull(LineManager.createNewEmptyLine(tableName));
 	}
 	
 	private void getLineWithDbScTabReturnNull() {

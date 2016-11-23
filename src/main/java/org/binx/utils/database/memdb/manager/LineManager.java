@@ -22,7 +22,7 @@ public abstract class LineManager {
 	 * False if not<br/>
 	 * Null if table do not contains columns or if table, schema or database not exists
 	 */
-	public static Boolean createNewEmptyLine(String databaseName, String schemaName, String tableName) {
+	public static Line createNewEmptyLine(String databaseName, String schemaName, String tableName) {
 		Line line =  LineGenerator.getLine();
 		List<Column> columns = TableManager.getAllColumns(databaseName, schemaName, tableName);
 		if(columns != null) {
@@ -31,7 +31,7 @@ public abstract class LineManager {
 				columnValue.setOrder(column.getOrder());
 				line.getValues().add(columnValue);
 			}
-			return TableManager.addLine(databaseName, schemaName, tableName, line);
+			return TableManager.addLine(databaseName, schemaName, tableName, line) ? line : null;
 		}
 		return null;
 	}
@@ -46,7 +46,7 @@ public abstract class LineManager {
 	 * False if not<br/>
 	 * Null if table do not contains columns or if table or database not exists
 	 */
-	public static Boolean createNewEmptyLine(String databaseName, String tableName) {
+	public static Line createNewEmptyLine(String databaseName, String tableName) {
 		Line line =  LineGenerator.getLine();
 		List<Column> columns = TableManager.getAllColumns(databaseName, tableName);
 		if(columns != null) {
@@ -55,8 +55,9 @@ public abstract class LineManager {
 				columnValue.setOrder(column.getOrder());
 				line.getValues().add(columnValue);
 			}
+			return TableManager.addLine(databaseName, tableName, line) ? line : null;
 		}
-		return TableManager.addLine(databaseName, tableName, LineGenerator.getLine());
+		return null;
 	}
 	
 	/**
@@ -69,7 +70,7 @@ public abstract class LineManager {
 	 * False if not<br/>
 	 * Null if table do not contains columns or if table, schema or default database not exists
 	 */
-	public static Boolean createNewEmptyLineDefaultDB(String schemaName, String tableName) {
+	public static Line createNewEmptyLineDefaultDB(String schemaName, String tableName) {
 		Line line =  LineGenerator.getLine();
 		List<Column> columns = TableManager.getAllColumnsDefaultDB(schemaName, tableName);
 		if(columns != null) {
@@ -78,7 +79,7 @@ public abstract class LineManager {
 				columnValue.setOrder(column.getOrder());
 				line.getValues().add(columnValue);
 			}
-			return TableManager.addLineDefaultDB(schemaName, tableName, line);
+			return TableManager.addLineDefaultDB(schemaName, tableName, line) ? line : null;
 		}
 		return null;
 	}
@@ -92,7 +93,7 @@ public abstract class LineManager {
 	 * False if not<br/>
 	 * Null if table do not contains columns or if table or default database not exists
 	 */
-	public static Boolean createNewEmptyLine(String tableName) {
+	public static Line createNewEmptyLine(String tableName) {
 		Line line =  LineGenerator.getLine();
 		List<Column> columns = TableManager.getAllColumns(tableName);
 		if(columns != null) {
@@ -101,7 +102,7 @@ public abstract class LineManager {
 				columnValue.setOrder(column.getOrder());
 				line.getValues().add(columnValue);
 			}
-			return TableManager.addLine(tableName, LineGenerator.getLine());
+			return TableManager.addLine(tableName, line) ? line : null;
 		}
 		return null;
 	}

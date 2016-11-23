@@ -22,7 +22,7 @@
   </tr>
   <tr>
     <td><a href="https://github.com/yassineDiouri/java-utils/tree/master/src/main/java/org/binx/utils/database/memdb">MemDB</a></td>
-    <td>0.0.23 [SNAPSHOT]</td>
+    <td>0.0.24 [SNAPSHOT]</td>
   </tr>
 </table>
 ## Module MemDB
@@ -39,10 +39,10 @@
 </ul>
 
 ### Model Generators
-<p><u><i>MemDB</i></u> instantiate all Models by Generators, which add tests on given arguments beside the creation of objects.</p>
+<p><strong><i>MemDB</i></strong> instantiate all Models by Generators, which add tests on given arguments beside the creation of objects.</p>
 
 ### Model Managers
-<p><u><i>MemDB</i></u> manages basic operations (CRUD, get sublists, existance ...) via Model Managers.</p>
+<p><strong><i>MemDB</i></strong> manages basic operations (CRUD, get sublists, existance ...) via Model Managers.</p>
 <ul>
   <li><strong><i>DatabaseListManager : </i></strong> Offer Operations to manage list a list of databases (add new database, get database, set default database ...).</li>
   <li><strong><i>DatabaseManager : </i></strong> Offer Operations to manage an instance of database (create new database, get it, set it to default, manage his schemas list ... ).</li>
