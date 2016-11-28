@@ -1,12 +1,19 @@
 package org.binx.utils.database.memdb;
 
-import java.time.*;
-import java.util.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
-import org.binx.utils.database.memdb.manager.*;
-import org.binx.utils.database.memdb.model.*;
+import org.binx.utils.database.memdb.core.manager.ColumnManager;
+import org.binx.utils.database.memdb.core.manager.ColumnValueManager;
+import org.binx.utils.database.memdb.core.manager.DatabaseManager;
+import org.binx.utils.database.memdb.core.manager.LineManager;
+import org.binx.utils.database.memdb.core.manager.TableManager;
+import org.binx.utils.database.memdb.core.model.Column;
+import org.binx.utils.database.memdb.core.model.ConstraintType;
+import org.binx.utils.database.memdb.core.model.Line;
 
-import junit.framework.*;
+import junit.framework.TestCase;
 
 /**
  * 
