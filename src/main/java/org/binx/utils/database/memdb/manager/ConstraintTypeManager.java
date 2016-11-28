@@ -339,6 +339,15 @@ public abstract class ConstraintTypeManager {
 		return true;
 	}
 	
+	/**
+	 * Do the Equals operation between the 2 specified Objects in corespondant type
+	 * 
+	 * @param o1
+	 * @param o2
+	 * @return
+	 * True if equals<br/>
+	 * False if not.
+	 */
 	private static Boolean equals(Object o1, Object o2) {
 		if(o1 instanceof String)
 			return ((String) o1).equalsIgnoreCase((String) o2);

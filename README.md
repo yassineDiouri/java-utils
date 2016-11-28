@@ -22,7 +22,7 @@
   </tr>
   <tr>
     <td><a href="https://github.com/yassineDiouri/java-utils/tree/master/src/main/java/org/binx/utils/database/memdb">MemDB</a></td>
-    <td>0.0.24 [SNAPSHOT]</td>
+    <td>0.1.0 [SNAPSHOT]</td>
   </tr>
 </table>
 ## Module MemDB
