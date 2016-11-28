@@ -9,5 +9,6 @@ public enum ConstraintType {
 
 	PRIMARY_KEY,
 	UNIQUE,
+	NOT_NULL,
 	DEFAULT;
 }

@@ -23,6 +23,12 @@ public class Column implements Serializable {
 		this.constraints = new ArrayList<>();
 	}
 
+	public Column(String name, Class<?> type, List<Constraint> constraints) {
+		this.name = name;
+		this.type = type;
+		this.constraints = constraints;
+	}
+
 	public String getName() {
 		return name;
 	}

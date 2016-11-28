@@ -75,6 +75,70 @@ public abstract class ColumnManager {
 	public static Boolean createNewColumn(String tableName, String columnName, Class<?> columnType) {
 		return TableManager.addColumn(tableName, ColumnGenerator.getColumn(columnName, columnType));
 	}
+
+	/**
+	 * Create a new column with Constraints on specified table in database..schema with given name & type
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnName
+	 * @param columnType
+	 * @return
+	 * True if added,<br/>
+	 * False if column exists or not added,<br/>
+	 * Null if table or schema or database not exist
+	 */
+	public static Boolean createNewColumn(String databaseName, String schemaName, String tableName, String columnName, Class<?> columnType, ConstraintType... constraintTypes) {
+		return TableManager.addColumn(databaseName, schemaName, tableName, ColumnGenerator.getColumn(columnName, columnType, constraintTypes));
+	}
+
+	/**
+	 * Create a new column with Constraints on specified table in database..Default(schema) with given name & type
+	 * 
+	 * @param databaseName
+	 * @param tableName
+	 * @param columnName
+	 * @param columnType
+	 * @return
+	 * True if added,<br/>
+	 * False if column exists or not added,<br/>
+	 * Null if table or database not exist
+	 */
+	public static Boolean createNewColumn(String databaseName, String tableName, String columnName, Class<?> columnType, ConstraintType... constraintTypes) {
+		return TableManager.addColumn(databaseName, tableName, ColumnGenerator.getColumn(columnName, columnType, constraintTypes));
+	}
+	
+	/**
+	 * Create a new column with Constraints on specified table in Default(database)..schema with given name & type
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnName
+	 * @param columnType
+	 * @return
+	 * True if added,<br/>
+	 * False if column exists or not added,<br/>
+	 * Null if table or schema or default database not exist
+	 */
+	public static Boolean createNewColumnDefaultDB(String schemaName, String tableName, String columnName, Class<?> columnType, ConstraintType... constraintTypes) {
+		return TableManager.addColumnDefaultDB(schemaName, tableName, ColumnGenerator.getColumn(columnName, columnType, constraintTypes));
+	}
+	
+	/**
+	 * Create a new column with Constraints on specified table in default(database)..default(schema) with given name & type
+	 * 
+	 * @param tableName
+	 * @param columnName
+	 * @param columnType
+	 * @return
+	 * True if added,<br/>
+	 * False if column exists or not added,<br/>
+	 * Null if table or schema or default database not exist
+	 */
+	public static Boolean createNewColumn(String tableName, String columnName, Class<?> columnType, ConstraintType... constraintTypes) {
+		return TableManager.addColumn(tableName, ColumnGenerator.getColumn(columnName, columnType, constraintTypes));
+	}
 	
 	/**
 	 * Get Column from specified table on database..schema

@@ -477,8 +477,7 @@ public abstract class LineManager {
 	public static Boolean updateColumnValue(String databaseName, String schemaName, String tableName, Long lineIndex, Integer columnOrder, Object value) {
 		ColumnValue columnValue = getColumnValue(databaseName, schemaName, tableName, lineIndex, columnOrder);
 		if(columnValue != null) {
-			Column column = ColumnManager.getColumn(databaseName, schemaName, tableName, columnValue.getOrder());
-			if(value == null ? true : column.getType().equals(value.getClass())) {
+			if(canBeInsertedValue(databaseName, schemaName, tableName, columnValue)) {
 				columnValue.setValue(value);
 				return true;
 			}
@@ -501,8 +500,7 @@ public abstract class LineManager {
 	public static Boolean updateColumnValue(String databaseName, String tableName, Long lineIndex, Integer columnOrder, Object value) {
 		ColumnValue columnValue = getColumnValue(databaseName, tableName, lineIndex, columnOrder);
 		if(columnValue != null) {
-			Column column = ColumnManager.getColumn(databaseName, tableName, columnValue.getOrder());
-			if(value == null ? true : column.getType().equals(value.getClass())) {
+			if(canBeInsertedValue(databaseName, tableName, columnValue)) {
 				columnValue.setValue(value);
 				return true;
 			}
@@ -525,8 +523,7 @@ public abstract class LineManager {
 	public static Boolean updateColumnValueDefaultDB(String schemaName, String tableName, Long lineIndex, Integer columnOrder, Object value) {
 		ColumnValue columnValue = getColumnValueDefaultDB(schemaName, tableName, lineIndex, columnOrder);
 		if(columnValue != null) {
-			Column column = ColumnManager.getColumnDefaultDB(schemaName, tableName, columnValue.getOrder());
-			if(value == null ? true : column.getType().equals(value.getClass())) {
+			if(canBeInsertedValueDefaultDB(schemaName, tableName, columnValue)) {
 				columnValue.setValue(value);
 				return true;
 			}
@@ -548,8 +545,7 @@ public abstract class LineManager {
 	public static Boolean updateColumnValue(String tableName, Long lineIndex, Integer columnOrder, Object value) {
 		ColumnValue columnValue = getColumnValue(tableName, lineIndex, columnOrder);
 		if(columnValue != null) {
-			Column column = ColumnManager.getColumn(tableName, columnValue.getOrder());
-			if(value == null ? true : column.getType().equals(value.getClass())) {
+			if(canBeInsertedValue(tableName, columnValue)) {
 				columnValue.setValue(value);
 				return true;
 			}
@@ -753,7 +749,11 @@ public abstract class LineManager {
 		Column column = ColumnManager.getColumn(databaseName, schemaName, tableName, columnValue.getOrder());
 		if(column != null) {
 			Boolean typeCondition = columnValue.getValue() == null ? true : column.getType().equals(columnValue.getValue().getClass());
-			Boolean constraintsCondition = true; // TODO change when add constraints Tests
+			Boolean constraintsCondition = true;
+			for(Constraint constraint : column.getConstraints()) {
+				constraintsCondition = constraintsCondition && 
+						ConstraintTypeManager.verifyConstraint(databaseName, schemaName, tableName, columnValue, constraint.getType());
+			}
 			return typeCondition && constraintsCondition;
 		}
 		return false;
@@ -775,7 +775,11 @@ public abstract class LineManager {
 		Column column = ColumnManager.getColumn(databaseName, tableName, columnValue.getOrder());
 		if(column != null) {
 			Boolean typeCondition = columnValue.getValue() == null ? true : column.getType().equals(columnValue.getValue().getClass());
-			Boolean constraintsCondition = true; // TODO change when add constraints Tests
+			Boolean constraintsCondition = true;
+			for(Constraint constraint : column.getConstraints()) {
+				constraintsCondition = constraintsCondition && 
+						ConstraintTypeManager.verifyConstraint(databaseName, tableName, columnValue, constraint.getType());
+			}
 			return typeCondition && constraintsCondition;
 		}
 		return false;
@@ -797,7 +801,11 @@ public abstract class LineManager {
 		Column column = ColumnManager.getColumnDefaultDB(schemaName, tableName, columnValue.getOrder());
 		if(column != null) {
 			Boolean typeCondition = columnValue.getValue() == null ? true : column.getType().equals(columnValue.getValue().getClass());
-			Boolean constraintsCondition = true; // TODO change when add constraints Tests
+			Boolean constraintsCondition = true;
+			for(Constraint constraint : column.getConstraints()) {
+				constraintsCondition = constraintsCondition && 
+						ConstraintTypeManager.verifyConstraintDefaultDB(schemaName, tableName, columnValue, constraint.getType());
+			}
 			return typeCondition && constraintsCondition;
 		}
 		return false;
@@ -819,7 +827,11 @@ public abstract class LineManager {
 		Column column = ColumnManager.getColumn(tableName, columnValue.getOrder());
 		if(column != null) {
 			Boolean typeCondition = columnValue.getValue() == null ? true : column.getType().equals(columnValue.getValue().getClass());
-			Boolean constraintsCondition = true; // TODO change when add constraints Tests
+			Boolean constraintsCondition = true;
+			for(Constraint constraint : column.getConstraints()) {
+				constraintsCondition = constraintsCondition && 
+						ConstraintTypeManager.verifyConstraint(tableName, columnValue, constraint.getType());
+			}
 			return typeCondition && constraintsCondition;
 		}
 		return false;
