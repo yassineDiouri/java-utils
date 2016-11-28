@@ -477,7 +477,7 @@ public abstract class LineManager {
 	public static Boolean updateColumnValue(String databaseName, String schemaName, String tableName, Long lineIndex, Integer columnOrder, Object value) {
 		ColumnValue columnValue = getColumnValue(databaseName, schemaName, tableName, lineIndex, columnOrder);
 		if(columnValue != null) {
-			if(canBeInsertedValue(databaseName, schemaName, tableName, columnValue)) {
+			if(canBeUpdatedValue(databaseName, schemaName, tableName, columnValue, value)) {
 				columnValue.setValue(value);
 				return true;
 			}
@@ -500,7 +500,7 @@ public abstract class LineManager {
 	public static Boolean updateColumnValue(String databaseName, String tableName, Long lineIndex, Integer columnOrder, Object value) {
 		ColumnValue columnValue = getColumnValue(databaseName, tableName, lineIndex, columnOrder);
 		if(columnValue != null) {
-			if(canBeInsertedValue(databaseName, tableName, columnValue)) {
+			if(canBeUpdatedValue(databaseName, tableName, columnValue, value)) {
 				columnValue.setValue(value);
 				return true;
 			}
@@ -523,7 +523,7 @@ public abstract class LineManager {
 	public static Boolean updateColumnValueDefaultDB(String schemaName, String tableName, Long lineIndex, Integer columnOrder, Object value) {
 		ColumnValue columnValue = getColumnValueDefaultDB(schemaName, tableName, lineIndex, columnOrder);
 		if(columnValue != null) {
-			if(canBeInsertedValueDefaultDB(schemaName, tableName, columnValue)) {
+			if(canBeUpdatedValueDefaultDB(schemaName, tableName, columnValue, value)) {
 				columnValue.setValue(value);
 				return true;
 			}
@@ -545,7 +545,7 @@ public abstract class LineManager {
 	public static Boolean updateColumnValue(String tableName, Long lineIndex, Integer columnOrder, Object value) {
 		ColumnValue columnValue = getColumnValue(tableName, lineIndex, columnOrder);
 		if(columnValue != null) {
-			if(canBeInsertedValue(tableName, columnValue)) {
+			if(canBeUpdatedValue(tableName, columnValue, value)) {
 				columnValue.setValue(value);
 				return true;
 			}
@@ -831,6 +831,122 @@ public abstract class LineManager {
 			for(Constraint constraint : column.getConstraints()) {
 				constraintsCondition = constraintsCondition && 
 						ConstraintTypeManager.verifyConstraint(tableName, columnValue, constraint.getType());
+			}
+			return typeCondition && constraintsCondition;
+		}
+		return false;
+	}
+	
+	/**
+	 * Verify if the Value can be inserted in the specified Line for columnOrder<br/>
+	 * from specified table on database..schema
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnValue
+	 * @return
+	 * True it can be inserted<br/>
+	 * False if order not valid or not same type of columnOrder or not verified constraints
+	 */
+	private static Boolean canBeUpdatedValue(String databaseName, String schemaName, String tableName, ColumnValue columnValue, Object value) {
+		Column column = ColumnManager.getColumn(databaseName, schemaName, tableName, columnValue.getOrder());
+		if(column != null) {
+			Boolean typeCondition = value == null ? true : column.getType().equals(value.getClass());
+			Boolean constraintsCondition = true;
+			ColumnValue temp = ColumnValueGenerator.getColumnValue(value);
+			temp.setIndex(columnValue.getIndex());
+			temp.setOrder(columnValue.getOrder());
+			for(Constraint constraint : column.getConstraints()) {
+				constraintsCondition = constraintsCondition && 
+						ConstraintTypeManager.verifyConstraint(databaseName, schemaName, tableName, temp, constraint.getType());
+			}
+			return typeCondition && constraintsCondition;
+		}
+		return false;
+	}
+	
+	/**
+	 * Verify if the Value can be inserted in the specified Line for columnOrder<br/>
+	 * from specified table on database..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnValue
+	 * @return
+	 * True it can be inserted<br/>
+	 * False if order not valid or not same type of columnOrder or not verified constraints
+	 */
+	private static Boolean canBeUpdatedValue(String databaseName, String tableName, ColumnValue columnValue, Object value) {
+		Column column = ColumnManager.getColumn(databaseName, tableName, columnValue.getOrder());
+		if(column != null) {
+			Boolean typeCondition = value == null ? true : column.getType().equals(value.getClass());
+			Boolean constraintsCondition = true;
+			ColumnValue temp = ColumnValueGenerator.getColumnValue(value);
+			temp.setIndex(columnValue.getIndex());
+			temp.setOrder(columnValue.getOrder());
+			for(Constraint constraint : column.getConstraints()) {
+				constraintsCondition = constraintsCondition && 
+						ConstraintTypeManager.verifyConstraint(databaseName, tableName, temp, constraint.getType());
+			}
+			return typeCondition && constraintsCondition;
+		}
+		return false;
+	}
+	
+	/**
+	 * Verify if the Value can be inserted in the specified Line for columnOrder<br/>
+	 * from specified table on default(database)..schema
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnValue
+	 * @return
+	 * True it can be inserted<br/>
+	 * False if order not valid or not same type of columnOrder or not verified constraints
+	 */
+	private static Boolean canBeUpdatedValueDefaultDB(String schemaName, String tableName, ColumnValue columnValue, Object value) {
+		Column column = ColumnManager.getColumnDefaultDB(schemaName, tableName, columnValue.getOrder());
+		if(column != null) {
+			Boolean typeCondition = value == null ? true : column.getType().equals(value.getClass());
+			Boolean constraintsCondition = true;
+			ColumnValue temp = ColumnValueGenerator.getColumnValue(value);
+			temp.setIndex(columnValue.getIndex());
+			temp.setOrder(columnValue.getOrder());
+			for(Constraint constraint : column.getConstraints()) {
+				constraintsCondition = constraintsCondition && 
+						ConstraintTypeManager.verifyConstraintDefaultDB(schemaName, tableName, temp, constraint.getType());
+			}
+			return typeCondition && constraintsCondition;
+		}
+		return false;
+	}
+	
+	/**
+	 * Verify if the Value can be inserted in the specified Line for columnOrder<br/>
+	 * from specified table on default(database)..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param columnValue
+	 * @return
+	 * True it can be inserted<br/>
+	 * False if order not valid or not same type of columnOrder or not verified constraints
+	 */
+	private static Boolean canBeUpdatedValue(String tableName, ColumnValue columnValue, Object value) {
+		Column column = ColumnManager.getColumn(tableName, columnValue.getOrder());
+		if(column != null) {
+			Boolean typeCondition = value == null ? true : column.getType().equals(value.getClass());
+			Boolean constraintsCondition = true;
+			ColumnValue temp = ColumnValueGenerator.getColumnValue(value);
+			temp.setIndex(columnValue.getIndex());
+			temp.setOrder(columnValue.getOrder());
+			for(Constraint constraint : column.getConstraints()) {
+				constraintsCondition = constraintsCondition && 
+						ConstraintTypeManager.verifyConstraint(tableName, temp, constraint.getType());
 			}
 			return typeCondition && constraintsCondition;
 		}

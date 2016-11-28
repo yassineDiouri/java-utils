@@ -139,6 +139,12 @@ public class globalMemDBTest extends TestCase {
 		System.out.println(ColumnValueManager.getValue(tableName, line.getIndex(), column.getOrder()) + " [done successfully]");
 		System.out.println("\t\t\t{The Value did not change and it was maintained to the init value : null}");
 		
+		//  4.2.3 Delete (manually the none used line)
+		System.out.print("\t\t4.2.3. delete the not used line with index : ");
+		Boolean result = LineManager.delete(tableName, line.getIndex());
+		System.out.println((result == true ? line.getIndex() : "Failed") + " [done successfully]");
+		line = null;
+		
 		// 4.3. Update Person name : "Yassine Diouri" => "Yassine DIOURI"
 		System.out.println("\t4.3. Update Person name : 'Yassine Diouri' => 'Yassine DIOURI'");
 		
@@ -151,7 +157,7 @@ public class globalMemDBTest extends TestCase {
 		//  4.3.2. Update to new Person name
 		System.out.print("\t\t4.3.2. update to new Person name = ");
 		column = ColumnManager.getColumn(tableName, name);
-		Boolean result = ColumnValueManager.updateValue(tableName, line.getIndex(), column.getOrder(), "Yassine DIOURI");
+		result = ColumnValueManager.updateValue(tableName, line.getIndex(), column.getOrder(), "Yassine DIOURI");
 		System.out.println(ColumnValueManager.getValue(tableName, line.getIndex(), column.getOrder()) + " [done successfully]");
 		
 		// 4.4. Person with null name

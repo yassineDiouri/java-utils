@@ -239,12 +239,14 @@ public abstract class ConstraintTypeManager {
 		List<Line> lines = TableManager.getAllLines(databaseName, schemaName, tableName);
 		for(Line line : lines) {
 			Object o = ColumnValueManager.getValue(databaseName, schemaName, tableName, line.getIndex(), columnValue.getOrder());
-			if(o == null) {
-				if(columnValue.getValue() == null)
-					return false;
-			} else {
-				if(o.equals(columnValue.getValue()))//TODO change it to specific equals by types (TestEqualsToStrings, ToDates...)
-					return false;
+			if(!line.getIndex().equals(columnValue.getIndex())) {
+				if(o == null) {
+					if(columnValue.getValue() == null)
+						return false;
+				} else {
+					if(equals(o, columnValue.getValue()))
+						return false;
+				}
 			}
 		}
 		return true;
@@ -265,13 +267,15 @@ public abstract class ConstraintTypeManager {
 	private static Boolean unique(String databaseName, String tableName, ColumnValue columnValue) {
 		List<Line> lines = TableManager.getAllLines(databaseName, tableName);
 		for(Line line : lines) {
-			Object o = ColumnValueManager.getValue(databaseName, tableName, line.getIndex(), columnValue.getOrder());
-			if(o == null) {
-				if(columnValue.getValue() == null)
-					return false;
-			} else {
-				if(o.equals(columnValue.getValue()))//TODO change it to specific equals by types (TestEqualsToStrings, ToDates...)
-					return false;
+			if(!line.getIndex().equals(columnValue.getIndex())) {
+				Object o = ColumnValueManager.getValue(databaseName, tableName, line.getIndex(), columnValue.getOrder());
+				if(o == null) {
+					if(columnValue.getValue() == null)
+						return false;
+				} else {
+					if(equals(o, columnValue.getValue()))
+						return false;
+				}
 			}
 		}
 		return true;
@@ -292,13 +296,15 @@ public abstract class ConstraintTypeManager {
 	private static Boolean uniqueDefaultDB(String schemaName, String tableName, ColumnValue columnValue) {
 		List<Line> lines = TableManager.getAllLinesDefaultDB(schemaName, tableName);
 		for(Line line : lines) {
-			Object o = ColumnValueManager.getValueDefaultDB(schemaName, tableName, line.getIndex(), columnValue.getOrder());
-			if(o == null) {
-				if(columnValue.getValue() == null)
-					return false;
-			} else {
-				if(o.equals(columnValue.getValue()))//TODO change it to specific equals by types (TestEqualsToStrings, ToDates...)
-					return false;
+			if(!line.getIndex().equals(columnValue.getIndex())) {
+				Object o = ColumnValueManager.getValueDefaultDB(schemaName, tableName, line.getIndex(), columnValue.getOrder());
+				if(o == null) {
+					if(columnValue.getValue() == null)
+						return false;
+				} else {
+					if(equals(o, columnValue.getValue()))
+						return false;
+				}
 			}
 		}
 		return true;
@@ -319,15 +325,23 @@ public abstract class ConstraintTypeManager {
 	private static Boolean unique(String tableName, ColumnValue columnValue) {
 		List<Line> lines = TableManager.getAllLines(tableName);
 		for(Line line : lines) {
-			Object o = ColumnValueManager.getValue(tableName, line.getIndex(), columnValue.getOrder());
-			if(o == null) {
-				if(columnValue.getValue() == null)
-					return false;
-			} else {
-				if(o.equals(columnValue.getValue())) //TODO change it to specific equals by types (TestEqualsToStrings, ToDates...)
-					return false;
+			if(!line.getIndex().equals(columnValue.getIndex())) {
+				Object o = ColumnValueManager.getValue(tableName, line.getIndex(), columnValue.getOrder());
+				if(o == null) {
+					if(columnValue.getValue() == null)
+						return false;
+				} else {
+					if(equals(o, columnValue.getValue()))
+						return false;
+				}
 			}
 		}
 		return true;
+	}
+	
+	private static Boolean equals(Object o1, Object o2) {
+		if(o1 instanceof String)
+			return ((String) o1).equalsIgnoreCase((String) o2);
+		return o1.equals(o2);
 	}
 }
