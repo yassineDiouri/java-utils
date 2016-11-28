@@ -169,7 +169,7 @@ public abstract class ColumnValueManager {
 	 * @param schemaName
 	 * @param tableName
 	 * @param lineIndex
-	 * @param ColumnOrder
+	 * @param columnOrder
 	 * @return
 	 * Null if column order, line, table, schema or database not exists
 	 */
@@ -183,7 +183,7 @@ public abstract class ColumnValueManager {
 	 * @param databaseName
 	 * @param tableName
 	 * @param lineIndex
-	 * @param ColumnOrder
+	 * @param columnOrder
 	 * @return
 	 * Null if column order, line, table or database not exists
 	 */
@@ -197,7 +197,7 @@ public abstract class ColumnValueManager {
 	 * @param schemaName
 	 * @param tableName
 	 * @param lineIndex
-	 * @param ColumnOrder
+	 * @param columnOrder
 	 * @return
 	 * Null if column order, line, table, schema or default database not exists
 	 */
@@ -211,12 +211,85 @@ public abstract class ColumnValueManager {
 	 * @param databaseName
 	 * @param tableName
 	 * @param lineIndex
-	 * @param ColumnOrder
+	 * @param columnOrder
 	 * @return
 	 * Null if column order, line, table or default database not exists
 	 */
 	public static ColumnValue getColumnValue(String tableName, Long lineIndex, Integer columnOrder) {
 		return LineManager.getColumnValue(tableName, lineIndex, columnOrder);
+	}
+	
+	/**
+	 * Get value of specified ColumnValue from Line from table on database..schema
+	 * 
+	 * @param databaseName
+	 * @param schemaName
+	 * @param tableName
+	 * @param lineIndex
+	 * @param columnOrder
+	 * @return
+	 * Null if column order, line, table, schema or database not exists
+	 */
+	public static Object getValue(String databaseName, String schemaName, String tableName, Long lineIndex, Integer columnOrder) {
+		ColumnValue cv = getColumnValue(databaseName, schemaName, tableName, lineIndex, columnOrder);
+		if(cv != null) {
+			return cv.getValue();
+		}
+		return null;
+	}
+	
+	/**
+	 * Get value of specified ColumnValue from Line from table on database..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param tableName
+	 * @param lineIndex
+	 * @param columnOrder
+	 * @return
+	 * Null if column order, line, table or database not exists
+	 */
+	public static Object getValue(String databaseName, String tableName, Long lineIndex, Integer columnOrder) {
+		ColumnValue cv = getColumnValue(databaseName, tableName, lineIndex, columnOrder);
+		if(cv != null) {
+			return cv.getValue();
+		}
+		return null;
+	}
+	
+	/**
+	 * Get value of specified ColumnValue from Line from table on default(database)..schema
+	 * 
+	 * @param schemaName
+	 * @param tableName
+	 * @param lineIndex
+	 * @param columnOrder
+	 * @return
+	 * Null if column order, line, table, schema or default database not exists
+	 */
+	public static Object getValueDefaultDB(String schemaName, String tableName, Long lineIndex, Integer columnOrder) {
+		ColumnValue cv = getColumnValueDefaultDB(schemaName, tableName, lineIndex, columnOrder);
+		if(cv != null) {
+			return cv.getValue();
+		}
+		return null;
+	}
+	
+	/**
+	 * Get value of specified ColumnValue from Line from table on default(database)..default(schema)
+	 * 
+	 * @param databaseName
+	 * @param tableName
+	 * @param lineIndex
+	 * @param columnOrder
+	 * @return
+	 * Null if column order, line, table or default database not exists
+	 */
+	public static Object getValue(String tableName, Long lineIndex, Integer columnOrder) {
+		ColumnValue cv = getColumnValue(tableName, lineIndex, columnOrder);
+		if(cv != null) {
+			return cv.getValue();
+		}
+		return null;
 	}
 	
 	/**

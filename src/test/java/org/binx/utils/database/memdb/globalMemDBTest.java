@@ -109,19 +109,19 @@ public class globalMemDBTest extends TestCase {
 		System.out.print("\t\t4.1.2. insert name person = ");
 		column = ColumnManager.getColumn(tableName, name);
 		ColumnValueManager.createNewColumnValue(tableName, line.getIndex(), column.getOrder(), "Yassine Diouri");
-		System.out.println(ColumnValueManager.getColumnValue(tableName, line.getIndex(), column.getOrder()).getValue() + " [done successfully]");
+		System.out.println(ColumnValueManager.getValue(tableName, line.getIndex(), column.getOrder()) + " [done successfully]");
 		
 		//  4.1.3. Add age : 24
 		System.out.print("\t\t4.1.3. insert age person = ");
 		column = ColumnManager.getColumn(tableName, age);
 		ColumnValueManager.createNewColumnValue(tableName, line.getIndex(), column.getOrder(), 24);
-		System.out.println(ColumnValueManager.getColumnValue(tableName, line.getIndex(), column.getOrder()).getValue() + " [done successfully]");
+		System.out.println(ColumnValueManager.getValue(tableName, line.getIndex(), column.getOrder()) + " [done successfully]");
 		
 		//  4.1.4. Add birthdate : 15/11/1992
 		System.out.print("\t\t4.1.4. insert birthdate person = ");
 		column = ColumnManager.getColumn(tableName, birthdate);
 		ColumnValueManager.createNewColumnValue(tableName, line.getIndex(), column.getOrder(), Date.from(LocalDate.of(1992, 11, 15).atStartOfDay(ZoneId.systemDefault()).toInstant()));
-		System.out.println(ColumnValueManager.getColumnValue(tableName, line.getIndex(), column.getOrder()).getValue() + " [done successfully]");
+		System.out.println(ColumnValueManager.getValue(tableName, line.getIndex(), column.getOrder()) + " [done successfully]");
 		
 		// 4.2. Person with wrong type of age : Person ("xxxxxx", "yassine", xx/xx/xxxx)
 		System.out.println("\t4.2. Person with wrong type of age : Person ('xxxxxx', 'yassine', xx/xx/xxxx)");
@@ -135,7 +135,7 @@ public class globalMemDBTest extends TestCase {
 		System.out.print("\t\t4.2.2. insert age person = ");
 		column = ColumnManager.getColumn(tableName, age);
 		ColumnValueManager.createNewColumnValue(tableName, line.getIndex(), column.getOrder(), "yassine");
-		System.out.println(ColumnValueManager.getColumnValue(tableName, line.getIndex(), column.getOrder()).getValue() + " [done successfully]");
+		System.out.println(ColumnValueManager.getValue(tableName, line.getIndex(), column.getOrder()) + " [done successfully]");
 		System.out.println("\t\t\t{The Value did not change and it was maintained to the init value : null}");
 		
 		// 4.3. Update Person name : "Yassine Diouri" => "Yassine DIOURI"
@@ -145,12 +145,12 @@ public class globalMemDBTest extends TestCase {
 		System.out.print("\t\t4.3.1. get Line which contains the old value [using index : 0] : ");
 		line = LineManager.getLine(tableName, 0L);
 		column = ColumnManager.getColumn(tableName, name);
-		System.out.println(ColumnValueManager.getColumnValue(tableName, line.getIndex(), column.getOrder()).getValue() + " [done successfully]");
+		System.out.println(ColumnValueManager.getValue(tableName, line.getIndex(), column.getOrder()) + " [done successfully]");
 		
 		//  4.3.2. Add age : "yassine"
 		System.out.print("\t\t4.3.2. update to new Person name = ");
 		column = ColumnManager.getColumn(tableName, name);
 		ColumnValueManager.updateValue(tableName, line.getIndex(), column.getOrder(), "Yassine DIOURI");
-		System.out.println(ColumnValueManager.getColumnValue(tableName, line.getIndex(), column.getOrder()).getValue() + " [done successfully]");
+		System.out.println(ColumnValueManager.getValue(tableName, line.getIndex(), column.getOrder()) + " [done successfully]");
 	}
 }

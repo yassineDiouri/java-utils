@@ -74,18 +74,27 @@ public class ColumnValueManagerUnitTest extends TestCase {
 		createNewColumnValueWithDbDefaultScTabReturnNull();
 		createNewColumnValueWithDefaultDbScTabReturnNull();
 		createNewColumnValueWithDefaultDbDefaultScTabReturnNull();
-		createNewColumnValueWithDbScTabReturnTrue();
-		createNewColumnValueWithDbDefaultScTabReturnTrue();
-		createNewColumnValueWithDefaultDbScTabReturnTrue();
-		createNewColumnValueWithDefaultDbDefaultScTabReturnTrue();
 		createNewColumnValueWithValueWithDbScTabReturnNull();
 		createNewColumnValueWithValueWithDbDefaultScTabReturnNull();
 		createNewColumnValueWithValueWithDefaultDbScTabReturnNull();
 		createNewColumnValueWithValueWithDefaultDbDefaultScTabReturnNull();
+		getValueWithDbScTabReturnNull();
+		getValueWithDbDefaultScTabReturnNull();
+		getValueWithDefaultDbScTabReturnNull();
+		getValueWithDefaultDbDefaultScTabReturnNull();
+		
+		createNewColumnValueWithDbScTabReturnTrue();
+		createNewColumnValueWithDbDefaultScTabReturnTrue();
+		createNewColumnValueWithDefaultDbScTabReturnTrue();
+		createNewColumnValueWithDefaultDbDefaultScTabReturnTrue();
 		createNewColumnValueWithValueWithDbScTabReturnTrue();
 		createNewColumnValueWithValueWithDbDefaultScTabReturnTrue();
 		createNewColumnValueWithValueWithDefaultDbScTabReturnTrue();
 		createNewColumnValueWithValueWithDefaultDbDefaultScTabReturnTrue();
+		getValueWithDbScTabReturnNotNull();
+		getValueWithDbDefaultScTabReturnNotNull();
+		getValueWithDefaultDbScTabReturnNotNull();
+		getValueWithDefaultDbDefaultScTabReturnNotNull();
 	}
 	
 	private void createNewColumnValueWithDbScTabReturnNull() {
@@ -194,5 +203,57 @@ public class ColumnValueManagerUnitTest extends TestCase {
 	
 	private void createNewColumnValueWithValueWithDefaultDbDefaultScTabReturnTrue() {
 		assertTrue(ColumnValueManager.createNewColumnValue(tableName, 0L, 0, value));
+	}
+	
+	private void getValueWithDbScTabReturnNull() {
+		assertNull(ColumnValueManager.getValue(notexistdb, schemaName, tableName, 0L, 0));
+		assertNull(ColumnValueManager.getValue(databaseName, notexistSchema, tableName, 0L, 0));
+		assertNull(ColumnValueManager.getValue(databaseName, schemaName, notexistTab, 0L, 0));
+		assertNull(ColumnValueManager.getValue(databaseName, schemaName, tableName, -1L, 0));
+		assertNull(ColumnValueManager.getValue(databaseName, schemaName, tableName, 10000L, 0));
+		assertNull(ColumnValueManager.getValue(databaseName, schemaName, tableName, 0L, -1));
+		assertNull(ColumnValueManager.getValue(databaseName, schemaName, tableName, 0L, 10000));
+	}
+	
+	private void getValueWithDbScTabReturnNotNull() {
+		assertNotNull(ColumnValueManager.getValue(databaseName, schemaName, tableName, 0L, 0));
+	}
+	
+	private void getValueWithDbDefaultScTabReturnNull() {
+		assertNull(ColumnValueManager.getValue(notexistdb, tableName, 0L, 0));
+		assertNull(ColumnValueManager.getValue(databaseName, notexistTab, 0L, 0));
+		assertNull(ColumnValueManager.getValue(databaseName, tableName, -1L, 0));
+		assertNull(ColumnValueManager.getValue(databaseName, tableName, 10000L, 0));
+		assertNull(ColumnValueManager.getValue(databaseName, tableName, 0L, -1));
+		assertNull(ColumnValueManager.getValue(databaseName, tableName, 0L, 10000));
+	}
+	
+	private void getValueWithDbDefaultScTabReturnNotNull() {
+		assertNotNull(ColumnValueManager.getValue(databaseName, tableName, 0L, 0));
+	}
+	
+	private void getValueWithDefaultDbScTabReturnNull() {
+		assertNull(ColumnValueManager.getValueDefaultDB(notexistSchema, tableName, 0L, 0));
+		assertNull(ColumnValueManager.getValueDefaultDB(schemaName, notexistTab, 0L, 0));
+		assertNull(ColumnValueManager.getValueDefaultDB(schemaName, tableName, -1L, 0));
+		assertNull(ColumnValueManager.getValueDefaultDB(schemaName, tableName, 10000L, 0));
+		assertNull(ColumnValueManager.getValueDefaultDB(schemaName, tableName, 0L, -1));
+		assertNull(ColumnValueManager.getValueDefaultDB(schemaName, tableName, 0L, 10000));
+	}
+	
+	private void getValueWithDefaultDbScTabReturnNotNull() {
+		assertNotNull(ColumnValueManager.getValueDefaultDB(schemaName, tableName, 0L, 0));
+	}
+	
+	private void getValueWithDefaultDbDefaultScTabReturnNull() {
+		assertNull(ColumnValueManager.getValue(notexistTab, 0L, 0));
+		assertNull(ColumnValueManager.getValue(tableName, -1L, 0));
+		assertNull(ColumnValueManager.getValue(tableName, 10000L, 0));
+		assertNull(ColumnValueManager.getValue(tableName, 0L, -1));
+		assertNull(ColumnValueManager.getValue(tableName, 0L, 10000));
+	}
+	
+	private void getValueWithDefaultDbDefaultScTabReturnNotNull() {
+		assertNotNull(ColumnValueManager.getValue(tableName, 0L, 0));
 	}
 }
