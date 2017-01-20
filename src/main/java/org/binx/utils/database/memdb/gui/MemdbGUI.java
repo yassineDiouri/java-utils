@@ -15,8 +15,6 @@ import org.binx.utils.database.memdb.core.manager.DatabaseManager;
 import org.binx.utils.database.memdb.core.manager.SchemaManager;
 import org.binx.utils.database.memdb.core.manager.TableManager;
 import org.binx.utils.database.memdb.core.model.Column;
-import org.binx.utils.database.memdb.core.model.ColumnValue;
-import org.binx.utils.database.memdb.core.model.Line;
 
 /**
  *
@@ -157,7 +155,11 @@ public class MemdbGUI extends javax.swing.JFrame {
 
             }
         ));
+        tableLinesjTable.setToolTipText("");
+        tableLinesjTable.setName(""); // NOI18N
         jScrollPane1.setViewportView(tableLinesjTable);
+        tableLinesjTable.getAccessibleContext().setAccessibleName("");
+        tableLinesjTable.getAccessibleContext().setAccessibleDescription("");
 
         javax.swing.GroupLayout tableDetailPanelLayout = new javax.swing.GroupLayout(tableDetailPanel);
         tableDetailPanel.setLayout(tableDetailPanelLayout);
@@ -429,7 +431,7 @@ public class MemdbGUI extends javax.swing.JFrame {
                 columns[column.getOrder()] = column.getName();
             }
             
-            if(TableManager.countColumns(tableName) > 0) {
+            if(TableManager.countLines(tableName) > 0) {
                 lines = new Object[TableManager.countColumns(tableName)][];
         
                 for(int i = 0; i < 10; i++) {
